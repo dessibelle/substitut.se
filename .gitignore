@@ -1,0 +1,9 @@
+env
+project/static/lib
+project/.sass-cache
+project/.coverage
+*.egg-info
+*.pot
+*.py[co]
+__pycache__
+MANIFEST
