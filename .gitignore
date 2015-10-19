@@ -1,6 +1,6 @@
 env
-project/static/lib
-project/.sass-cache
+project/static/lib/*
+project/.sass-cache/*
 project/.coverage
 *.egg-info
 *.pot
