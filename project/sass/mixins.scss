@@ -1,0 +1,40 @@
+@mixin breakpoint($size) {
+    @if $size == xxs {
+        @media only screen and (min-width: 320px) {
+            /* Custom, iPhone Retina */
+            @content;
+        }
+    }
+    @else if $size == xs {
+        @media only screen and (min-width: $screen-xs-min) and (max-width: $screen-xs-max) {
+            /* Extra Small Devices, Phones */
+            @content;
+        }
+    }
+    @else if $size == sm {
+        @media only screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+            /* Small Devices */
+            @content;
+        }
+    }
+    @else if $size == md {
+        @media only screen and (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+            /* Medium Devices, Desktops */
+            @content;
+        }
+    }
+    @else if $size == lg {
+        @media only screen and (min-width: $screen-lg-min) {
+            /* Large Devices, Wide Screens */
+            @content;
+        }
+    }
+}
+
+@mixin vertical-align($position: relative) {
+    position: $position;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}

@@ -1,0 +1,74 @@
+<div class="row recipe-row">
+    <div class="column-1 col-md-9 col-sm-12 col-xs-12">
+        <section class="recipe-section">
+            <article class="recipe">
+                <div class="row">
+                    <h2><a href="{{ url }}">{{ name }}</a></h2>
+                    <div class="vote">
+                        <span class="votes-btn" data-recipe-id="{{ id }}" href="#"><i class="glyphicon glyphicon-heart"></i></span>
+                        <span class="votes-text">Rekommendera</span>
+                        <span class="votes-total" id="votes-total-{{ id }}">{{ vote_total }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    {{#if servings}}
+                    <div class="servings label label-primary">
+                        Antal portioner: <span id="servings-recipe-{{ id }}">{{ servings }}</span>
+                    </div>
+                    {{/if}}
+                    {{#if weight}}
+                    <div class="weight label label-primary">
+                        Vikt: <span id="weight-recipe-{{ id }}">{{ weight }}g</span>
+                    </div>
+                    {{/if}}
+                    {{#if description}}
+                    <div class="description">
+                        {{{ description }}}
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 col-xs-12 no-left-padding ingredients-wrapper">
+                        <ul class="ingredients">
+                        {{#each ingredients}}
+                            <li>
+                                <span class="ingredient-amount">{{ amount }}</span>
+                                <span class="ingredient-unit">{{ unit_short }}</span>
+                                <span class="ingredient-name">{{ text }}</span>
+                            </li>
+                        {{/each}}
+                        </ul>
+                    </div>
+                    <div class="col-md-8 instructions-wrapper">
+                        <div class="instructions">
+                            {{{instructions}}}
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </div>
+    <div class="column-2 col-md-3 col-sm-12 col-xs-12">
+        {{#if image}}
+        <aside class="recipe-image-wrapper">
+            <img class="recipe-image image-hidden" src="/static/images/placeholder.png" data-src="http://127.0.0.1:8000/{{ image }}" width="100%">
+        </aside>
+        {{/if}}
+        <aside class="nutrition">
+            <h3>Näringsinnehåll <a href="#" class="nutrition-toggle" data-recipe-id="{{ id }}" data-current-nutrition="total">totalt</a></h3>
+            <table class="nutrition-table">
+                {{#each nutrition}}
+                    {{#if val}}
+                    <tr>
+                        <th>{{key}}</th>
+                        <td class="nutrition-recipe-{{ ../id }} nutrition-total">{{val}}</td>
+                        <td class="nutrition-recipe-{{ ../id }} nutrition-phg">{{phg}}</td>
+                        <td class="nutrition-recipe-{{ ../id }} nutrition-ps">{{ps}}</td>
+                    </tr>
+                    {{/if}}
+                {{/each}}
+            </table>
+            <span class="footnote">Källa: <a href="http://www.livsmedelsverket.se/livsmedelsdatabasen" target="_blank">Livsmedelsverket</a></span>
+        </aside>
+    </div>
+</div>

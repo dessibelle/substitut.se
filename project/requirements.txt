@@ -1,0 +1,5 @@
+Django==1.8.4
+Pillow==2.9.0
+django-grappelli==2.7.1
+six==1.9.0
+wsgiref==0.1.2

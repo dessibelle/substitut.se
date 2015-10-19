@@ -1,0 +1,51 @@
+{% extends "recipes/base.html" %}
+
+{% block title %}Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <article class="recipe">
+            <h2>{{ recipe.name }}</h2>
+            <h3>Ingredienser</h3>
+            <ul class="ingredients">
+            {% for ingredient in ingredients %}
+                <li data-id="{{ ingredient.ingredient_id }}"
+                    data-energy-kj="{{ ingredient.energy_kj }}"
+                    data-energy-kcal="{{ ingredient.energy_kcal }}"
+                    data-protein="{{ ingredient.protein }}"
+                    data-fat="{{ ingredient.fat }}"
+                    data-carbohydrates="{{ ingredient.carbohydrates }}"
+                    data-fibers="{{ ingredient.fibres }}"
+                    data-salt="{{ ingredient.salt }}"
+                    data-water="{{ ingredient.water }}"
+                    data-saturates="{{ ingredient.saturates }}"
+                    data-monounsaturated="{{ ingredient.monounsaturated }}"
+                    data-trans-fat="{{ ingredient.trans_fat }}"
+                    data-cholesterol="{{ ingredient.cholesterol }}"
+                    data-vitamin-d="{{ ingredient.vitamin_d }}"
+                    data-vitamin-e="{{ ingredient.vitamin_e }}"
+                    data-vitamin-k="{{ ingredient.vitamin_k }}"
+                    data-vitamin-c="{{ ingredient.vitamin_c }}"
+                    data-vitamin-b6="{{ ingredient.vitamin_b6 }}"
+                    data-vitamin-b12="{{ ingredient.vitamin_b12 }}"
+                    data-iron="{{ ingredient.iron }}">
+                    <span class="ingredient-amount">{{ ingredient.amount }}</span>
+                    <span class="ingredient-unit">{{ ingredient.unit_short }}</span>
+                    <span class="ingredient-name">{{ ingredient.text }}</span>
+                </li>
+            {% endfor %}
+            </ul>
+            <h3>Gör då här</h3>
+            <div class="instructions">
+                {{ recipe.instructions }}
+            </div>
+            <hr>
+        </article>
+    </div>
+    <div class="col-md-4 bgc2">
+        <h4>Näringsinnehåll:</h4>
+        <div id="nutrition-data"></div>
+    </div>
+</div>
+{% endblock %}

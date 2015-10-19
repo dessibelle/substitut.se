@@ -1,0 +1,20 @@
+{
+  "name": "substitut.se",
+  "version": "0.0.0",
+  "authors": [
+    "Dan Larsson <danlarss@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "project/static/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery-autocomplete": "~1.1.1"
+  }
+}

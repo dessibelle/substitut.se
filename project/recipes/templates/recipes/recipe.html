@@ -1,0 +1,47 @@
+{% for recipe in recipes %}
+   <article class="recipe no-gutter">
+        <div class="col-md-9 column-1">
+            <div class="row">
+                <h2><a href="{{ url }}">{{ recipe.name }}</a></h2>
+                <div class="vote">
+                    <span id="votes-total">{{ recipe.vote_total }}</span>
+                    <a class="vote-btn" data-recipe-id="{{ recipe.id }}" href="#"><i class="glyphicon glyphicon-heart"></i></a>
+                </div>
+            </div>
+            <div class="row">                
+                <div class="col-md-4">
+                    <h3>Ingredienser:</h3>
+                    <ul class="ingredients">
+                    {% for ingredient in recipe.ingredients %}
+                        <li>
+                            <span class="ingredient-amount">{{ ingredient.amount }}</span>
+                            <span class="ingredient-unit">{{ ingredient.unit_short }}</span>
+                            <span class="ingredient-name">{{ ingredient.text }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <h3>Gör så här:</h3>
+                    <div class="instructions">
+                        {{ recipe.instructions }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 column-2">
+            <div class="nutrition">
+                <h3>Näringsinnehåll</h3>
+                <table class="nutrition-table">
+                    {% for nutrition in nutritions %}
+                        <tr>
+                            <th>{{ nutrition.key }}</th>
+                            <td>{{ nutrition.val }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <span class="footnote">Källa: <a href="http://www.livsmedelsverket.se/livsmedelsdatabasen" target="_blank">Livsmedelsverket</a></span>
+            </div>
+        </div>
+    </article>
+{% endfor %}
