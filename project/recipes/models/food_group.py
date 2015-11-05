@@ -1,4 +1,5 @@
 from django.db import models
+# from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
 from recipe import Recipe
@@ -31,6 +32,33 @@ class FoodGroupManager(models.Manager):
     def get_latest(self):
         """Return categories with newest recipes."""
         pass
+
+    def get_food_groups(self, recipe_id=None):
+        """Return food groups for a single recipe."""
+        from django.db import connection
+        cursor = connection.cursor()
+        if recipe_id is not None:
+            cursor.execute("""
+                SELECT fg.id, fg.name, fg.lookup
+                FROM recipes_foodgroup fg
+                INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
+                INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
+                WHERE r.id = ?""", [recipe_id])
+        else:
+            cursor.execute("""
+                SELECT fg.id, fg.name, fg.lookup
+                FROM recipes_foodgroup fg
+                ORDER BY fg.name""")
+
+        result_list = []
+        for row in cursor.fetchall():
+            fg = FoodGroup(id=row[0], name=row[1], lookup=row[2])
+            result_list.append({
+                'id': row[0],
+                'name': row[1],
+                'url': fg.get_absolute_url()
+            })
+        return result_list
 
     def get_index(self):
         """Return data used for tag indexing."""

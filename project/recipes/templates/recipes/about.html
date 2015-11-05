@@ -1,0 +1,70 @@
+{% extends "recipes/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div id="content" class="row about" data-endpoint="" data-limit="{{ limit }}">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h2>Vad är substitut.se?</h2>
+        <p class="airy">Internet är fyllt av receptsidor och grupper med fantastiskt goda växtbaserade recept. Ändå kan det upplevas svårt att hitta de riktiga guldkornen och när de väl hittas är de ofta svårtillgängligt på ett eller annat sätt, därför registrerade jag domänen substitut.se och började arbeta på en lösning.</p>
+        <p class="airy">Jag bestämde mig för att skapa en sida efter följande kriterier:</p>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="criteria bg-success">
+                <h4 class="text-success">
+                    <span class="glyphicon glyphicon-leaf text-success lg"></span>
+                    Veganskt
+                </h4>
+                <p>Alla recept ska naturligtvis vara helt veganska.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="criteria bg-info">
+                <h4 class="text-info">
+                    <span class="glyphicon glyphicon-search text-info"></span>
+                    Sökbart
+                </h4>
+                <p>Det ska vara lätt att hitta det man söker. Det ska finnas en bra sökfunktion med ordkomplettering men även ett register likt en gammal hederlig kokbok.</p>
+            </div>
+        </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="criteria bg-warning">
+            <h4 class="text-warning">
+                <span class="glyphicon glyphicon-stats text-warning"></span>
+                Informativt
+            </h4>
+            <p>Det ska finnas information om de näringsämnen rätterna innehåller.</p>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="criteria bg-danger">
+                <h4 class="text-danger">
+                    <span class="glyphicon glyphicon-user text-danger"></span>
+                    Lättillgängligt
+                </h4>
+                <p>Man ska inte behöva bli medlem för att ta del av recepten. Inte heller för att rekommendera ett recept. Sidan ska vara responsiv och fungera i de vanligaste upplösningarna.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="criteria">
+                <h4>
+                    <span class="glyphicon glyphicon-adjust text-primary"></span>
+                    Tydligt
+                </h4>
+                <p>Det ska vara fokus på recepten utan reklam och irrelevant information. Ingredienser och instruktioner ska rymmas på skärmen utan att scrolla i den mån det är möjligt.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="criteria bg-tag">
+                <h4 class="text-tag">
+                    <span class="glyphicon glyphicon-thumbs-up text-tag"></span>
+                    Relevant
+                </h4>
+                <p>Det ska finnas en ranking på recepten så att användare kan sortera på de recepten som de allra flesta tycker om.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

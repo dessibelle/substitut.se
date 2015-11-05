@@ -3,19 +3,19 @@
 templates['recipe'] = template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "                    <div class=\"servings label label-primary\">\n                        Antal portioner: <span id=\"servings-recipe-"
+  return "                    <div class=\"servings\">\n                        <span id=\"servings-recipe-"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\">"
     + alias4(((helper = (helper = helpers.servings || (depth0 != null ? depth0.servings : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"servings","hash":{},"data":data}) : helper)))
-    + "</span>\n                    </div>\n";
+    + "</span> portioner\n                    </div>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "                    <div class=\"weight label label-primary\">\n                        Vikt: <span id=\"weight-recipe-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">"
-    + alias4(((helper = (helper = helpers.weight || (depth0 != null ? depth0.weight : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"weight","hash":{},"data":data}) : helper)))
-    + "g</span>\n                    </div>\n";
+  return "                    <a class=\"btn btn-tag\" href=\""
+    + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
+    + "\">\n                        "
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "\n                    </a>\n";
 },"5":function(container,depth0,helpers,partials,data) {
     var stack1, helper;
 
@@ -33,11 +33,17 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
     + "</span>\n                            </li>\n";
 },"9":function(container,depth0,helpers,partials,data) {
-    var helper;
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "        <aside class=\"recipe-image-wrapper\">\n            <img class=\"recipe-image image-hidden\" src=\"/static/images/placeholder.png\" data-src=\"http://127.0.0.1:8000/"
-    + container.escapeExpression(((helper = (helper = helpers.image || (depth0 != null ? depth0.image : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"image","hash":{},"data":data}) : helper)))
-    + "\" width=\"100%\">\n        </aside>\n";
+  return "        <aside class=\"thumbnail recipe-image-wrapper\">\n            <img class=\"recipe-image img-responsive\" src=\"http://127.0.0.1:8000/static/recipes/images/"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "_135x135.jpg\" data-1x=\"http://127.0.0.1:8000/static/recipes/images/"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "_270x270.jpg\" data-2x=\"http://127.0.0.1:8000/static/recipes/images/"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "_540x540.jpg\" width=\"100%\">\n            <div class=\"caption\">\n                <h3>"
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</h3>\n            </div>\n        </aside>\n";
 },"11":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
 
@@ -63,19 +69,21 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<div class=\"row recipe-row\">\n    <div class=\"column-1 col-md-9 col-sm-12 col-xs-12\">\n        <section class=\"recipe-section\">\n            <article class=\"recipe\">\n                <div class=\"row\">\n                    <h2><a href=\""
+  return "<div class=\"row recipe-row "
+    + alias4(((helper = (helper = helpers["class"] || (depth0 != null ? depth0["class"] : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"class","hash":{},"data":data}) : helper)))
+    + "\">\n    <div class=\"cover\"></div>\n    <div class=\"column-1 col-md-9 col-sm-12 col-xs-12\">\n        <section class=\"recipe-section\">\n            <article class=\"recipe\">\n                <div class=\"row\">\n                    <h2><a href=\""
     + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
     + "\">"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</a></h2>\n                    <div class=\"vote\">\n                        <span class=\"votes-btn\" data-recipe-id=\""
+    + "</a></h2>\n                    <div class=\"vote\" data-recipe-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" href=\"#\"><i class=\"glyphicon glyphicon-heart\"></i></span>\n                        <span class=\"votes-text\">Rekommendera</span>\n                        <span class=\"votes-total\" id=\"votes-total-"
+    + "\">\n                        <span class=\"votes-btn\"><i class=\"glyphicon glyphicon-heart\"></i></span>\n                        <span class=\"votes-text\">Rekommendera</span>\n                        <span class=\"votes-total\" id=\"votes-total-"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\">"
     + alias4(((helper = (helper = helpers.vote_total || (depth0 != null ? depth0.vote_total : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"vote_total","hash":{},"data":data}) : helper)))
     + "</span>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.servings : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.weight : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.food_groups : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.description : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "                </div>\n                <div class=\"row\">\n                    <div class=\"col-md-4 col-sm-12 col-xs-12 no-left-padding ingredients-wrapper\">\n                        <ul class=\"ingredients\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.ingredients : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -83,7 +91,7 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + ((stack1 = ((helper = (helper = helpers.instructions || (depth0 != null ? depth0.instructions : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"instructions","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.image : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        <aside class=\"nutrition\">\n            <h3>Näringsinnehåll <a href=\"#\" class=\"nutrition-toggle\" data-recipe-id=\""
+    + "        <aside class=\"nutrition\">\n            <h3><span class=\"pull-left\">Näring</span> <a href=\"#\" class=\"nutrition-toggle btn btn-info pull-right\" data-recipe-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-current-nutrition=\"total\">totalt</a></h3>\n            <table class=\"nutrition-table\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"each","hash":{},"fn":container.program(11, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")

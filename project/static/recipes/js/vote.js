@@ -1,25 +1,30 @@
 /*jslint browser: true*/
-/*global $, jQuery*/
+/*global $, jQuery, substitut*/
 (function ($) {
     "use strict";
-    $.votes = function (options) {
-        var vote = {
+
+    var vote = {};
+
+    $.extend(true, substitut.modules, {Vote: function (options) {
+
+        vote = {
 
             options: $.extend({
-                "selector": ".vote-btn"
+                selector: ".vote-btn"
             }, options),
             storage: null,
 
-            _init: function () {
+            init: function () {
                 try {
-                    vote.storage = $.storage({
-                        "name": "votes",
-                        "expire": 1 // expire next day
+                    vote.storage = substitut.modules.Storage({
+                        name: "votes",
+                        expire: 1 // expire next day
                     });
                 } catch (ex) {
-                    if (ex instanceof $.storageDisabledException) {
-                        // TODO: fall back on cookies
+                    if (ex instanceof substitut.exceptions.StorageDisabledException) {
                         console.log("storage is disabled");
+                    } else {
+                        console.log(ex);
                     }
                 }
             },
@@ -29,7 +34,7 @@
                     try {
                         vote.storage.get(recipe_id);
                     } catch (ex) {
-                        if (ex instanceof $.storageParamNotFoundException) {
+                        if (ex instanceof substitut.exceptions.StorageParamNotFoundException) {
                             vote.storage.set(recipe_id);
                         }
                     }
@@ -40,17 +45,19 @@
                 $.ajax({
                     url: "/api/recipes/vote/" + recipe_id + "/?v=" + Date.now(),
                     success: function (responseData) {
-                        var json = $.app.parseJson(responseData);
+                        var json = substitut.application.parseJson(responseData);
                         if (json) {
                             if (json.status === "ok") {
                                 var $vote_total = $('#votes-total-' + recipe_id);
                                 if ($vote_total) {
                                     vote.save(recipe_id);
                                     var num_votes = parseInt($vote_total.html(), 10) + 1;
-                                    vote.setTotal({'recipe_id': recipe_id, 'votes': num_votes});
+                                    vote.setTotal({recipe_id: recipe_id, votes: num_votes});
                                 }
                             } else if (json.status === "denied") {
                                 vote.save(recipe_id);
+                            } else {
+                                console.log("Endpoint returned an unknown status: ", json.status);
                             }
                             vote.validateButton(recipe_id);
                         }
@@ -58,11 +65,14 @@
                 });
             },
 
+            /**
+             * Return the total number of votes for current recipe.
+             */
             getTotal: function (recipe_id) {
                 $.ajax({
                     url: "/api/recipes/votes/" + recipe_id + "/?v=" + Date.now(),
                     success: function (responseData) {
-                        var json = $.app.parseJson(responseData);
+                        var json = substitut.application.parseJson(responseData);
                         if (json) {
                             vote.setTotal(json);
                         }
@@ -70,6 +80,9 @@
                 });
             },
 
+            /**
+             * Checks if vote button should be enabled for current recipe.
+             */
             validateButton: function (recipe_id) {
                 var $vote_total = $('#votes-total-' + recipe_id);
                 if (!$vote_total.parent().hasClass("disabled")) {
@@ -78,7 +91,7 @@
                 try {
                     vote.storage.get(recipe_id);
                 } catch (ex) {
-                    if (ex instanceof $.storageParamNotFoundException) {
+                    if (ex instanceof substitut.exceptions.StorageParamNotFoundException) {
                         $vote_total.parent().removeClass("disabled");
                     }
                 }
@@ -104,12 +117,12 @@
             }
         };
 
-        vote._init();
+        vote.init();
 
         return {
             voteFor: vote.voteFor,
             getTotal: vote.getTotal,
             getSelector: vote.getSelector
         };
-    };
+    }});
 }(jQuery));

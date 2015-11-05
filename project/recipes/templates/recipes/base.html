@@ -5,32 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{% static "recipes/css/substitut.css" %}" />
     <title>{% block title %}Substitut{% endblock %}</title>
-    
-    <script type="text/javascript" src="{% static "lib/jquery-ui/jquery-ui.js" %}"> </script>
-    <script type="text/javascript" src="{% static "lib/jquery-unveil/jquery.unveil.js" %}"> </script>
-    <script type="text/javascript" src="{% static "lib/handlebars/handlebars.runtime.js" %}"> </script>
-    <script type="text/javascript" src="{% static "lib/parallax/parallax.js" %}"> </script>
-    <script type="text/javascript" src="{% static "recipes/js/vote.js" %}"> </script>
-    <script type="text/javascript" src="{% static "recipes/js/exceptions.js" %}"> </script>
-    <script type="text/javascript" src="{% static "recipes/js/storage.js" %}"> </script>
-    <script type="text/javascript" src="{% static "recipes/js/recipe.js" %}"> </script>
-    <script type="text/javascript" src="{% static "recipes/js/substitut.js" %}"> </script>
-    <script type="text/javascript" src="{% static "recipes/js/templates/templates.js" %}"></script>
-    
-    <!--<script type="text/javascript" src="{% static "recipes/js/final/app.js" %}"> </script>-->
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="{% static "recipes/js/final/app.js" %}"></script>
+    <link href='https://fonts.googleapis.com/css?family=Cutive+Mono|Roboto' rel='stylesheet' type='text/css'>
 </head>
 <body id="substitut">
-    <header class="container-fluid">
+    <header class="site-header container-fluid">
         <div class="col-md-4 col-sm-4 col-xs-12 logo-wrapper">
             <img src="{% static "recipes/images/vegan.png" %}" class="vegan-logo">
             <h1 id="logo"><a href="/">SUBSTITUT</a></h1>
         </div>
         <nav class="col-md-4 col-sm-4 col-xs-12 navigation">
             <ul class="nav nav-pills pull-right">
-                <li><a href="#">Kontakt</a></li>
-                <li><a href="#">Om</a></li>
-                <li><a href="#">Skicka in ett recept</a></li>
+                <li><a href="/om">Om</a></li>
+                <li><a href="/skicka-in-recept" class="btn btn-info">Skicka in ett recept</a></li>
             </ul>
         </nav>
         <div class="col-md-4 col-sm-4 col-xs-12 search-wrapper">
@@ -44,11 +31,7 @@
             </form>
         </div>
     </header>
-    <div class="parallax-window" data-position-y="top" data-parallax="scroll" data-image-src="{% static "recipes/images/front_1.jpg" %}">
-        <div class="container-fluid fluid-limited">
-            <p class="index-text">Att äta rätt är viktigt för din hälsa och för vår miljö. Visste du t.ex. att kött- och mejeriindustrin står för 70 % av världens sötvattenskonsumtion, 38 % av landanvändningen och 19 % av växthusgasutsläppen? Du kan minska ditt klimatavtryck genom att byta ut kött- och mejeriprodukter till växtbaserade alternativ. Substutit.se är en samling recept på just substitut till för att underlätta för dig att gå mot en snällare och mer klimatsmart kost.</p>
-        </div>
-    </div>
+    {% block post_header %}{% endblock %}
     <section class="container-fluid">
         <div class="container-fluid fluid-limited">
             <div class="content-wrapper">
@@ -56,14 +39,8 @@
             </div>
             <footer class="site-footer">
                 <div class="footer-wrapper">
-                    <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </div>
-                    <div class="col-md-4 col-sm-12 col-xs-12">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 2
-                    </div>
-                    <div class="col-md-4 col-sm-12 col-xs-12">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 3
                     </div>
                 </div>
             </footer>

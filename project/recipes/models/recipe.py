@@ -64,7 +64,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    image = models.ImageField(upload_to='static/recipes/images/', blank=True, null=True)
+    image = models.ImageField(upload_to='static/recipes/original/', blank=True, null=True)
     pub_date = models.DateTimeField(auto_now_add=True, blank=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES)
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient')
@@ -93,8 +93,7 @@ class Recipe(models.Model):
     def __unicode__(self):
         return self.name
 
-    def save(self, size=(600, 600), *args, **kwargs):
-        super(Recipe, self).save(*args, **kwargs)
+    def save_image(self, size=(600, 600)):
         if not self.id or not self.image:
             return
         pw = self.image.width
@@ -103,8 +102,10 @@ class Recipe(models.Model):
         nh = size[1]
 
         if (pw, ph) != (nw, nh):
-            filename = str(self.image.path)
-            image = Image.open(filename)
+            tmp_filename = str(self.image.path)
+            filename = 'static/recipes/images/{}_{}x{}.jpg'.format(self.id, size[0], size[1])
+            print(filename)
+            image = Image.open(tmp_filename)
             pr = float(pw) / float(ph)
             nr = float(nw) / float(nh)
 
@@ -127,6 +128,12 @@ class Recipe(models.Model):
 
             image.save(filename)
 
+    def save(self, *args, **kwargs):
+        super(Recipe, self).save(*args, **kwargs)
+        self.save_image((540, 540))
+        self.save_image((270, 270))
+        self.save_image((135, 135))
+
 
 class RecipeFoodGroup(models.Model):
     recipe = models.ForeignKey(Recipe)
@@ -137,11 +144,12 @@ class RecipeFoodGroup(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    unit = models.ForeignKey('Unit')
+    unit = models.ForeignKey('Unit', null=True, blank=True)
     ingredient = models.ForeignKey('Ingredient')
     recipe = models.ForeignKey(Recipe)
-    amount = models.FloatField()
+    amount = models.FloatField(null=True, blank=True)
     text = models.CharField(max_length=255)
+    order = models.IntegerField(default=0)
 
     class Meta:
         app_label = 'recipes'

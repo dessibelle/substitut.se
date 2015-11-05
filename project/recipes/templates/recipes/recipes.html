@@ -3,5 +3,6 @@
 {% block title %}Details{% endblock %}
 
 {% block content %}
-<div id="content" data-endpoint="{{ endpoint }}"></div>
+<div id="content" data-endpoint="{{ endpoint }}" data-limit="{{ limit }}"></div>
+<button id="show-more-btn" class="btn btn-lg btn-info">Hämta fler recept</button>
 {% endblock %}

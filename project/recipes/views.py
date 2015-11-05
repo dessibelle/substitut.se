@@ -3,18 +3,69 @@ from django.shortcuts import get_object_or_404, render
 from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.conf import settings
 from models.term import Term
 from models.food_group import FoodGroup
 from models.ingredient import Ingredient
 from models.recipe import Recipe
 from models.vote import Vote
+from forms.recipe import RecipeForm
+# from random import randint
 import simplejson
 import mistune
 
 
 @never_cache
+def about(request):
+    return render(request, 'recipes/about.html', {
+        'limit': settings.PAGE_LIMIT,
+        })
+
+
+@never_cache
 def index(request):
-    return render(request, 'recipes/index.html')
+
+    latest_recipes = Recipe.objects.filter(status=1).order_by('-pub_date')[:4]
+    latest_recipes_with_links = []
+    for recipe in latest_recipes:
+        latest_recipes_with_links.append({
+            'id': recipe.id,
+            'name': recipe.name,
+            'url': recipe.get_absolute_url()
+            })
+
+    popular_recipes = Recipe.objects.filter(status=1).order_by('-num_votes')[:4]
+    popular_recipes_with_links = []
+    for recipe in popular_recipes:
+        popular_recipes_with_links.append({
+            'id': recipe.id,
+            'name': recipe.name,
+            'url': recipe.get_absolute_url()
+            })
+
+    food_groups = FoodGroup.objects.get_food_groups()
+    food_groups_grouped = {}
+    for food_group in food_groups:
+        ch = food_group['name'][:1].lower()
+        try:
+            food_groups_grouped[ch].append(food_group)
+        except:
+            food_groups_grouped[ch] = []
+            food_groups_grouped[ch].append(food_group)
+            pass
+
+    print(food_groups_grouped)
+
+    parallax_src = "http://127.0.0.1:8000/static/recipes/images/background/{}.jpg"
+    # index = randint(1, 6)
+
+    return render(request, 'recipes/index.html', {
+        'limit': settings.PAGE_LIMIT,
+        'latest_recipes': latest_recipes_with_links,
+        'popular_recipes': popular_recipes_with_links,
+        'food_groups': food_groups_grouped,
+        'parallax_src': parallax_src.format(1)
+        })
 
 
 @never_cache
@@ -48,7 +99,7 @@ def recipes(request, lookup, slug=None):
     except:
         raise Http404
 
-    return render(request, 'recipes/recipes.html', {'endpoint': endpoint})
+    return render(request, 'recipes/recipes.html', {'endpoint': endpoint, 'limit': settings.PAGE_LIMIT})
 
 
 def food_groups(request, lookup, slug=None):
@@ -61,7 +112,7 @@ def food_groups(request, lookup, slug=None):
     except:
         raise Http404
 
-    return render(request, 'recipes/recipes.html', {'endpoint': endpoint})
+    return render(request, 'recipes/recipes.html', {'endpoint': endpoint, 'limit': settings.PAGE_LIMIT})
 
 
 def ingredients(request, lookup, slug=None):
@@ -74,7 +125,7 @@ def ingredients(request, lookup, slug=None):
     except:
         raise Http404
 
-    return render(request, 'recipes/recipes.html', {'endpoint': endpoint})
+    return render(request, 'recipes/recipes.html', {'endpoint': endpoint, 'limit': settings.PAGE_LIMIT})
 
 
 @cache_page(60 * 15)
@@ -86,10 +137,10 @@ def api_terms(request):
             term = request.GET[u'term']
             results = Term.objects.lookup(term)
     output = simplejson.dumps(results)
-    return HttpResponse(output) # todo return json header
+    return HttpResponse(output)  # todo return json header
 
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def api_recipes(request, recipe_id):
     md = mistune.Markdown()
     _recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -113,20 +164,27 @@ def api_recipes(request, recipe_id):
         'status': _recipe.status,
         'ingredients': ingredients['list'],
         'vote_total': 0,
+        'food_groups': FoodGroup.objects.get_food_groups(_recipe.id),
         'weight': ingredients['weight']
     })
 
     output = simplejson.dumps(result)
-    return HttpResponse(output) # todo return json header
+    return HttpResponse(output)  # todo return json header
 
 
-@cache_page(60 * 15)
 def api_ingredients(request, ingredient_id):
     ingredient = Ingredient.objects.get(pk=ingredient_id)
     if not ingredient:
         raise Http404
 
-    recipes = Recipe.objects.filter(ingredients__in=[ingredient_id]).order_by('-num_votes')
+    if u'o' in request.GET:
+        offset = int(request.GET[u'o'])
+        if offset < 0:
+            offset = 0
+    else:
+        offset = 0
+
+    recipes = Recipe.objects.filter(ingredients=ingredient_id).order_by('-num_votes')[offset:offset + settings.PAGE_LIMIT]
 
     result = {
         'url': ingredient.get_absolute_url(),
@@ -151,18 +209,27 @@ def api_ingredients(request, ingredient_id):
                 'status': recipe.status,
                 'ingredients': ingredients['list'],
                 'vote_total': 0,
+                'food_groups': FoodGroup.objects.get_food_groups(recipe.id),
                 'weight': ingredients['weight']
             }
         )
         result['count'] += 1
 
     output = simplejson.dumps(result)
-    return HttpResponse(output) # todo return json header
+    return HttpResponse(output)  # todo return json header
 
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 def api_food_groups(request, food_group_id):
-    recipes = Recipe.objects.filter(foodgroup__in=[food_group_id]).order_by('-num_votes')
+
+    if u'o' in request.GET:
+        offset = int(request.GET[u'o'])
+        if offset < 0:
+            offset = 0
+    else:
+        offset = 0
+
+    recipes = Recipe.objects.filter(foodgroup=food_group_id).order_by('-num_votes')[offset:offset + settings.PAGE_LIMIT]
     food_group = FoodGroup.objects.get(pk=food_group_id)
 
     result = {
@@ -188,13 +255,14 @@ def api_food_groups(request, food_group_id):
                 'status': recipe.status,
                 'ingredients': ingredients['list'],
                 'vote_total': 0,
+                'food_groups': FoodGroup.objects.get_food_groups(recipe.id),
                 'weight': ingredients['weight']
             }
         )
         result['count'] += 1
 
     output = simplejson.dumps(result)
-    return HttpResponse(output) # todo return json header
+    return HttpResponse(output)  # todo return json header
 
 
 @cache_page(60 * 15)
@@ -204,4 +272,13 @@ def api_term(request):
             term = request.GET[u'term']
             results = Term.objects.lookup(term)
     output = simplejson.dumps(results)
-    return HttpResponse(output) # todo return json header
+    return HttpResponse(output)  # todo return json header
+
+
+def recipe_form(request):
+    form = RecipeForm()
+    return render(request, 'recipes/form.html', {'form': form})
+
+
+def bootstrap(request):
+    return render(request, 'recipes/bootstrap.html')

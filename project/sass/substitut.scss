@@ -1,6 +1,69 @@
+#substitut {
+    #index-search-btn {
+        border: none;
+        padding: 5px ($grid-gutter-width/2) 0;
+        @include box-shadow(none);
+    }
+    .thumbnail {
+        border: 0;
+    }
+    h3.index {
+        margin-bottom: 0;
+    }
 
+}
 
-body#substitut {
+.airy {
+    margin: $grid-gutter-width 0;
+}
+
+.criteria {
+    width: 100%;
+    padding: $grid-gutter-width;
+    margin-bottom: ($grid-gutter-width/2);
+    font-size: 14px;
+    &.bg-primary {
+        .text-primary {
+            color: $white;
+        }
+    }
+    p {
+        margin-bottom: $grid-gutter-width; 
+    }
+}
+
+.search-promote-wrapper {
+    text-align: center;
+    padding: $grid-gutter-width;
+}
+
+.food-groups {
+    &.index {
+        h3 {
+            text-transform: uppercase;
+        }
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            li {
+                padding: 0;
+                margin: 0 0 .5em 0;
+            }
+        }
+    }
+}
+
+.servings {
+    float: left;
+    line-height: 32px;
+    margin-right: 1em;
+    padding-right: 1em;
+    border-right: 1px solid $gray;
+}
+
+body {
+    font-weight: 100;
     .container-fluid {
         background-color: $white;
         padding-left: 0;
@@ -14,11 +77,50 @@ body#substitut {
     }
 }
 
+.label {
+    font-family: $font-family-monospace;
+    &.label-tag {
+        background-color: lighten($sunflower, 20%);
+        color: darken($sunflower, 50%);
+        border: 1px solid lighten(adjust-hue($sunflower, -10), 10%);
+        font-weight: 100;
+    }
+}
+
+.input-group {
+    .input-group-addon {
+        background-color: $gray;
+        color: $white;
+    }
+    .input-group-btn {
+        .btn {
+            background-color: $white;
+            color: $gray;
+            border: 1px solid $gray;
+        }
+    }
+}
+
+.form-group {
+    margin-top: ($grid-gutter-width/2);
+    margin-bottom: ($grid-gutter-width/2);
+    width: 100%;
+    float: left;
+ }
+
+.control-label {
+    font-family: $font-family-monospace;
+}
+
 .posthead {
     background-color: $brand-background;
 }
 
-header {
+#show-more-btn {
+    margin-bottom: $grid-gutter-width;
+}
+
+header.site-header {
     padding: 0;
     margin: 0 auto;
     width: 100%;
@@ -26,6 +128,8 @@ header {
     background-color: $white;
     overflow: visible;
     text-align: center;
+    @include box-shadow(0 5px 20px rgba(0, 0, 0, 0.2));
+    z-index: 99;
     .logo-wrapper {
         h1 {
             margin: 13px 0 0 0;
@@ -49,16 +153,22 @@ header {
     }
     .navigation {
         height: 60px;
+        padding-top: 10px;
         background-color: $white;
         .nav-pills {
+            margim-top: 10px;
             li {
                 text-align: center;
                 a {
-                    background-color: $white;
-                    color: $gray-dark;
-                    height: 60px;
+                    font-family: $font-family-monospace;
+                    height: 40px;
                     font-size: 14px;
-                    line-height: 40px;
+                    &.btn-info {
+                        padding: 10px 15px !important;
+                        &:hover {
+                            background-color: darken($btn-info-bg, 15%);
+                        }
+                    }
                 }
             }
             @include breakpoint(xxs) {
@@ -144,16 +254,18 @@ header {
     }
 }
 
-footer {
+.site-footer {
     float: left;
     display: block;
     text-align: center;
-    background-color: $gray-darker;
-    color: $white;
+    width: 100%;
     font-size: small;
+    border-top: 3px solid $brand-info;
+    margin-top: $grid-gutter-width;
     .footer-wrapper {
+        width: 100%;
         margin: 0 auto;
-        text-align: left;
+        text-align: center;
         font-size: 0.9em;
         padding: 1em 0;
         display: inline-block;
@@ -167,12 +279,13 @@ footer {
     min-height: 532px;
     article.recipe {
         padding: ($grid-gutter-width/2);
-        .label {
-            font-size: small;
-            font-weight: 900;
-            margin-right: ($grid-gutter-width/2);
-            padding: .5em 1em;
-            border-radius: 0;
+        .row {
+            .label {
+                font-size: small;
+                margin-right: ($grid-gutter-width/2);
+                padding: .5em 1em;
+                @include border_radius(.5em);
+            }
         }
         .description {
             padding-top: ($grid-gutter-width/2);
@@ -188,7 +301,7 @@ footer {
         }
         .ingredients-wrapper,
         .instructions-wrapper {
-            margin-top: $grid-gutter-width;
+            margin-top: ($grid-gutter-width*2);
         }
         .vote {
             float: right;
@@ -211,6 +324,7 @@ footer {
                 float: right;
             }
             .votes-text {
+                font-family: $font-family-monospace;
                 display: none;
                 line-height: 25px;
                 float: right;
@@ -227,7 +341,9 @@ footer {
             &:hover {
                 cursor: pointer;
                 background-color: $brand-danger;
-                width: 150px;
+                width: 165px;
+                @include box-shadow(0 1px 1.5px 1px rgba(0,0,0,.12));
+                text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
                 .votes-total {
                     display: none;
                 }
@@ -314,10 +430,30 @@ footer {
         }
     }
 }
-.column-2 {
-    .recipe-image-wrapper {
-        margin-top: $grid-gutter-width;
+
+.recipe-image-wrapper {
+    margin-top: $grid-gutter-width;
+    margin-bottom: 0;
+    &.index {
+        margin: ($grid-gutter-width/2) 0;
     }
+    position: relative;
+    .caption {
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        right: 4px;
+        background-color: #000;
+        @include opacity(.65);
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            text-transform: none;
+            color: #ffffff;
+        }
+    }
+}
+.column-2 {
     .nutrition {
         background-color: $brand-background;
         width: 100%;
@@ -329,8 +465,18 @@ footer {
         h3 {
             font-size: 16px;
             color: $gray;
-            a {
-                text-decoration: underline;
+            display: block;
+            position: relative;
+            height: 37px;
+            line-height: 37px;
+            margin-top: ($grid-gutter-width/2);
+            a.btn-info {
+                text-transform: none;
+                font-size: 14px;
+                line-height: 20px;
+                &:hover {
+                    background-color: darken($btn-info-bg, 15%);
+                }
             }
         }
         .nutrition-table {
@@ -358,8 +504,8 @@ footer {
 }
 
 .parallax-window {
-    -webkit-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
@@ -370,21 +516,25 @@ footer {
     }
     .index-text {
         color: $white;
+        fonr-weight: lighter;
         float: left;
         @include vertical_align();
     }
     &.search {
-        min-height: 200px;
-        height: 200px;
+        min-height: 0;
+        height: 0;
         .fluid-limited {
-            min-height: 200px;
-            height: 200px;
+            min-height: 0;
+            height: 0;
+        }
+        .index-text {
+            display: none;
         }
     }
     background: transparent;
     @include breakpoint(xxs) {
         font-size: 16px;
-        text-shadow: 1px 1px 3px rgba(70, 70, 70, 1);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         .index-text {
             margin: -3em 1em 0 1em;
         }
@@ -425,14 +575,45 @@ footer {
 }
 
 .recipe-row {
-    margin-bottom: ($grid-gutter-width/2);
+    position: relative;
+    margin-bottom: ($grid-gutter-width*2);
     margin-top: ($grid-gutter-width/2);
+    padding-bottom: ($grid-gutter-width*2);
     background-color: $white;
     h3 {
         text-transform: uppercase;
         font-size: 16px;
         color: $gray;
         margin-top: $grid-gutter-width;
+    }
+    .cover {
+        display: none;
+    }
+    &.last {
+        height: 150px;
+        overflow: hidden;
+        border-bottom: none;
+        .cover {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            z-index: 999;
+            background: -webkit-gradient(
+                linear, 
+                left bottom, 
+                left top, 
+                color-stop(0, rgba(255,255,255,1.0)),
+                color-stop(1, rgba(255,255,255,0.0))
+            );
+            background: -moz-linear-gradient(
+                center bottom, 
+                rgba(255,255,255,0.0) 100%, 
+                rgba(255,255,255,1.0) 0%
+            );
+        }
     }
 }
 

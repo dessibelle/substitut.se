@@ -1,86 +1,62 @@
 {% extends "recipes/base.html" %}
 {% load staticfiles %}
 
-{% block content %}
-<div id="content" class="row index">
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="category">
-            <h4>Kategori 1</h4>
-            <ul class="recipes">
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-            </ul>
-            <a href="#">Fler liknande recept</a>
-        </div>
+{% block post_header %}
+<div class="parallax-window" data-position-y="top" data-parallax="scroll" data-image-src="{{ parallax_src }}">
+    <div class="container-fluid fluid-limited">
+        <p class="index-text">Att äta rätt är viktigt för din hälsa och för vår miljö. Visste du t.ex. att kött- och mejeriindustrin står för 70 % av världens sötvattenskonsumtion, 38 % av landanvändningen och 19 % av växthusgasutsläppen? Du kan minska ditt klimatavtryck genom att byta ut kött- och mejeriprodukter till växtbaserade alternativ. Substutit.se är en samling recept på just substitut till för att underlätta för dig att gå mot en snällare och mer klimatsmart kost.</p>
     </div>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="category">
-            <h4>Kategori 2</h4>
-            <ul class="recipes">
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-            </ul>
-            <a href="#">Fler liknande recept</a>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="category">
-            <h4>Kategori 3</h4>
-            <ul class="recipes">
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-            </ul>
-            <a href="#">Fler liknande recept</a>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="category">
-            <h4>Kategori 4</h4>
-            <ul class="recipes">
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-            </ul>
-            <a href="#">Fler liknande recept</a>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="category">
-            <h4>Kategori 5</h4>
-            <ul class="recipes">
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-            </ul>
-            <a href="#">Fler liknande recept</a>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-4 col-xs-12">
-        <div class="category">
-            <h4>Kategori 6</h4>
-            <ul class="recipes">
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-                <li><a href="#">Lorem ipsum</a></li>
-            </ul>
-            <a href="#">Fler liknande recept</a>
-        </div>
-    </div>
-
 </div>
+{% endblock %}
+
+{% block content %}
+<div id="content" class="row index" data-endpoint="" data-limit="{{ limit }}">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h3 class="index">De senaste recepten</h3>
+    </div>
+{% for recipe in latest_recipes %}
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <a href="{{ recipe.url }}">
+            <div class="thumbnail recipe-image-wrapper index">
+                <img class="recipe-image img-responsive" src="http://127.0.0.1:8000/static/recipes/images/{{ recipe.id }}_135x135.jpg" data-1x="http://127.0.0.1:8000/static/recipes/images/{{ recipe.id }}_270x270.jpg" data-2x="http://127.0.0.1:8000/static/recipes/images/{{ recipe.id }}_540x540.jpg" width="100%">
+                <div class="caption bg-info">
+                    <h3>{{ recipe.name }}</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+    <div class="col-md-12 col-sm-12 col-xs-12 search-promote-wrapper">
+        <button class="btn btn-lg btn-info search-promote-btn">Hitta recept</button>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h3 class="index">Populära recept</h3>
+    </div>
+{% for recipe in popular_recipes %}
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <a href="{{ recipe.url }}">
+            <div class="thumbnail recipe-image-wrapper index">
+                <img class="recipe-image img-responsive" src="http://127.0.0.1:8000/static/recipes/images/{{ recipe.id }}_135x135.jpg" data-1x="http://127.0.0.1:8000/static/recipes/images/{{ recipe.id }}_270x270.jpg" data-2x="http://127.0.0.1:8000/static/recipes/images/{{ recipe.id }}_540x540.jpg" width="100%">
+                <div class="caption">
+                    <h3>{{ recipe.name }}</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <h3>Kategorier</h3>
+    </div>
+{% for char, food_group in food_groups.items %}
+    <div class="food-groups index col-md-2 col-sm-3 col-xs-6">
+        <h3>{{ char }}</h3>
+        <ul>
+        {% for group in food_group %}
+            <li><a class="btn btn-tag btn-xs" href="{{ group.url }}">{{ group.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+</div>
+<button id="show-more-btn" class="btn btn-lg btn-info hidden">Hämta fler recept</button>
 {% endblock %}

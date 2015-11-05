@@ -10,6 +10,8 @@ urlpatterns = [
         views.food_groups, name='food_groups'),
     url(r'^ingrediens/(?P<lookup>[a-zA-Z0-9]+)(?:/(?P<slug>[a-zA-Z0-9-]+))?$',
         views.ingredients, name='ingredients'),
+    url(r'^skicka-in-recept/$',
+        views.recipe_form, name='recipe-form'),
     url(r'^api/recipes/vote/(?P<recipe_id>[0-9]+)/$',
         views.api_vote, name='api_vote'),
     url(r'^api/recipes/(?P<recipe_id>[0-9]+)/$',
@@ -22,4 +24,8 @@ urlpatterns = [
         views.api_food_groups, name='api_food_groups'),
     url(r'^api/recipes/votes/(?P<recipe_id>[0-9]+)/$',
         views.api_votes, name='api_votes'),
+    url(r'^om/$',
+        views.about, name='about'),
+    url(r'^bootstrap/$',
+        views.bootstrap, name='bootstrap'),
     ]

@@ -1,29 +1,70 @@
 /*jslint browser: true*/
-/*global $, jQuery*/
+/*global $, jQuery, window, substitut, Handlebars*/
+
+// top-level namespace being assigned an object literal
+var substitut = substitut || {};
+
+$.extend(true, substitut, {modules: {}});
+
 (function ($) {
     "use strict";
-    $.substitut = function (options) {
-        var app = {
+
+    var app = {};
+
+    $.extend(true, substitut.modules, {Main: function (options) {
+        app = {
 
             cache: {},
             options: $.extend({}, options),
             votes: null,
+            limit: 10,
+            offset: 0,
 
-            _init: function () {
-                app.votes = $.votes({"selector": ".votes-btn"});
+            init: function () {
+                $.hisrc.speedTest();
+                app.votes = substitut.modules.Vote({selector: ".vote"});
                 app.setupAutocomplete();
                 app.setupVoteButtons();
+                app.setupSearchPromoteBtn();
+                app.setupPagination();
                 app.setupNutritionToggle();
                 app.loadRecipes();
+                //$(".recipe-image").unveil(200, app.unveil);
+                $(".recipe-image").hisrc({useTransparentGif: true});
+            },
+
+            setupSearchPromoteBtn: function () {
+                $(".search-promote-btn").on("click", function (ignore) {
+                    $("#index-search-field").focus();
+                });
+            },
+
+            hideFooter: function () {
+                $('.site-footer').addClass("hidden");
+            },
+
+            showFooter: function () {
+                $('.site-footer').removeClass("hidden");
+            },
+
+            setupPagination: function () {
+                app.limit = parseInt($("#content").attr("data-limit"));
+                $(".content-wrapper").on("click", "#show-more-btn", function (event) {
+                    $(event.currentTarget).fadeOut("fast", function () {
+                        $(".last").removeClass("last");
+                        app.loadRecipesAppend();
+                    });
+                });
             },
 
             setupVoteButtons: function () {
                 $("#content").on("click", app.votes.getSelector(), function (event) {
-                    var recipe_id = $(this).attr("data-recipe-id");
-                    if (recipe_id !== undefined && !$(this).parent().hasClass("disabled")) {
+                    var recipe_id = $(event.currentTarget).attr("data-recipe-id");
+
+                    if (recipe_id !== undefined && !$(event.currentTarget).parent().hasClass("disabled")) {
                         app.votes.voteFor(recipe_id);
                     }
-                    event.stopPropagation();
+
                     return false;
                 });
             },
@@ -41,7 +82,7 @@
 
             setupNutritionToggle: function () {
                 $("#content").on("click", ".nutrition-toggle", function (event) {
-                    var my = this,
+                    var my = event.target,
                         recipe_id = $(my).attr("data-recipe-id");
 
                     if (recipe_id !== undefined) {
@@ -54,30 +95,32 @@
             },
 
             toggleNutrition: function (e, recipe_id) {
-                var k = null,
-                    $elem = $(e),
-                    servings = $('#servings-recipe-' + recipe_id).html(),
-                    opt = {
-                        'total': {'next': 'phg', 'label': 'totalt'},
-                        'phg': {'next': (servings === undefined ? 'total' : 'ps'), 'label': '100g'},
-                        'ps': {'next': 'total', 'label': 'portion'}
-                    },
-                    current_index = $elem.attr('data-current-nutrition'),
-                    next = opt[current_index].next,
-                    label = opt[next].label;
+                var $elem, servings, opt, current_index, next, label;
+
+                $elem = $(e);
+                servings = $('#servings-recipe-' + recipe_id).html();
+                opt = {
+                    total: {next: 'phg', label: 'Totalt'},
+                    phg: {next: 'total', label: '100g'},
+                    ps: {next: 'total', label: 'Portion'}
+                };
+                if (servings !== undefined) {
+                    opt.phg.next = 'ps';
+                }
+
+                current_index = $elem.attr('data-current-nutrition');
+                next = opt[current_index].next;
+                label = opt[next].label;
 
                 $elem.attr('data-current-nutrition', next);
                 $elem.html(label);
-
-                for (k in options) {
-                    if (options.hasOwnProperty(k)) {
-                        if (k === next) {
-                            $('.nutrition-recipe-' + recipe_id + '.nutrition-' + k).show();
-                        } else {
-                            $('.nutrition-recipe-' + recipe_id + '.nutrition-' + k).hide();
-                        }
+                $.each(opt, function (key, ignore) {
+                    if (key === next) {
+                        $('.nutrition-recipe-' + recipe_id + '.nutrition-' + key).show();
+                    } else {
+                        $('.nutrition-recipe-' + recipe_id + '.nutrition-' + key).hide();
                     }
-                }
+                });
             },
 
             parseJson: function (str) {
@@ -97,8 +140,8 @@
                 if ($searchBox) {
                     $searchBox.autocomplete({
                         appendTo: $('.js-header'),
-                        source: this.autocompleteSource,
-                        select: this.autocompleteSelect
+                        source: app.autocompleteSource,
+                        select: app.autocompleteSelect
                     });
                 }
 
@@ -111,78 +154,128 @@
                 }
             },
 
-            getHtml: function (recipe) {
+            getHtml: function (recipe, last) {
                 try {
                     var recipe_id = recipe.id;
-                    if (app.cache[recipe_id] === undefined) {
-                        app.cache[recipe_id] = $.recipe(recipe);
+
+                    if (app.cache[recipe_id] === undefined || !app.cache[recipe_id]) {
+                        var r = new substitut.modules.Recipe(recipe);
+                        app.cache[recipe_id] = r.getData();
                     }
-                    return app.cache[recipe_id].getHtml();
+                    if (last) {
+                        app.cache[recipe_id].class = "last";
+                    }
+                    return Handlebars.templates.recipe(app.cache[recipe_id]);
                 } catch (err) {
                     console.log(err);
                     return "";
                 }
             },
 
-            loadRecipes: function () {
+            loadRecipesCallback: function (callback) {
                 var endpoint = $('#content').attr('data-endpoint');
                 if (endpoint !== undefined && endpoint !== "") {
                     app.loading(true);
-                    $.ajax({ url: endpoint + "?v=" + Date.now()}).success(app.requestSuccess);
+                    $.ajax(
+                        {
+                            url: endpoint,
+                            data: {v: Date.now(), o: app.offset}
+                        }
+                    ).success(callback);
                 }
             },
 
-            setSubHeader: function (data) {
-                var $subheader = $(".parallax-window");
-                $subheader.html("<a href=\"" + data.url + "\">" + data.label + "</a>");
-                $(".parallax-window").addClass("search");
+            loadRecipes: function () {
+                app.loadRecipesCallback(app.requestSuccess);
+            },
+
+            loadRecipesAppend: function () {
+                app.loadRecipesCallback(app.requestSuccessAppend);
+            },
+
+            hideParallax: function () {
+                $(".parallax-window").removeClass("search").addClass("search");
+            },
+
+            requestSuccessObject: function (obj) {
+                var html, i = 0;
+
+                app.offset += obj.count;
+
+                obj.data.forEach(function (item) {
+                    i += 1;
+                    html = app.getHtml(item, (obj.count !== 1 && i === obj.count));
+                    app.setContent(html, true);
+                    app.votes.getTotal(item.id);
+                });
+
+                app.showFooter();
+                //$(".recipe-image").unveil(200, app.unveil);
+                $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
             requestSuccess: function (responseData) {
-                var i, html, obj;
-
-                obj = app.parseJson(responseData);
-
+                var obj = app.parseJson(responseData);
+                app.hideParallax();
                 if (obj && obj.count > 0) {
                     app.setContent("");
-                    app.setSubHeader(obj);
-                    for (i = 0; i < obj.data.length; i++) {
-                        html = app.getHtml(obj.data[i]);
-                        app.setContent(html, true);
-                        app.votes.getTotal(obj.data[i].id);
-                    }
-                    $(".recipe-image").unveil(200, app.unveil);
+                    app.hideFooter();
+                    app.requestSuccessObject(obj);
                 }
-
                 app.loading(false);
+                app.toggleMoreBtn(obj.count === app.limit);
+            },
+
+            requestSuccessAppend: function (responseData) {
+                var obj = app.parseJson(responseData);
+                app.hideParallax();
+                if (obj && obj.count > 0) {
+                    $('#show-more-btn').fadeOut("fast", function () {
+                        app.requestSuccessObject(obj);
+                        app.toggleMoreBtn(obj.count === app.limit);
+                    });
+                }
+                app.loading(false);
+            },
+
+            toggleMoreBtn: function (display) {
+                if (display) {
+                    $('#show-more-btn').removeClass('hidden').show();
+                } else {
+                    $('#show-more-btn').hide();
+                }
             },
 
             autocompleteSource: function (request, response) {
                 $.ajax({
                     url: "/api/terms",
-                    data: {'term': request.term, "v": Date.now()},
+                    data: {term: request.term, v: Date.now()},
                     success: function (responseData) {
-                        var i, array = [], json;
+                        var array = [], json;
 
                         json = app.parseJson(responseData);
                         if (json) {
-                            for (i = 0; i < json.length; i++) {
+                            json.forEach(function (item) {
                                 array.push(
                                     {
-                                        'value': json[i].name,
-                                        'type': json[i].type,
-                                        'endpoint': json[i].endpoint
+                                        value: item.name,
+                                        type: item.type,
+                                        endpoint: item.endpoint
                                     }
                                 );
-                            }
+                            });
                         }
                         response(array);
                     }
                 });
             },
+
             autocompleteSelect: function (ignore, ui) {
                 if (ui.item.endpoint !== undefined && ui.item.endpoint !== "") {
                     app.loading(true);
+                    app.offset = 0; // Reset offset
+                    app.setEndpoint(ui.item.endpoint);
+
                     $.ajax({
                         url: ui.item.endpoint
                     }).success(app.requestSuccess).done(function (responseData) {
@@ -197,7 +290,11 @@
 
             setUrl: function (url) {
                 var $content = $("#content");
-                window.history.pushState({"content": $content.html()}, "", url);
+                window.history.pushState({content: $content.html()}, "", url);
+            },
+
+            setEndpoint: function (endpoint) {
+                $("#content").attr("data-endpoint", endpoint);
             },
 
             clearSearch: function () {
@@ -205,10 +302,18 @@
             },
 
             setContent: function (content, append) {
-                if (append !== 'undefined' && append === true) {
-                    $('#content').append(content);
+                var $content;
+
+                if (content === undefined || content === "") {
+                    $('#content').html("");
                 } else {
-                    $('#content').html(content);
+                    $content = $(content);
+                    $content.hide();
+                    if (append === 'undefined' || append === false) {
+                        $('#content').html("");
+                    }
+                    $content.appendTo("#content");
+                    $content.fadeIn("slow");
                 }
             },
 
@@ -217,18 +322,21 @@
                 $me.removeClass("image-hidden").addClass("image-visible");
             }
         };
-        app._init();
+
+        app.init();
+
         return {
+            init: app.init,
             parseJson: app.parseJson,
             unveil: app.unveil
         };
-    };
+    }});
 }(jQuery));
-
 
 $(function () {
     "use strict";
-    $.app = $.substitut();
+    $.extend(true, substitut, {application: substitut.modules.Main()});
+
     window.onpopstate = function (e) {
         if (e.state) {
             $("#content").html(e.state.content);

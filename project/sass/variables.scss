@@ -15,12 +15,32 @@ $gray:                   lighten($gray-base, 33.5%) !default; // #555
 $gray-light:             lighten($gray-base, 46.7%) !default; // #777
 $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 
-$brand-primary:         #1ab394 !default;
+$grapefruit:             #da656e !default;
+$bluejeans:              #6aa2e3 !default;
+$sunflower:              #f7ca72 !default;
+$pinkrose:               #dc94c0 !default;
+$mint:                   #75c8ae !default;
+$lavander:               #a69de4 !default;
+$grass:                  #aecc78 !default;
+$bittersweet:            #ea7764 !default;
+$aqua:                   #71c2e3 !default;
+
+$brand-primary:         $gray !default;
+$brand-success:         $grass !default;
+$brand-info:            $aqua !default;
+$brand-warning:         $sunflower !default;
+$brand-danger:          $grapefruit !default;
+
+$brand-background:      #f7fafa !default;
+$brand-tag:             $pinkrose !default;
+
+/*$brand-primary:         #1ab394 !default;
+$brand-primary:         $gray !default;
 $brand-success:         #21c6ce !default;
 $brand-info:            #1884c6 !default;
 $brand-warning:         #ffad59 !default;
 $brand-danger:          #ef5263 !default;
-$brand-background:      #f7fafa !default;
+$brand-background:      #f7fafa !default;*/
 
 $white:                 #ffffff;
 $green:                 #227f0b;
@@ -46,10 +66,10 @@ $link-hover-decoration: none !default;
 //
 //## Font, line-height, and color for body text, headings, and more.
 
+$font-family-monospace:   "Cutive Mono", "Courier New", Courier, Menlo, Monaco, Consolas, monospace !default;
 $font-family-sans-serif:  "Roboto", Helvetica, Arial, sans-serif !default;
-$font-family-serif:       "Montserrat", Helvetica, Arial, sans-serif !default;
+$font-family-serif:       $font-family-monospace !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-$font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
 $font-family-base:        $font-family-sans-serif !default;
 
 $font-size-base:          18px !default;
@@ -69,7 +89,7 @@ $line-height-base:        1.428571429 !default; // 20/14
 $line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
 
 //** By default, this inherits from the `<body>`.
-$headings-font-family:    inherit !default;
+$headings-font-family:    $font-family-serif !default;
 $headings-font-weight:    500 !default;
 $headings-line-height:    1.1 !default;
 $headings-color:          inherit !default;
@@ -143,7 +163,7 @@ $table-bg-hover:                #f5f5f5 !default;
 $table-bg-active:               $table-bg-hover !default;
 
 //** Border color for table and cell borders.
-$table-border-color:            #ddd !default;
+$table-border-color:            $gray !default;
 
 
 //== Buttons
@@ -152,9 +172,9 @@ $table-border-color:            #ddd !default;
 
 $btn-font-weight:                normal !default;
 
-$btn-default-color:              #333 !default;
+$btn-default-color:              $gray !default;
 $btn-default-bg:                 #fff !default;
-$btn-default-border:             #ccc !default;
+$btn-default-border:             $gray !default;
 
 $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
@@ -176,6 +196,10 @@ $btn-danger-color:               #fff !default;
 $btn-danger-bg:                  $brand-danger !default;
 $btn-danger-border:              darken($btn-danger-bg, 5%) !default;
 
+$btn-tag-color:                  #fff !default;
+$btn-tag-bg:                     $brand-tag !default;
+$btn-tag-border:                 darken($btn-tag-bg, 5%) !default;
+
 $btn-link-disabled-color:        $gray-light !default;
 
 // Allows for customizing button radius independently from global border radius
@@ -196,7 +220,7 @@ $input-bg-disabled:              $gray-lighter !default;
 //** Text color for `<input>`s
 $input-color:                    $gray !default;
 //** `<input>` border color
-$input-border:                   #ccc !default;
+$input-border:                   $gray !default;
 
 // TODO: Rename `$input-border-radius` to `$input-border-radius-base` in v4
 //** Default `.form-control` border radius
@@ -504,21 +528,25 @@ $jumbotron-heading-font-size:    ceil(($font-size-base * 4.5)) !default;
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-$state-success-text:             #3c763d !default;
-$state-success-bg:               #dff0d8 !default;
-$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%) !default;
+$state-success-text:             darken($brand-success, 25%) !default;
+$state-success-bg:               lighten($brand-success, 25%) !default;
+$state-success-border:           darken(adjust-hue($state-success-bg, -10), 7%) !default;
 
-$state-info-text:                #31708f !default;
-$state-info-bg:                  #d9edf7 !default;
+$state-info-text:                darken($brand-info, 7%) !default;
+$state-info-bg:                  lighten($brand-info, 25%) !default;
 $state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
 
-$state-warning-text:             #8a6d3b !default;
-$state-warning-bg:               #fcf8e3 !default;
-$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
+$state-warning-text:             darken($brand-warning, 7%) !default;
+$state-warning-bg:               lighten($brand-warning, 25%) !default;
+$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 4%) !default;
 
-$state-danger-text:              #a94442 !default;
-$state-danger-bg:                #f2dede !default;
+$state-danger-text:              darken($brand-danger, 25%) !default;
+$state-danger-bg:                lighten($brand-danger, 25%) !default;
 $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
+
+$state-tag-text:                 darken($brand-tag, 7%) !default;
+$state-tag-bg:                   lighten($brand-tag, 25%) !default;
+$state-tag-border:               darken(adjust-hue($state-tag-bg, -10), 5%) !default;
 
 
 //== Tooltips

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
 from recipe import Recipe
@@ -13,19 +14,19 @@ class IngredientManager(models.Manager):
             SELECT i.name, i.energy_kj, i.energy_kcal, i.protein, i.fat, i.carbohydrates, i.fibers, i.salt, i.water, i.saturates, i.monounsaturated, i.trans_fat, i.cholesterol, i.vitamin_d, i.vitamin_e, i.vitamin_k, i.vitamin_c, i.vitamin_b6, i.vitamin_b12, i.iron, ui.multiplier, u.name, u.short_name, ri.amount, ri.text
             FROM recipes_ingredient i
             INNER JOIN recipes_recipeingredient ri ON ri.ingredient_id = i.id
-            INNER JOIN recipes_unit u ON u.id = ri.unit_id
-            INNER JOIN recipes_unitingredient ui ON ui.ingredient_id = i.id
+            LEFT JOIN recipes_unit u ON u.id = ri.unit_id
+            LEFT JOIN recipes_unitingredient ui ON ui.ingredient_id = i.id
             AND ui.unit_id = u.id
             WHERE ri.recipe_id = ?
-            ORDER BY ri.text DESC""", [recipe_id])
+            ORDER BY ri.`order` ASC""", [recipe_id])
         result = {
             'weight': 0,
             'list': []
         }
         for row in cursor.fetchall():
             # calculate multiplier
-            multiplier = row[20]
-            amount = row[23]
+            multiplier = row[20] or 0
+            amount = row[23] or 0
             weight = multiplier * amount
             result['weight'] += weight * 100
             result['list'].append({

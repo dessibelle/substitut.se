@@ -1,36 +1,54 @@
 /*jslint browser: true*/
-/*global $, jQuery*/
+/*global $, jQuery, substitut*/
 (function ($) {
     "use strict";
-    $.storage = function (data) {
-        var storage = {
+
+    var storage = {};
+
+    /**
+     * Local storage class.
+     *
+     *
+     */
+    $.extend(true, substitut.modules, {Storage: function (data) {
+        storage = {
 
             enabled: true,
             object: null,
 
             data: $.extend({
-                'name': 'undefined',
-                'expire': 0
+                name: 'undefined',
+                expire: 0
             }, data),
 
-            _init: function () {
-                storage.enabled = Storage !== "undefined";
+            init: function () {
+                storage.enabled = localStorage !== "undefined";
                 if (storage.enabled) {
                     if (!localStorage[storage.data.name]) {
                         localStorage.setItem(storage.data.name, "{}");
                     }
                     storage.object = JSON.parse(localStorage.getItem(storage.data.name));
                 } else {
-                    throw new $.storageDisabledException("localstorage is not supported");
+                    var cookieData = null,
+                        objectString = "{}";
+
+                    cookieData = document.cookie.match('(^|;)\\s*' + storage.data.name + '\\s*=\\s*([^;]+)');
+                    if (cookieData) {
+                        objectString = cookieData.pop();
+                    }
+
+                    if (objectString) {
+                        storage.object = JSON.parse(objectString);
+                    } else {
+                        storage.object = {};
+                    }
+                    document.cookie = storage.data.name + "=" + JSON.stringify(storage.object) + "; path=/";
                 }
             },
 
             get: function (param) {
-                if (!storage.enabled) {
-                    throw new $.storageDisabledException("localstorage is not supported");
-                }
                 if (storage.object[param] === undefined) {
-                    throw new $.storageParamNotFoundException(
+                    throw new substitut.exceptions.StorageParamNotFoundException(
                         "param \"" + param + "\" does not exist"
                     );
                 }
@@ -40,12 +58,8 @@
                     if (now >= obj.timestamp) {
                         delete storage.object[param];
                         localStorage.setItem(storage.data.name, JSON.stringify(storage.object));
-                        throw new $.storageParamExpiredException("param \"" + param + "\" found but has expired");
+                        throw new substitut.exceptions.StorageParamExpiredException("param \"" + param + "\" found but has expired");
                     }
-                    if (obj.value === undefined) {
-                        return "";
-                    }
-                    return obj.value;
                 }
                 if (obj.value === undefined) {
                     return "";
@@ -67,27 +81,27 @@
             },
 
             set: function (param, value) {
+                var timestamp = 0;
+                if (storage.data.expire) {
+                    timestamp = storage.getTimestamp(storage.data.expire);
+                }
+                if (value === undefined) {
+                    storage.object[param] = {timestamp: timestamp};
+                } else {
+                    storage.object[param] = {value: value, timestamp: timestamp};
+                }
                 if (storage.enabled) {
-                    var timestamp = 0;
-                    if (storage.data.expire) {
-                        timestamp = storage.getTimestamp(storage.data.expire);
-                    }
-                    if (value === undefined) {
-                        storage.object[param] = { 'timestamp': timestamp };
-                    } else {
-                        storage.object[param] = { 'value': value, 'timestamp': timestamp };
-                    }
                     localStorage.setItem(storage.data.name, JSON.stringify(storage.object));
                 } else {
-                    throw new $.storageDisabledException("localstorage is not supported");
+                    document.cookie = storage.data.name + "=" + JSON.stringify(storage.object) + "; path=/";
                 }
             }
         };
-        storage._init();
+        storage.init();
 
         return {
             get: storage.get,
             set: storage.set
         };
-    };
+    }});
 }(jQuery));

@@ -1,37 +1,35 @@
 /*jslint browser: true*/
-/*global $, jQuery*/
+/*global $, jQuery, substitut*/
 (function ($) {
     "use strict";
 
-    $.recipeException = function (message) {
-        this.name = 'recipeException';
-        this.message = message;
-    };
-    $.recipeException.prototype = new Error();
+    $.extend(true, substitut, {exceptions: {}});
 
-    $.storageException = function (message) {
-        this.name = 'storageException';
-        this.message = message;
-    };
-    $.storageException.prototype = new Error();
-
-    $.storageDisabledException = function (message) {
-        this.name = 'storageDisabledException';
-        this.message = message;
-    };
-    $.storageDisabledException.prototype = new Error();
-
-    $.storageParamNotFoundException = function (message) {
-        this.name = 'storageParamNotFoundException';
-        this.message = message;
-    };
-    $.storageParamNotFoundException.prototype = new Error();
-
-    $.storageParamExpiredException = function (message) {
-        this.name = 'storageParamExpiredException';
-        this.message = message;
-    };
-    $.storageParamExpiredException.prototype = new Error();
-
-
+    $.extend(true, substitut.exceptions, {
+        RecipeException: function (message) {
+            this.name = 'RecipeException';
+            this.message = message;
+        },
+        StorageException: function (message) {
+            this.name = 'StorageException';
+            this.message = message;
+        },
+        StorageDisabledException: function (message) {
+            this.name = 'StorageDisabledException';
+            this.message = message;
+        },
+        StorageParamNotFoundException: function (message) {
+            this.name = 'StorageParamNotFoundException';
+            this.message = message;
+        },
+        StorageParamExpiredException: function (message) {
+            this.name = 'StorageParamExpiredException';
+            this.message = message;
+        }
+    });
+    substitut.exceptions.RecipeException.prototype = new Error();
+    substitut.exceptions.StorageException.prototype = new Error();
+    substitut.exceptions.StorageDisabledException.prototype = new Error();
+    substitut.exceptions.StorageParamNotFoundException.prototype = new Error();
+    substitut.exceptions.StorageParamExpiredException.prototype = new Error();
 }(jQuery));

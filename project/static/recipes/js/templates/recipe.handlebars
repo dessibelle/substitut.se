@@ -1,26 +1,27 @@
-<div class="row recipe-row">
+<div class="row recipe-row {{ class }}">
+    <div class="cover"></div>
     <div class="column-1 col-md-9 col-sm-12 col-xs-12">
         <section class="recipe-section">
             <article class="recipe">
                 <div class="row">
                     <h2><a href="{{ url }}">{{ name }}</a></h2>
-                    <div class="vote">
-                        <span class="votes-btn" data-recipe-id="{{ id }}" href="#"><i class="glyphicon glyphicon-heart"></i></span>
+                    <div class="vote" data-recipe-id="{{ id }}">
+                        <span class="votes-btn"><i class="glyphicon glyphicon-heart"></i></span>
                         <span class="votes-text">Rekommendera</span>
                         <span class="votes-total" id="votes-total-{{ id }}">{{ vote_total }}</span>
                     </div>
                 </div>
                 <div class="row">
                     {{#if servings}}
-                    <div class="servings label label-primary">
-                        Antal portioner: <span id="servings-recipe-{{ id }}">{{ servings }}</span>
+                    <div class="servings">
+                        <span id="servings-recipe-{{ id }}">{{ servings }}</span> portioner
                     </div>
                     {{/if}}
-                    {{#if weight}}
-                    <div class="weight label label-primary">
-                        Vikt: <span id="weight-recipe-{{ id }}">{{ weight }}g</span>
-                    </div>
-                    {{/if}}
+                    {{#each food_groups}}
+                    <a class="btn btn-tag" href="{{ url }}">
+                        {{name}}
+                    </a>
+                    {{/each}}
                     {{#if description}}
                     <div class="description">
                         {{{ description }}}
@@ -50,12 +51,15 @@
     </div>
     <div class="column-2 col-md-3 col-sm-12 col-xs-12">
         {{#if image}}
-        <aside class="recipe-image-wrapper">
-            <img class="recipe-image image-hidden" src="/static/images/placeholder.png" data-src="http://127.0.0.1:8000/{{ image }}" width="100%">
+        <aside class="thumbnail recipe-image-wrapper">
+            <img class="recipe-image img-responsive" src="http://127.0.0.1:8000/static/recipes/images/{{ id }}_135x135.jpg" data-1x="http://127.0.0.1:8000/static/recipes/images/{{ id }}_270x270.jpg" data-2x="http://127.0.0.1:8000/static/recipes/images/{{ id }}_540x540.jpg" width="100%">
+            <div class="caption">
+                <h3>{{ name }}</h3>
+            </div>
         </aside>
         {{/if}}
         <aside class="nutrition">
-            <h3>Näringsinnehåll <a href="#" class="nutrition-toggle" data-recipe-id="{{ id }}" data-current-nutrition="total">totalt</a></h3>
+            <h3><span class="pull-left">Näring</span> <a href="#" class="nutrition-toggle btn btn-info pull-right" data-recipe-id="{{ id }}" data-current-nutrition="total">totalt</a></h3>
             <table class="nutrition-table">
                 {{#each nutrition}}
                     {{#if val}}

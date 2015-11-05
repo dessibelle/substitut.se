@@ -15,7 +15,7 @@ class RecipeFoodGroupInline(admin.TabularInline):
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
-    fields = ('ingredient', 'unit', 'amount', 'text')
+    fields = ('ingredient', 'unit', 'amount', 'text', 'order')
     raw_id_fields = ('ingredient',)
     # define the autocomplete_lookup_fields
     autocomplete_lookup_fields = {
