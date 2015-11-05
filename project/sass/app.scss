@@ -1,9 +1,6 @@
 @import "variables.scss";
+@import "../static/lib/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "mixins.scss";
-@import "../static/lib/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_buttons.scss";
-@import "../static/lib/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_text-emphasis.scss";
-@import "../static/lib/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_background-variant.scss";
 @import "type.scss";
 @import "buttons.scss";
-@import "../static/lib/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "substitut.scss"

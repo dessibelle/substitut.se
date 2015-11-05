@@ -6,135 +6,6 @@ $brand-info:            #1884c6 !default;
 $brand-warning:         #ffad59 !default;
 $brand-danger:          #ef5263 !default;
 $brand-background:      #f7fafa !default;*/
-.bg-primary {
-  background-color: #555555; }
-
-a.bg-primary:hover,
-a.bg-primary:focus {
-  background-color: #3c3c3c; }
-
-.bg-success {
-  background-color: #e6efd5; }
-
-a.bg-success:hover,
-a.bg-success:focus {
-  background-color: #cfe1b0; }
-
-.bg-info {
-  background-color: #dcf0f8; }
-
-a.bg-info:hover,
-a.bg-info:focus {
-  background-color: #b1ddf0; }
-
-.bg-warning {
-  background-color: #fef7eb; }
-
-a.bg-warning:hover,
-a.bg-warning:focus {
-  background-color: #fbe5ba; }
-
-.bg-danger {
-  background-color: #f3cccf; }
-
-a.bg-danger:hover,
-a.bg-danger:focus {
-  background-color: #e9a3a8; }
-
-.bg-tag {
-  background-color: #fbf4f9; }
-
-a.bg-tag:hover,
-a.bg-tag:focus {
-  background-color: #efcee2; }
-
-.text-primary {
-  color: #555555; }
-
-a.text-primary:hover,
-a.text-primary:focus {
-  color: #3c3c3c; }
-
-.text-success {
-  color: #6f8f36; }
-
-a.text-success:hover,
-a.text-success:focus {
-  color: #526a28; }
-
-.text-info {
-  color: #53b5dd; }
-
-a.text-info:hover,
-a.text-info:focus {
-  color: #2aa2d4; }
-
-.text-warning {
-  color: #f5bd50; }
-
-a.text-warning:hover,
-a.text-warning:focus {
-  color: #f2ab20; }
-
-.text-danger {
-  color: #9a252e; }
-
-a.text-danger:hover,
-a.text-danger:focus {
-  color: #711b22; }
-
-.text-tag {
-  color: #d379b0; }
-
-a.text-tag:hover,
-a.text-tag:focus {
-  color: #c7539a; }
-
-#substitut .btn {
-  font-family: "Cutive Mono", "Courier New", Courier, Menlo, Monaco, Consolas, monospace;
-  text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  padding: .5em 1.5em;
-  border: none;
-  -webkit-box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12);
-  transition: all 300ms; }
-  #substitut .btn:active, #substitut .btn.active {
-    outline: 0;
-    background-image: none;
-    -webkit-box-shadow: 0 8px 20px 1px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 8px 20px 1px rgba(0, 0, 0, 0.3); }
-#substitut .btn-lg, #substitut .btn-group-lg > .btn {
-  font-size: 28px; }
-#substitut .btn-tag {
-  color: #fff;
-  background-color: #dc94c0;
-  border-color: #d681b5; }
-  #substitut .btn-tag:focus, #substitut .btn-tag.focus {
-    color: #fff;
-    background-color: #cf6ea9;
-    border-color: #a23578; }
-  #substitut .btn-tag:hover {
-    color: #fff;
-    background-color: #cf6ea9;
-    border-color: #c7539a; }
-  #substitut .btn-tag:active, #substitut .btn-tag.active, .open > #substitut .btn-tag.dropdown-toggle {
-    color: #fff;
-    background-color: #cf6ea9;
-    border-color: #c7539a; }
-    #substitut .btn-tag:active:hover, #substitut .btn-tag:active:focus, #substitut .btn-tag:active.focus, #substitut .btn-tag.active:hover, #substitut .btn-tag.active:focus, #substitut .btn-tag.active.focus, .open > #substitut .btn-tag.dropdown-toggle:hover, .open > #substitut .btn-tag.dropdown-toggle:focus, .open > #substitut .btn-tag.dropdown-toggle.focus {
-      color: #fff;
-      background-color: #c7539a;
-      border-color: #a23578; }
-  #substitut .btn-tag:active, #substitut .btn-tag.active, .open > #substitut .btn-tag.dropdown-toggle {
-    background-image: none; }
-  #substitut .btn-tag.disabled, #substitut .btn-tag.disabled:hover, #substitut .btn-tag.disabled:focus, #substitut .btn-tag.disabled.focus, #substitut .btn-tag.disabled:active, #substitut .btn-tag.disabled.active, #substitut .btn-tag[disabled], #substitut .btn-tag[disabled]:hover, #substitut .btn-tag[disabled]:focus, #substitut .btn-tag[disabled].focus, #substitut .btn-tag[disabled]:active, #substitut .btn-tag[disabled].active, fieldset[disabled] #substitut .btn-tag, fieldset[disabled] #substitut .btn-tag:hover, fieldset[disabled] #substitut .btn-tag:focus, fieldset[disabled] #substitut .btn-tag.focus, fieldset[disabled] #substitut .btn-tag:active, fieldset[disabled] #substitut .btn-tag.active {
-    background-color: #dc94c0;
-    border-color: #d681b5; }
-  #substitut .btn-tag .badge {
-    color: #dc94c0;
-    background-color: #fff; }
-
 /*!
  * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -5931,6 +5802,135 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+.bg-primary {
+  background-color: #555555; }
+
+a.bg-primary:hover,
+a.bg-primary:focus {
+  background-color: #3c3c3c; }
+
+.bg-success {
+  background-color: #e6efd5; }
+
+a.bg-success:hover,
+a.bg-success:focus {
+  background-color: #cfe1b0; }
+
+.bg-info {
+  background-color: #dcf0f8; }
+
+a.bg-info:hover,
+a.bg-info:focus {
+  background-color: #b1ddf0; }
+
+.bg-warning {
+  background-color: #fef7eb; }
+
+a.bg-warning:hover,
+a.bg-warning:focus {
+  background-color: #fbe5ba; }
+
+.bg-danger {
+  background-color: #f3cccf; }
+
+a.bg-danger:hover,
+a.bg-danger:focus {
+  background-color: #e9a3a8; }
+
+.bg-tag {
+  background-color: #fbf4f9; }
+
+a.bg-tag:hover,
+a.bg-tag:focus {
+  background-color: #efcee2; }
+
+.text-primary {
+  color: #555555; }
+
+a.text-primary:hover,
+a.text-primary:focus {
+  color: #3c3c3c; }
+
+.text-success {
+  color: #6f8f36; }
+
+a.text-success:hover,
+a.text-success:focus {
+  color: #526a28; }
+
+.text-info {
+  color: #53b5dd; }
+
+a.text-info:hover,
+a.text-info:focus {
+  color: #2aa2d4; }
+
+.text-warning {
+  color: #f5bd50; }
+
+a.text-warning:hover,
+a.text-warning:focus {
+  color: #f2ab20; }
+
+.text-danger {
+  color: #9a252e; }
+
+a.text-danger:hover,
+a.text-danger:focus {
+  color: #711b22; }
+
+.text-tag {
+  color: #d379b0; }
+
+a.text-tag:hover,
+a.text-tag:focus {
+  color: #c7539a; }
+
+#substitut .btn {
+  font-family: "Cutive Mono", "Courier New", Courier, Menlo, Monaco, Consolas, monospace;
+  text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  padding: .5em 1.5em;
+  border: none;
+  -webkit-box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12);
+  transition: all 300ms; }
+  #substitut .btn:active, #substitut .btn.active {
+    outline: 0;
+    background-image: none;
+    -webkit-box-shadow: 0 8px 20px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px 1px rgba(0, 0, 0, 0.3); }
+#substitut .btn-lg, #substitut .btn-group-lg > .btn {
+  font-size: 28px; }
+#substitut .btn-tag {
+  color: #fff;
+  background-color: #dc94c0;
+  border-color: #d681b5; }
+  #substitut .btn-tag:focus, #substitut .btn-tag.focus {
+    color: #fff;
+    background-color: #cf6ea9;
+    border-color: #a23578; }
+  #substitut .btn-tag:hover {
+    color: #fff;
+    background-color: #cf6ea9;
+    border-color: #c7539a; }
+  #substitut .btn-tag:active, #substitut .btn-tag.active, .open > #substitut .btn-tag.dropdown-toggle {
+    color: #fff;
+    background-color: #cf6ea9;
+    border-color: #c7539a; }
+    #substitut .btn-tag:active:hover, #substitut .btn-tag:active:focus, #substitut .btn-tag:active.focus, #substitut .btn-tag.active:hover, #substitut .btn-tag.active:focus, #substitut .btn-tag.active.focus, .open > #substitut .btn-tag.dropdown-toggle:hover, .open > #substitut .btn-tag.dropdown-toggle:focus, .open > #substitut .btn-tag.dropdown-toggle.focus {
+      color: #fff;
+      background-color: #c7539a;
+      border-color: #a23578; }
+  #substitut .btn-tag:active, #substitut .btn-tag.active, .open > #substitut .btn-tag.dropdown-toggle {
+    background-image: none; }
+  #substitut .btn-tag.disabled, #substitut .btn-tag.disabled:hover, #substitut .btn-tag.disabled:focus, #substitut .btn-tag.disabled.focus, #substitut .btn-tag.disabled:active, #substitut .btn-tag.disabled.active, #substitut .btn-tag[disabled], #substitut .btn-tag[disabled]:hover, #substitut .btn-tag[disabled]:focus, #substitut .btn-tag[disabled].focus, #substitut .btn-tag[disabled]:active, #substitut .btn-tag[disabled].active, fieldset[disabled] #substitut .btn-tag, fieldset[disabled] #substitut .btn-tag:hover, fieldset[disabled] #substitut .btn-tag:focus, fieldset[disabled] #substitut .btn-tag.focus, fieldset[disabled] #substitut .btn-tag:active, fieldset[disabled] #substitut .btn-tag.active {
+    background-color: #dc94c0;
+    border-color: #d681b5; }
+  #substitut .btn-tag .badge {
+    color: #dc94c0;
+    background-color: #fff; }
+
 #substitut #index-search-btn {
   border: none;
   padding: 5px 15px 0;
