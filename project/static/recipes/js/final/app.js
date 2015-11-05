@@ -26164,7 +26164,7 @@ var tooltip = $.widget( "ui.tooltip", {
 })(window.jQuery || window.Zepto);
 /*!
 
- handlebars v4.0.2
+ handlebars v4.0.4
 
 Copyright (C) 2011-2015 by Yehuda Katz
 
@@ -26333,7 +26333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _logger2 = _interopRequireDefault(_logger);
 
-	var VERSION = '4.0.2';
+	var VERSION = '4.0.4';
 	exports.VERSION = VERSION;
 	var COMPILER_REVISION = 7;
 
@@ -26385,7 +26385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _utils.extend(this.partials, name);
 	    } else {
 	      if (typeof partial === 'undefined') {
-	        throw new _exception2['default']('Attempting to register a partial as undefined');
+	        throw new _exception2['default']('Attempting to register a partial called "' + name + '" as undefined');
 	      }
 	      this.partials[name] = partial;
 	    }
@@ -26859,6 +26859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var partialBlock = undefined;
 	  if (options.fn && options.fn !== noop) {
+	    options.data = _base.createFrame(options.data);
 	    partialBlock = options.data['partial-block'] = options.fn;
 
 	    if (partialBlock.partials) {
@@ -27036,6 +27037,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	exports.__esModule = true;
+
+	var _utils = __webpack_require__(4);
+
 	var logger = {
 	  methodMap: ['debug', 'info', 'warn', 'error'],
 	  level: 'info',
@@ -27043,7 +27047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Maps a given level value to the `methodMap` indexes above.
 	  lookupLevel: function lookupLevel(level) {
 	    if (typeof level === 'string') {
-	      var levelMap = logger.methodMap.indexOf(level.toLowerCase());
+	      var levelMap = _utils.indexOf(logger.methodMap, level.toLowerCase());
 	      if (levelMap >= 0) {
 	        level = levelMap;
 	      } else {
@@ -27162,12 +27166,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function execIteration(field, index, last) {
-	      // Don't iterate over undefined values since we can't execute blocks against them
-	      // in non-strict (js) mode.
-	      if (context[field] == null) {
-	        return;
-	      }
-
 	      if (data) {
 	        data.key = field;
 	        data.index = index;
@@ -27188,7 +27186,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (context && typeof context === 'object') {
 	      if (_utils.isArray(context)) {
 	        for (var j = context.length; i < j; i++) {
-	          execIteration(i, i, i === context.length - 1);
+	          if (i in context) {
+	            execIteration(i, i, i === context.length - 1);
+	          }
 	        }
 	      } else {
 	        var priorKey = undefined;
@@ -30818,13 +30818,14 @@ $(function () {
             },
 
             getNutrition: function () {
-                var kv = [], name, total, per_hundred_gram, per_serving;
+                var kv = [], name, total, per_hundred_gram, per_serving, sum = 0;
 
                 $.each(rec.nutrition, function (key, value) {
 
                     name = rec.labels[key];
                     total = value;
                     per_hundred_gram = (value / rec.data.weight) * 100;
+                    sum += value;
 
                     if (rec.data.servings) {
                         per_serving = (total / rec.data.servings);
@@ -30832,14 +30833,15 @@ $(function () {
                         per_serving = 0;
                     }
 
-                    kv.push({
-                        key: name,
-                        val: Math.round(total * 100) / 100,
-                        phg: Math.round(per_hundred_gram * 100) / 100,
-                        ps: Math.round(per_serving * 100) / 100
-                    });
+                    if (total !== 0) {
+                        kv.push({
+                            key: name,
+                            val: Math.round(total * 100) / 100,
+                            phg: Math.round(per_hundred_gram * 100) / 100,
+                            ps: Math.round(per_serving * 100) / 100
+                        });
+                    }
                 });
-                return kv;
             },
 
             getData: function () {
@@ -30905,10 +30907,18 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "</h3>\n            </div>\n        </aside>\n";
 },"11":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
+
+  return "        <aside class=\"nutrition\">\n            <h3><span class=\"pull-left\">Näring</span> <a href=\"#\" class=\"nutrition-toggle btn btn-info pull-right\" data-recipe-id=\""
+    + container.escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" data-current-nutrition=\"total\">totalt</a></h3>\n            <table class=\"nutrition-table\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"each","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </table>\n            <span class=\"footnote\">Källa: <a href=\"http://www.livsmedelsverket.se/livsmedelsdatabasen\" target=\"_blank\">Livsmedelsverket</a></span>\n        </aside>\n";
+},"12":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
 
-  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.val : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"12":function(container,depth0,helpers,partials,data,blockParams,depths) {
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.val : depth0),{"name":"if","hash":{},"fn":container.program(13, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"13":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda;
 
   return "                    <tr>\n                        <th>"
@@ -30951,10 +30961,7 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + ((stack1 = ((helper = (helper = helpers.instructions || (depth0 != null ? depth0.instructions : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"instructions","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.image : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        <aside class=\"nutrition\">\n            <h3><span class=\"pull-left\">Näring</span> <a href=\"#\" class=\"nutrition-toggle btn btn-info pull-right\" data-recipe-id=\""
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" data-current-nutrition=\"total\">totalt</a></h3>\n            <table class=\"nutrition-table\">\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"each","hash":{},"fn":container.program(11, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "            </table>\n            <span class=\"footnote\">Källa: <a href=\"http://www.livsmedelsverket.se/livsmedelsdatabasen\" target=\"_blank\">Livsmedelsverket</a></span>\n        </aside>\n    </div>\n</div>\n";
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"if","hash":{},"fn":container.program(11, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </div>\n</div>\n";
 },"useData":true,"useDepths":true});
 })();

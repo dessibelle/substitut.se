@@ -64,7 +64,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    image = models.ImageField(upload_to='static/recipes/original/', blank=True, null=True)
+    image = models.ImageField(upload_to='original/', blank=True, null=True)
     pub_date = models.DateTimeField(auto_now_add=True, blank=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES)
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient')

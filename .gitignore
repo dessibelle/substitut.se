@@ -1,4 +1,5 @@
 env
+project/media/*
 project/static/lib/*
 project/static/recipes/js/final/*
 project/static/recipes/original/*

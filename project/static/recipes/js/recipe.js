@@ -83,13 +83,14 @@
             },
 
             getNutrition: function () {
-                var kv = [], name, total, per_hundred_gram, per_serving;
+                var kv = [], name, total, per_hundred_gram, per_serving, sum = 0;
 
                 $.each(rec.nutrition, function (key, value) {
 
                     name = rec.labels[key];
                     total = value;
                     per_hundred_gram = (value / rec.data.weight) * 100;
+                    sum += value;
 
                     if (rec.data.servings) {
                         per_serving = (total / rec.data.servings);
@@ -97,14 +98,15 @@
                         per_serving = 0;
                     }
 
-                    kv.push({
-                        key: name,
-                        val: Math.round(total * 100) / 100,
-                        phg: Math.round(per_hundred_gram * 100) / 100,
-                        ps: Math.round(per_serving * 100) / 100
-                    });
+                    if (total !== 0) {
+                        kv.push({
+                            key: name,
+                            val: Math.round(total * 100) / 100,
+                            phg: Math.round(per_hundred_gram * 100) / 100,
+                            ps: Math.round(per_serving * 100) / 100
+                        });
+                    }
                 });
-                return kv;
             },
 
             getData: function () {
