@@ -50,9 +50,9 @@
         </section>
     </div>
     <div class="column-2 col-md-3 col-sm-12 col-xs-12">
-        {{#if image}}
+        {{#if img_small}}
         <aside class="thumbnail recipe-image-wrapper">
-            <img class="recipe-image img-responsive" src="http://127.0.0.1:8000/static/recipes/images/{{ id }}_135x135.jpg" data-1x="http://127.0.0.1:8000/static/recipes/images/{{ id }}_270x270.jpg" data-2x="http://127.0.0.1:8000/static/recipes/images/{{ id }}_540x540.jpg" width="100%">
+            <img class="recipe-image img-responsive" src="{{ img_small }}" data-1x="{{ img_medium }}" data-2x="{{ img_large }}" width="100%">
             <div class="caption">
                 <h3>{{ name }}</h3>
             </div>

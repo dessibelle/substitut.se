@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load staticfiles %}
+    {% load static %}
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="{% static "recipes/css/substitut.css" %}" />
+    <link rel="stylesheet" href="{% static "css/substitut.css" %}" />
     <title>{% block title %}Substitut{% endblock %}</title>
-    <script type="text/javascript" src="{% static "recipes/js/final/app.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/app.js" %}"></script>
     <link href='https://fonts.googleapis.com/css?family=Cutive+Mono|Roboto' rel='stylesheet' type='text/css'>
 </head>
 <body id="substitut">
     <header class="site-header container-fluid">
         <div class="col-md-4 col-sm-4 col-xs-12 logo-wrapper">
-            <img src="{% static "recipes/images/vegan.png" %}" class="vegan-logo">
+            <img src="{% static "images/site/vegan.png" %}" class="vegan-logo">
             <h1 id="logo"><a href="/">SUBSTITUT</a></h1>
         </div>
         <nav class="col-md-4 col-sm-4 col-xs-12 navigation">
