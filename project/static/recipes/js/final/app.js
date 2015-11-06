@@ -30897,13 +30897,13 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
 },"9":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "        <aside class=\"thumbnail recipe-image-wrapper\">\n            <img class=\"recipe-image img-responsive\" src=\"http://127.0.0.1:8000/static/recipes/images/"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "_135x135.jpg\" data-1x=\"http://127.0.0.1:8000/static/recipes/images/"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "_270x270.jpg\" data-2x=\"http://127.0.0.1:8000/static/recipes/images/"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "_540x540.jpg\" width=\"100%\">\n            <div class=\"caption\">\n                <h3>"
+  return "        <aside class=\"thumbnail recipe-image-wrapper\">\n            <img class=\"recipe-image img-responsive\" src=\""
+    + alias4(((helper = (helper = helpers.img_small || (depth0 != null ? depth0.img_small : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"img_small","hash":{},"data":data}) : helper)))
+    + "\" data-1x=\""
+    + alias4(((helper = (helper = helpers.img_medium || (depth0 != null ? depth0.img_medium : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"img_medium","hash":{},"data":data}) : helper)))
+    + "\" data-2x=\""
+    + alias4(((helper = (helper = helpers.img_large || (depth0 != null ? depth0.img_large : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"img_large","hash":{},"data":data}) : helper)))
+    + "\" width=\"100%\">\n            <div class=\"caption\">\n                <h3>"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "</h3>\n            </div>\n        </aside>\n";
 },"11":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -30960,7 +30960,7 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + "                        </ul>\n                    </div>\n                    <div class=\"col-md-8 instructions-wrapper\">\n                        <div class=\"instructions\">\n                            "
     + ((stack1 = ((helper = (helper = helpers.instructions || (depth0 != null ? depth0.instructions : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"instructions","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.image : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.img_small : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"if","hash":{},"fn":container.program(11, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n</div>\n";
 },"useData":true,"useDepths":true});
