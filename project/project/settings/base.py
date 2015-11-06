@@ -55,11 +55,23 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
-    normpath(join(SITE_ROOT, 'static')),
+    # static/lib -> assets/lib
+    ('lib', normpath(join(SITE_ROOT, 'static', 'lib'))),
+    # static/recipes/css -> assets/css
+    ('css', normpath(join(SITE_ROOT, 'static', 'recipes', 'css'))),
+    # static/recipes/js/final -> assets/js
+    ('js', normpath(join(SITE_ROOT, 'static', 'recipes', 'js', 'final'))),
+    # static/recipes/fonts/ -> assets/fonts
+    ('fonts', normpath(join(SITE_ROOT, 'static', 'recipes', 'fonts'))),
+    # static/recipes/images/recipes -> assets/images/recipes
+    (join('images', 'recipes'), normpath(join(SITE_ROOT, 'static', 'recipes', 'images', 'recipes'))),
+    # static/recipes/images/site -> assets/images/site
+    (join('images', 'site'), normpath(join(SITE_ROOT, 'static', 'recipes', 'images', 'site'))),
+
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
