@@ -1,4 +1,5 @@
 from django.views.decorators.cache import cache_page, never_cache
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404
 from django.core.urlresolvers import reverse
@@ -31,7 +32,10 @@ def index(request):
         latest_recipes_with_links.append({
             'id': recipe.id,
             'name': recipe.name,
-            'url': recipe.get_absolute_url()
+            'url': recipe.get_absolute_url(),
+            'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
+            'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
+            'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id))
             })
 
     popular_recipes = Recipe.objects.filter(status=1).order_by('-num_votes')[:4]
@@ -40,7 +44,10 @@ def index(request):
         popular_recipes_with_links.append({
             'id': recipe.id,
             'name': recipe.name,
-            'url': recipe.get_absolute_url()
+            'url': recipe.get_absolute_url(),
+            'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
+            'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
+            'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id))
             })
 
     food_groups = FoodGroup.objects.get_food_groups()
@@ -56,7 +63,7 @@ def index(request):
 
     print(food_groups_grouped)
 
-    parallax_src = "http://127.0.0.1:8000/static/recipes/images/background/{}.jpg"
+    parallax_src = "images/site/{}.jpg"
     # index = randint(1, 6)
 
     return render(request, 'recipes/index.html', {
@@ -64,7 +71,7 @@ def index(request):
         'latest_recipes': latest_recipes_with_links,
         'popular_recipes': popular_recipes_with_links,
         'food_groups': food_groups_grouped,
-        'parallax_src': parallax_src.format(1)
+        'parallax_src': static(parallax_src.format(1))
         })
 
 
@@ -157,7 +164,9 @@ def api_recipes(request, recipe_id):
         'name': _recipe.name,
         'url': _recipe.get_absolute_url(),
         'instructions': md.render(_recipe.instructions),
-        'image': unicode(_recipe.image),
+        'img_small': static("images/recipes/{}_135x135.jpg".format(_recipe.id)),
+        'img_medium': static("images/recipes/{}_270x270.jpg".format(_recipe.id)),
+        'img_large': static("images/recipes/{}_540x540.jpg".format(_recipe.id)),
         'pub_date': unicode(_recipe.pub_date),
         'description': md.render(_recipe.description),
         'servings': _recipe.servings,
@@ -202,7 +211,9 @@ def api_ingredients(request, ingredient_id):
                 'name': recipe.name,
                 'url': recipe.get_absolute_url(),
                 'instructions': md.render(recipe.instructions),
-                'image': unicode(recipe.image),
+                'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
+                'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
+                'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id)),
                 'pub_date': unicode(recipe.pub_date),
                 'description': md.render(recipe.description),
                 'servings': recipe.servings,
@@ -250,7 +261,9 @@ def api_food_groups(request, food_group_id):
                 'instructions': md.render(recipe.instructions),
                 'description': md.render(recipe.description),
                 'servings': recipe.servings,
-                'image': unicode(recipe.image),
+                'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
+                'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
+                'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id)),
                 'pub_date': unicode(recipe.pub_date),
                 'status': recipe.status,
                 'ingredients': ingredients['list'],
