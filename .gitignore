@@ -16,4 +16,10 @@ project/*.sqlite3
 *.py[co]
 __pycache__
 MANIFEST
+.ebextensions
 .DS_Store
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
