@@ -103,7 +103,7 @@ class Recipe(models.Model):
 
         if (pw, ph) != (nw, nh):
             tmp_filename = str(self.image.path)
-            filename = 'static/recipes/images/{}_{}x{}.jpg'.format(self.id, size[0], size[1])
+            filename = 'static/recipes/images/recipes/{}_{}x{}.jpg'.format(self.id, size[0], size[1])
             print(filename)
             image = Image.open(tmp_filename)
             pr = float(pw) / float(ph)
