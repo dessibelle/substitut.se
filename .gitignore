@@ -1,7 +1,9 @@
 env
+project/assets/*
 project/media/*
 project/static/lib/*
 project/static/recipes/js/final/*
+project/static/recipes/js/templates/templates.js
 project/static/recipes/original/*
 project/static/recipes/images/*.jpg
 project/.sass-cache/*
