@@ -135,7 +135,6 @@ DJANGO_APPS = (
     'django.contrib.messages',
     'grappelli',
     'django.contrib.admin',
-    'allaccess',
     'simplejson',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
