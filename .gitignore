@@ -6,6 +6,7 @@ project/static/recipes/js/final/*
 project/static/recipes/js/templates/templates.js
 project/static/recipes/original/*
 project/static/recipes/images/*.jpg
+project/static/recipes/images/recipes/*.jpg
 project/.sass-cache/*
 project/.coverage
 project/project/settings_secret.py
