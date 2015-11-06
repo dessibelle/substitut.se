@@ -52,8 +52,11 @@ DATABASES = {
 }
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
-CACHES = {}
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = get_env_setting('SECRET_KEY')
