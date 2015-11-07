@@ -18,7 +18,10 @@ def get_env_setting(setting):
         raise ImproperlyConfigured(error_msg)
 
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = ['52.29.116.107']
+ALLOWED_HOSTS = [
+    '83.254.179.250',
+    'ec2-52-29-116-107.eu-central-1.compute.amazonaws.com'
+]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
