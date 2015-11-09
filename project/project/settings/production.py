@@ -49,8 +49,12 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'db.sqlite3')),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'substitut',
+        'USER': 'substitut',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
