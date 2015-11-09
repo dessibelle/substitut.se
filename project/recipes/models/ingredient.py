@@ -94,7 +94,7 @@ class IngredientManager(models.Manager):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=128)
     energy_kj = models.FloatField(default=0, blank=True, null=True)
     energy_kcal = models.FloatField(default=0, blank=True, null=True)
     protein = models.FloatField(default=0, blank=True, null=True)
