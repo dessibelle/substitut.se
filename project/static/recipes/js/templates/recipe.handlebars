@@ -1,10 +1,10 @@
-<div class="row recipe-row {{ class }}">
+<div class="row recipe-row {{ class }}" itemscope itemtype="http://schema.org/Recipe">
     <div class="cover"></div>
     <div class="column-1 col-md-9 col-sm-12 col-xs-12">
         <section class="recipe-section">
             <article class="recipe">
                 <div class="row">
-                    <h2><a href="{{ url }}">{{ name }}</a></h2>
+                    <h2><a href="{{ url }}" itemprop="name">{{ name }}</a></h2>
                     <div class="vote" data-recipe-id="{{ id }}">
                         <span class="votes-btn"><i class="glyphicon glyphicon-heart"></i></span>
                         <span class="votes-text">Rekommendera</span>
@@ -14,7 +14,7 @@
                 <div class="row">
                     {{#if servings}}
                     <div class="servings">
-                        <span id="servings-recipe-{{ id }}">{{ servings }}</span> portioner
+                        <span id="servings-recipe-{{ id }}" itemprop="recipeYield">{{ servings }}</span> portioner
                     </div>
                     {{/if}}
                     {{#each food_groups}}
@@ -23,7 +23,7 @@
                     </a>
                     {{/each}}
                     {{#if description}}
-                    <div class="description">
+                    <div class="description" itemprop="description">
                         {{{ description }}}
                     </div>
                     {{/if}}
@@ -32,7 +32,7 @@
                     <div class="col-md-4 col-sm-12 col-xs-12 no-left-padding ingredients-wrapper">
                         <ul class="ingredients">
                         {{#each ingredients}}
-                            <li>
+                            <li itemprop="recipeIngredient">
                                 <span class="ingredient-amount">{{ amount }}</span>
                                 <span class="ingredient-unit">{{ unit_short }}</span>
                                 <span class="ingredient-name">{{ text }}</span>
@@ -41,7 +41,7 @@
                         </ul>
                     </div>
                     <div class="col-md-8 instructions-wrapper">
-                        <div class="instructions">
+                        <div class="instructions" itemprop="recipeInstructions">
                             {{{instructions}}}
                         </div>
                     </div>
@@ -52,14 +52,14 @@
     <div class="column-2 col-md-3 col-sm-12 col-xs-12">
         {{#if img_small}}
         <aside class="thumbnail recipe-image-wrapper">
-            <img class="recipe-image img-responsive" src="{{ img_small }}" data-1x="{{ img_medium }}" data-2x="{{ img_large }}" width="100%">
+            <img itemprop="image" class="recipe-image img-responsive" src="{{ img_small }}" data-1x="{{ img_medium }}" data-2x="{{ img_large }}" width="100%">
             <div class="caption">
                 <h3>{{ name }}</h3>
             </div>
         </aside>
         {{/if}}
         {{#if nutrition}}
-        <aside class="nutrition">
+        <aside class="nutrition" itemprop="nutrition">
             <h3><span class="pull-left">Näring</span> <a href="#" class="nutrition-toggle btn btn-info pull-right" data-recipe-id="{{ id }}" data-current-nutrition="total">totalt</a></h3>
             <table class="nutrition-table">
                 {{#each nutrition}}
