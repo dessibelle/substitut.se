@@ -9,7 +9,7 @@ class RecipeManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute(
-            "SELECT id, name FROM recipes_recipe WHERE name LIKE ? ORDER BY name",
+            "SELECT id, name FROM recipes_recipe WHERE name LIKE %s ORDER BY name",
             ["%%{}%%".format(term)]
         )
         result_list = []
@@ -24,7 +24,7 @@ class RecipeManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute(
-            "SELECT id, name FROM recipes_recipe WHERE status = ?",
+            "SELECT id, name FROM recipes_recipe WHERE status = %s",
             [Recipe.PUBLISHED]
         )
         result_list = []
@@ -39,7 +39,7 @@ class RecipeManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute(
-            "SELECT id, name FROM recipes_recipe WHERE lookup = ? AND status = ?",
+            "SELECT id, name FROM recipes_recipe WHERE lookup = %s AND status = ?",
             [lookup, Recipe.PUBLISHED]
         )
 
