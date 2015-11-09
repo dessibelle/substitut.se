@@ -63,7 +63,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'substitut.log',
+            'filename': '/webapps/substitut.se/var/logs/django.log',
             'formatter': 'verbose'
         },
     },
