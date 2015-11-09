@@ -14,6 +14,22 @@ from forms.recipe import RecipeForm
 # from random import randint
 import simplejson
 import mistune
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger("substitut")
+
+
+class NullHandler(logging.Handler):
+
+    """Used when no logging conf is defined."""
+
+    def emit(self, record):
+        """Do nothing."""
+        pass
+
+
+nullhandler = logger.addHandler(NullHandler())
 
 
 @never_cache
@@ -97,6 +113,7 @@ def api_votes(request, recipe_id):
 
 
 def recipes(request, lookup, slug=None):
+    """Fetch a single recipe."""
     recipe = Recipe.objects.get_slug(lookup)
     if recipe and recipe['slug'] != slug:
         raise Http404
@@ -106,7 +123,15 @@ def recipes(request, lookup, slug=None):
     except:
         raise Http404
 
-    return render(request, 'recipes/recipes.html', {'endpoint': endpoint, 'limit': settings.PAGE_LIMIT})
+    return render(
+        request,
+        'recipes/recipes.html',
+        {
+            'endpoint': endpoint,
+            'page_title': recipe['name'],
+            'limit': settings.PAGE_LIMIT
+        }
+    )
 
 
 def food_groups(request, lookup, slug=None):
@@ -119,7 +144,15 @@ def food_groups(request, lookup, slug=None):
     except:
         raise Http404
 
-    return render(request, 'recipes/recipes.html', {'endpoint': endpoint, 'limit': settings.PAGE_LIMIT})
+    return render(
+        request,
+        'recipes/recipes.html',
+        {
+            'endpoint': endpoint,
+            'page_title': food_group['name'],
+            'limit': settings.PAGE_LIMIT
+        }
+    )
 
 
 def ingredients(request, lookup, slug=None):
@@ -132,7 +165,15 @@ def ingredients(request, lookup, slug=None):
     except:
         raise Http404
 
-    return render(request, 'recipes/recipes.html', {'endpoint': endpoint, 'limit': settings.PAGE_LIMIT})
+    return render(
+        request,
+        'recipes/recipes.html',
+        {
+            'endpoint': endpoint,
+            'page_title': ingredient['name'],
+            'limit': settings.PAGE_LIMIT
+        }
+    )
 
 
 @cache_page(60 * 15)

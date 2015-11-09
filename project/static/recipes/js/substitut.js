@@ -201,6 +201,7 @@ $.extend(true, substitut, {modules: {}});
                 var html, i = 0;
 
                 app.offset += obj.count;
+                document.title = obj.label + ' - Substitut';
 
                 obj.data.forEach(function (item) {
                     i += 1;
@@ -210,7 +211,6 @@ $.extend(true, substitut, {modules: {}});
                 });
 
                 app.showFooter();
-                //$(".recipe-image").unveil(200, app.unveil);
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 

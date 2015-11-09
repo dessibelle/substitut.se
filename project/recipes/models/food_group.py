@@ -92,6 +92,7 @@ class FoodGroupManager(models.Manager):
         try:
             return {
                 'id': result[0],
+                'name': result[1],
                 'slug': slugify(result[1])
             }
         except:
