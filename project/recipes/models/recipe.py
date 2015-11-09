@@ -8,10 +8,10 @@ class RecipeManager(models.Manager):
     def lookup(self, term):
         from django.db import connection
         cursor = connection.cursor()
-        cursor.execute("""
-            SELECT id, name FROM recipes_recipe
-            WHERE name LIKE ?
-            ORDER BY name""", ["%%{}%%".format(term)])
+        cursor.execute(
+            "SELECT id, name FROM recipes_recipe WHERE name LIKE ? ORDER BY name",
+            ["%%{}%%".format(term)]
+        )
         result_list = []
         for row in cursor.fetchall():
             result_list.append({
@@ -38,11 +38,10 @@ class RecipeManager(models.Manager):
     def get_slug(self, lookup):
         from django.db import connection
         cursor = connection.cursor()
-        cursor.execute("""
-            SELECT id, name
-            FROM recipes_recipe
-            WHERE lookup = ?
-            AND status = ?""", [lookup, Recipe.PUBLISHED])
+        cursor.execute(
+            "SELECT id, name FROM recipes_recipe WHERE lookup = ? AND status = ?",
+            [lookup, Recipe.PUBLISHED]
+        )
 
         result = cursor.fetchone()
         try:
