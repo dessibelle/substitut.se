@@ -123,7 +123,6 @@ MIDDLEWARE_CLASSES = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allaccess.backends.AuthorizedServiceBackend',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
