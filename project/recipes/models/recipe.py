@@ -39,7 +39,7 @@ class RecipeManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute(
-            "SELECT id, name FROM recipes_recipe WHERE lookup = %s AND status = ?",
+            "SELECT id, name FROM recipes_recipe WHERE lookup = %s AND status = %s",
             [lookup, Recipe.PUBLISHED]
         )
 
