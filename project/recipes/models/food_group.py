@@ -18,7 +18,7 @@ class FoodGroupManager(models.Manager):
             FROM recipes_foodgroup fg
             INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
             INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
-            WHERE r.status = ?
+            WHERE r.status = %s
             GROUP BY fg.id
             ORDER BY num DESC""", [Recipe.PUBLISHED])
         result_list = []
@@ -43,7 +43,7 @@ class FoodGroupManager(models.Manager):
                 FROM recipes_foodgroup fg
                 INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
                 INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
-                WHERE r.id = ?""", [recipe_id])
+                WHERE r.id = %s""", [recipe_id])
         else:
             cursor.execute("""
                 SELECT fg.id, fg.name, fg.lookup
@@ -69,7 +69,7 @@ class FoodGroupManager(models.Manager):
             FROM recipes_foodgroup fg
             INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
             INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
-            WHERE r.status = ?
+            WHERE r.status = %s
             GROUP BY fg.id""", [Recipe.PUBLISHED])
         result_list = []
         for row in cursor.fetchall():
@@ -86,7 +86,7 @@ class FoodGroupManager(models.Manager):
         cursor.execute("""
             SELECT id, name
             FROM recipes_foodgroup
-            WHERE lookup = ?""", [lookup])
+            WHERE lookup = %s""", [lookup])
 
         result = cursor.fetchone()
         try:
