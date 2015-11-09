@@ -18,7 +18,7 @@ class IngredientManager(models.Manager):
             LEFT JOIN recipes_unitingredient ui ON ui.ingredient_id = i.id
             AND ui.unit_id = u.id
             WHERE ri.recipe_id = %s
-            ORDER BY ri.`order` ASC""", [recipe_id])
+            ORDER BY ri.order ASC""", [recipe_id])
         result = {
             'weight': 0,
             'list': []
