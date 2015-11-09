@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'substitut',
         'USER': 'substitut',
-        'PASSWORD': '',
+        'PASSWORD': environ.get('DATABASES_DEFAULT_PASSWORD', ''),
         'HOST': 'localhost',
         'PORT': '',  # Set to empty string for default.
     }
