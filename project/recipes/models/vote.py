@@ -65,7 +65,7 @@ class VoteManager(models.Manager):
         cursor.execute("""
             SELECT count(*)
             FROM recipes_vote
-            WHERE recipe_id = ?
+            WHERE recipe_id = %s
             GROUP BY recipe_id""", [recipe_id])
         row = cursor.fetchone()
         try:

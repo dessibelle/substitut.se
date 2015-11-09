@@ -8,7 +8,7 @@ class TermManager(models.Manager):
         cursor = connection.cursor()
         cursor.execute("""
             SELECT id, type, name, endpoint FROM recipes_term
-            WHERE name LIKE ?
+            WHERE name LIKE %s
             ORDER BY name""", ["%%{}%%".format(term)])
         result_list = []
         for row in cursor.fetchall():

@@ -17,7 +17,7 @@ class IngredientManager(models.Manager):
             LEFT JOIN recipes_unit u ON u.id = ri.unit_id
             LEFT JOIN recipes_unitingredient ui ON ui.ingredient_id = i.id
             AND ui.unit_id = u.id
-            WHERE ri.recipe_id = ?
+            WHERE ri.recipe_id = %s
             ORDER BY ri.`order` ASC""", [recipe_id])
         result = {
             'weight': 0,
@@ -66,7 +66,7 @@ class IngredientManager(models.Manager):
             FROM recipes_recipeingredient ri
             INNER JOIN recipes_ingredient i ON ri.ingredient_id = i.id
             INNER JOIN recipes_recipe r ON ri.recipe_id = r.id
-            WHERE r.status = ? GROUP BY ri.ingredient_id""", [Recipe.PUBLISHED])
+            WHERE r.status = %s GROUP BY ri.ingredient_id""", [Recipe.PUBLISHED])
         result_list = []
         for row in cursor.fetchall():
             result_list.append({
