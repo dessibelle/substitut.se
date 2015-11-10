@@ -53,7 +53,7 @@ class IngredientManager(models.Manager):
             WHERE
                 ri.recipe_id = %s
             ORDER BY
-                ri.order ASC""", [recipe_id])
+                ri.sort_order ASC""", [recipe_id])
         result = {
             'weight': 0,
             'list': []

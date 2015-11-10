@@ -153,7 +153,7 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     amount = models.FloatField(null=True, blank=True)
     text = models.CharField(max_length=255)
-    order = models.IntegerField(default=0)
+    sort_order = models.IntegerField(default=0)
 
     class Meta:
         app_label = 'recipes'
