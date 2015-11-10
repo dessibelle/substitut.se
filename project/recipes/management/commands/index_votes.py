@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand, CommandError
 from recipes.models.vote import Vote
 from recipes.models.recipe import Recipe

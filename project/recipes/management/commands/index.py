@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand, CommandError
 from recipes.models.term import Term
 from recipes.models.recipe import Recipe
@@ -44,7 +45,6 @@ class Command(BaseCommand):
                 term.save()
                 food_group_count += 1
             self.stdout.write('Indexed {} food groups'.format(food_group_count))
-
 
         except Exception as e:
             raise CommandError('Indexing failed: {}'.format(e))
