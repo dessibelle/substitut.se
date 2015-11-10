@@ -19,9 +19,9 @@ class TermManager(models.Manager):
             FROM
                 recipes_term
             WHERE
-                name LIKE %s
+                lower(name) LIKE %s
             ORDER BY
-                name""", ["%%{}%%".format(term)])
+                name""", ["%%{}%%".format(term.lower())])
         result_list = []
         for row in cursor.fetchall():
             result_list.append({
