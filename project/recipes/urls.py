@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.conf import settings
 from . import views
 
 urlpatterns = [
@@ -28,4 +29,6 @@ urlpatterns = [
         views.about, name='about'),
     url(r'^bootstrap/$',
         views.bootstrap, name='bootstrap'),
+    url(r'^media/(?P<path>.*)$',
+        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     ]

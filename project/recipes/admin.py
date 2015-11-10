@@ -5,6 +5,7 @@ from models.ingredient import Ingredient
 from models.recipe import Recipe, RecipeFoodGroup, RecipeIngredient
 from models.unit import Unit, UnitIngredient
 from models.vote import Vote
+from sorl.thumbnail.admin import AdminImageMixin
 
 
 class RecipeFoodGroupInline(admin.TabularInline):
@@ -29,7 +30,7 @@ class VoteAdmin(admin.ModelAdmin):
     search_fields = ['recipe_id', 'ip_address']
 
 
-class RecipeAdmin(admin.ModelAdmin):
+class RecipeAdmin(AdminImageMixin, admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name', 'description']}),
         (None, {'fields': ['servings', 'instructions', 'image', 'status', 'lookup']}),

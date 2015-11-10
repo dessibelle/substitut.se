@@ -11,6 +11,7 @@ from models.ingredient import Ingredient
 from models.recipe import Recipe
 from models.vote import Vote
 from forms.recipe import RecipeForm
+from sorl.thumbnail import get_thumbnail
 # from random import randint
 import simplejson
 import mistune
@@ -49,9 +50,9 @@ def index(request):
             'id': recipe.id,
             'name': recipe.name,
             'url': recipe.get_absolute_url(),
-            'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
-            'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
-            'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id))
+            'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
+            'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
+            'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url
             })
 
     popular_recipes = Recipe.objects.filter(status=1).order_by('-num_votes')[:4]
@@ -61,9 +62,9 @@ def index(request):
             'id': recipe.id,
             'name': recipe.name,
             'url': recipe.get_absolute_url(),
-            'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
-            'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
-            'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id))
+            'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
+            'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
+            'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url
             })
 
     food_groups = FoodGroup.objects.get_food_groups()
@@ -178,8 +179,7 @@ def ingredients(request, lookup, slug=None):
 
 @cache_page(60 * 15)
 def api_terms(request):
-    """ Get terms for autocomplete
-    """
+    """Get terms for autocomplete."""
     if request.method == "GET":
         if u'term' in request.GET:
             term = request.GET[u'term']
@@ -205,9 +205,9 @@ def api_recipes(request, recipe_id):
         'name': _recipe.name,
         'url': _recipe.get_absolute_url(),
         'instructions': md.render(_recipe.instructions),
-        'img_small': static("images/recipes/{}_135x135.jpg".format(_recipe.id)),
-        'img_medium': static("images/recipes/{}_270x270.jpg".format(_recipe.id)),
-        'img_large': static("images/recipes/{}_540x540.jpg".format(_recipe.id)),
+        'img_small': get_thumbnail(_recipe.image, '135x135', crop='center', quality=99).url,
+        'img_medium': get_thumbnail(_recipe.image, '270x270', crop='center', quality=99).url,
+        'img_large': get_thumbnail(_recipe.image, '540x540', crop='center', quality=99).url,
         'pub_date': unicode(_recipe.pub_date),
         'description': md.render(_recipe.description),
         'servings': _recipe.servings,
@@ -252,9 +252,9 @@ def api_ingredients(request, ingredient_id):
                 'name': recipe.name,
                 'url': recipe.get_absolute_url(),
                 'instructions': md.render(recipe.instructions),
-                'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
-                'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
-                'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id)),
+                'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
+                'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
+                'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url,
                 'pub_date': unicode(recipe.pub_date),
                 'description': md.render(recipe.description),
                 'servings': recipe.servings,
@@ -302,9 +302,9 @@ def api_food_groups(request, food_group_id):
                 'instructions': md.render(recipe.instructions),
                 'description': md.render(recipe.description),
                 'servings': recipe.servings,
-                'img_small': static("images/recipes/{}_135x135.jpg".format(recipe.id)),
-                'img_medium': static("images/recipes/{}_270x270.jpg".format(recipe.id)),
-                'img_large': static("images/recipes/{}_540x540.jpg".format(recipe.id)),
+                'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
+                'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
+                'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url,
                 'pub_date': unicode(recipe.pub_date),
                 'status': recipe.status,
                 'ingredients': ingredients['list'],

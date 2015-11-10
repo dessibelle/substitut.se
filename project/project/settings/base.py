@@ -67,8 +67,6 @@ STATICFILES_DIRS = (
     ('js', normpath(join(SITE_ROOT, 'static', 'recipes', 'js', 'final'))),
     # static/recipes/fonts/ -> assets/fonts
     ('fonts', normpath(join(SITE_ROOT, 'static', 'recipes', 'fonts'))),
-    # static/recipes/images/recipes -> assets/images/recipes
-    (join('images', 'recipes'), normpath(join(SITE_ROOT, 'static', 'recipes', 'images', 'recipes'))),
     # static/recipes/images/site -> assets/images/site
     (join('images', 'site'), normpath(join(SITE_ROOT, 'static', 'recipes', 'images', 'site'))),
 
@@ -137,11 +135,18 @@ DJANGO_APPS = (
     'simplejson',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
 )
 
 LOCAL_APPS = (
     'recipes',
 )
+
+# solr-thumbnail settings
+THUMBNAIL_FORMAT = 'PNG'
+THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.redis_kvstore.KVStore'
+THUMBNAIL_REDIS_HOST = 'localhost'
+THUMBNAIL_REDIS_PORT = 6379
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS

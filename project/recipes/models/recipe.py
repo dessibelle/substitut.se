@@ -2,11 +2,10 @@
 
 """ Recipe model. """
 
-from PIL import Image
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
-
+from sorl.thumbnail import ImageField
 
 class RecipeManager(models.Manager):
     def lookup(self, term):
@@ -68,7 +67,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    image = models.ImageField(upload_to='original/', blank=True, null=True)
+    image = ImageField(upload_to='original', blank=True, null=True) 
     pub_date = models.DateTimeField(auto_now_add=True, blank=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES)
     ingredients = models.ManyToManyField('Ingredient', through='RecipeIngredient')
@@ -96,47 +95,6 @@ class Recipe(models.Model):
 
     def __unicode__(self):
         return self.name
-
-    def save_image(self, size=(600, 600)):
-        if not self.id or not self.image:
-            return
-        pw = self.image.width
-        ph = self.image.height
-        nw = size[0]
-        nh = size[1]
-
-        if (pw, ph) != (nw, nh):
-            tmp_filename = str(self.image.path)
-            filename = 'static/recipes/images/recipes/{}_{}x{}.jpg'.format(self.id, size[0], size[1])
-            print(filename)
-            image = Image.open(tmp_filename)
-            pr = float(pw) / float(ph)
-            nr = float(nw) / float(nh)
-
-            if pr > nr:
-                # image aspect is wider than destination ratio
-                tw = int(round(nh * pr))
-                image = image.resize((tw, nh), Image.ANTIALIAS)
-                l = int(round((tw - nw) / 2.0))
-                image = image.crop((l, 0, l + nw, nh))
-            elif pr < nr:
-                # image aspect is taller than destination ratio
-                th = int(round(nw / pr))
-                image = image.resize((nw, th), Image.ANTIALIAS)
-                t = int(round((th - nh) / 2.0))
-                print((0, t, nw, t + nh))
-                image = image.crop((0, t, nw, t + nh))
-            else:
-                # image aspect matches the destination ratio
-                image = image.resize(size, Image.ANTIALIAS)
-
-            image.save(filename)
-
-    def save(self, *args, **kwargs):
-        super(Recipe, self).save(*args, **kwargs)
-        self.save_image((540, 540))
-        self.save_image((270, 270))
-        self.save_image((135, 135))
 
 
 class RecipeFoodGroup(models.Model):

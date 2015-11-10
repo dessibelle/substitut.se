@@ -23,6 +23,9 @@ ALLOWED_HOSTS = [
     u'ec2-52-29-23-47.eu-central-1.compute.amazonaws.com'
 ]
 
+# solr-thumbnail settings
+THUMBNAIL_DEBUG = False
+
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
