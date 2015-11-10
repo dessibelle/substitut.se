@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from recipes.models.food_group import FoodGroup
 from recipes.models.recipe import Recipe, RecipeFoodGroup

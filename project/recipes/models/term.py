@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+""" Term model. """
+
 from django.db import models
 
 
@@ -7,9 +11,17 @@ class TermManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT id, type, name, endpoint FROM recipes_term
-            WHERE name LIKE %s
-            ORDER BY name""", ["%%{}%%".format(term)])
+            SELECT
+                id,
+                type,
+                name,
+                endpoint
+            FROM
+                recipes_term
+            WHERE
+                name LIKE %s
+            ORDER BY
+                name""", ["%%{}%%".format(term)])
         result_list = []
         for row in cursor.fetchall():
             result_list.append({

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+""" Recipe model. """
+
 from PIL import Image
 from django.db import models
 from django.template.defaultfilters import slugify

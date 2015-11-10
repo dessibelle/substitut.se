@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+""" Unit model. """
+
 from django.db import models
 from ingredient import Ingredient
 

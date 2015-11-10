@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
+""" Ingredient model. """
+
 from django.db import models
-from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
 from recipe import Recipe
@@ -11,14 +14,46 @@ class IngredientManager(models.Manager):
 
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT i.name, i.energy_kj, i.energy_kcal, i.protein, i.fat, i.carbohydrates, i.fibers, i.salt, i.water, i.saturates, i.monounsaturated, i.trans_fat, i.cholesterol, i.vitamin_d, i.vitamin_e, i.vitamin_k, i.vitamin_c, i.vitamin_b6, i.vitamin_b12, i.iron, ui.multiplier, u.name, u.short_name, ri.amount, ri.text
-            FROM recipes_ingredient i
-            INNER JOIN recipes_recipeingredient ri ON ri.ingredient_id = i.id
-            LEFT JOIN recipes_unit u ON u.id = ri.unit_id
-            LEFT JOIN recipes_unitingredient ui ON ui.ingredient_id = i.id
-            AND ui.unit_id = u.id
-            WHERE ri.recipe_id = %s
-            ORDER BY ri.order ASC""", [recipe_id])
+            SELECT
+                i.name,
+                i.energy_kj,
+                i.energy_kcal,
+                i.protein,
+                i.fat,
+                i.carbohydrates,
+                i.fibers,
+                i.salt,
+                i.water,
+                i.saturates,
+                i.monounsaturated,
+                i.trans_fat,
+                i.cholesterol,
+                i.vitamin_d,
+                i.vitamin_e,
+                i.vitamin_k,
+                i.vitamin_c,
+                i.vitamin_b6,
+                i.vitamin_b12,
+                i.iron,
+                ui.multiplier,
+                u.name,
+                u.short_name,
+                ri.amount,
+                ri.text
+            FROM
+                recipes_ingredient i
+            INNER JOIN
+                recipes_recipeingredient ri ON ri.ingredient_id = i.id
+            LEFT JOIN
+                recipes_unit u ON u.id = ri.unit_id
+            LEFT JOIN
+                recipes_unitingredient ui ON ui.ingredient_id = i.id
+            AND
+                ui.unit_id = u.id
+            WHERE
+                ri.recipe_id = %s
+            ORDER BY
+                ri.order ASC""", [recipe_id])
         result = {
             'weight': 0,
             'list': []
@@ -62,11 +97,17 @@ class IngredientManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT ri.ingredient_id, ri.text
-            FROM recipes_recipeingredient ri
-            INNER JOIN recipes_ingredient i ON ri.ingredient_id = i.id
-            INNER JOIN recipes_recipe r ON ri.recipe_id = r.id
-            WHERE r.status = %s GROUP BY ri.ingredient_id""", [Recipe.PUBLISHED])
+            SELECT DISTINCT
+                ri.ingredient_id,
+                ri.text
+            FROM
+                recipes_recipeingredient ri
+            INNER JOIN
+                recipes_ingredient i ON ri.ingredient_id = i.id
+            INNER JOIN
+                recipes_recipe r ON ri.recipe_id = r.id
+            WHERE
+                r.status = %s""", [Recipe.PUBLISHED])
         result_list = []
         for row in cursor.fetchall():
             result_list.append({
@@ -79,9 +120,13 @@ class IngredientManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT id, name
-            FROM recipes_ingredient
-            WHERE lookup = ?""", [lookup])
+            SELECT
+                id,
+                name
+            FROM
+                recipes_ingredient
+            WHERE
+                lookup = %s""", [lookup])
 
         result = cursor.fetchone()
         try:

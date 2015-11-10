@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+""" Vote model. """
+
 from django.db import models
 from django.utils.timezone import now
 from django.db.models.signals import post_save
@@ -50,9 +54,13 @@ class VoteManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT recipe_id, count(*)
-            FROM recipes_vote
-            GROUP BY recipe_id""")
+            SELECT
+                recipe_id,
+                count(*)
+            FROM
+                recipes_vote
+            GROUP BY
+                recipe_id""")
         rows = cursor.fetchall()
         ret = []
         for row in rows:
@@ -63,10 +71,14 @@ class VoteManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT count(*)
-            FROM recipes_vote
-            WHERE recipe_id = %s
-            GROUP BY recipe_id""", [recipe_id])
+            SELECT
+                count(*)
+            FROM
+                recipes_vote
+            WHERE
+                recipe_id = %s
+            GROUP BY
+                recipe_id""", [recipe_id])
         row = cursor.fetchone()
         try:
             return row[0]

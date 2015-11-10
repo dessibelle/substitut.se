@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+""" Food group model. """
+
 from django.db import models
 # from django.conf import settings
 from django.template.defaultfilters import slugify
@@ -14,13 +18,22 @@ class FoodGroupManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT fg.id, fg.name, SUM(r.num_votes) as num
-            FROM recipes_foodgroup fg
-            INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
-            INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
-            WHERE r.status = %s
-            GROUP BY fg.id
-            ORDER BY num DESC""", [Recipe.PUBLISHED])
+            SELECT
+                fg.id,
+                fg.name,
+                SUM(r.num_votes) as num
+            FROM
+                recipes_foodgroup fg
+            INNER JOIN
+                recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
+            INNER JOIN
+                recipes_recipe r ON rfg.recipe_id = r.id
+            WHERE
+                r.status = %s
+            GROUP BY
+                fg.id
+            ORDER BY
+                num DESC""", [Recipe.PUBLISHED])
         result_list = []
         for row in cursor.fetchall():
             result_list.append({
@@ -39,16 +52,28 @@ class FoodGroupManager(models.Manager):
         cursor = connection.cursor()
         if recipe_id is not None:
             cursor.execute("""
-                SELECT fg.id, fg.name, fg.lookup
-                FROM recipes_foodgroup fg
-                INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
-                INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
-                WHERE r.id = %s""", [recipe_id])
+                SELECT
+                    fg.id,
+                    fg.name,
+                    fg.lookup
+                FROM
+                    recipes_foodgroup fg
+                INNER JOIN
+                    recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
+                INNER JOIN
+                    recipes_recipe r ON rfg.recipe_id = r.id
+                WHERE
+                    r.id = %s""", [recipe_id])
         else:
             cursor.execute("""
-                SELECT fg.id, fg.name, fg.lookup
-                FROM recipes_foodgroup fg
-                ORDER BY fg.name""")
+                SELECT
+                    fg.id,
+                    fg.name,
+                    fg.lookup
+                FROM
+                    recipes_foodgroup fg
+                ORDER BY
+                    fg.name""")
 
         result_list = []
         for row in cursor.fetchall():
@@ -65,12 +90,19 @@ class FoodGroupManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT fg.id, fg.name
-            FROM recipes_foodgroup fg
-            INNER JOIN recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
-            INNER JOIN recipes_recipe r ON rfg.recipe_id = r.id
-            WHERE r.status = %s
-            GROUP BY fg.id""", [Recipe.PUBLISHED])
+            SELECT
+                fg.id,
+                fg.name
+            FROM
+                recipes_foodgroup fg
+            INNER JOIN
+                recipes_recipefoodgroup rfg ON rfg.food_group_id = fg.id
+            INNER JOIN
+                recipes_recipe r ON rfg.recipe_id = r.id
+            WHERE
+                r.status = %s
+            GROUP BY
+                fg.id""", [Recipe.PUBLISHED])
         result_list = []
         for row in cursor.fetchall():
             result_list.append({
@@ -84,9 +116,13 @@ class FoodGroupManager(models.Manager):
         from django.db import connection
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT id, name
-            FROM recipes_foodgroup
-            WHERE lookup = %s""", [lookup])
+            SELECT
+                id,
+                name
+            FROM
+                recipes_foodgroup
+            WHERE
+                lookup = %s""", [lookup])
 
         result = cursor.fetchone()
         try:
