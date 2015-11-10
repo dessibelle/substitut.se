@@ -140,6 +140,8 @@ $.extend(true, substitut, {modules: {}});
                 if ($searchBox) {
                     $searchBox.autocomplete({
                         appendTo: $('.js-header'),
+                        minLength: 2,
+                        autoFocus: true,
                         source: app.autocompleteSource,
                         select: app.autocompleteSelect
                     });
