@@ -30814,14 +30814,15 @@ $(function () {
             updateNutrition: function () {
                 rec.data.ingredients.forEach(function (ingredient) {
                     $.each(ingredient, function (key, value) {
-                        rec.nutrition[key] += parseFloat(value);
+                        if (rec.nutrition.hasOwnProperty(key) && value) {
+                            rec.nutrition[key] += parseFloat(value);
+                        }
                     });
                 });
             },
 
             getNutrition: function () {
                 var kv = [], name, total, per_hundred_gram, per_serving, sum = 0;
-
                 $.each(rec.nutrition, function (key, value) {
 
                     name = rec.labels[key];
@@ -30844,6 +30845,7 @@ $(function () {
                         });
                     }
                 });
+                return kv;
             },
 
             getData: function () {
