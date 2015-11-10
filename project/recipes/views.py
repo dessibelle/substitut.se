@@ -33,14 +33,14 @@ class NullHandler(logging.Handler):
 nullhandler = logger.addHandler(NullHandler())
 
 
-@never_cache
+@cache_page(60 * 15)
 def about(request):
     return render(request, 'recipes/about.html', {
         'limit': settings.PAGE_LIMIT,
         })
 
 
-@never_cache
+@cache_page(60 * 15)
 def index(request):
 
     latest_recipes = Recipe.objects.filter(status=1).order_by('-pub_date')[:4]
@@ -113,6 +113,7 @@ def api_votes(request, recipe_id):
     return HttpResponse(simplejson.dumps(output))
 
 
+@cache_page(60 * 15)
 def recipes(request, lookup, slug=None):
     """Fetch a single recipe."""
     recipe = Recipe.objects.get_slug(lookup)
@@ -135,6 +136,7 @@ def recipes(request, lookup, slug=None):
     )
 
 
+@cache_page(60 * 15)
 def food_groups(request, lookup, slug=None):
     food_group = FoodGroup.objects.get_slug(lookup)
     if food_group and food_group['slug'] != slug:
@@ -156,6 +158,7 @@ def food_groups(request, lookup, slug=None):
     )
 
 
+@cache_page(60 * 15)
 def ingredients(request, lookup, slug=None):
     ingredient = Ingredient.objects.get_slug(lookup)
     if not ingredient or ingredient['slug'] != slug:
@@ -188,7 +191,7 @@ def api_terms(request):
     return HttpResponse(output)  # todo return json header
 
 
-# @cache_page(60 * 15)
+@cache_page(60 * 15)
 def api_recipes(request, recipe_id):
     md = mistune.Markdown()
     _recipe = get_object_or_404(Recipe, pk=recipe_id)
