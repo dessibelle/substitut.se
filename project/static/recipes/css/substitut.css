@@ -6067,13 +6067,13 @@ header.site-header {
           /* Custom, iPhone Retina */
           width: 100%; }
           header.site-header .navigation .nav-pills li {
-            width: 32%; } }
+            width: 49%; } }
       @media only screen and (min-width: 480px) and (max-width: 767px) {
         header.site-header .navigation .nav-pills {
           /* Extra Small Devices, Phones */
           width: 100%; }
           header.site-header .navigation .nav-pills li {
-            width: 32%; } }
+            width: 49%; } }
       @media only screen and (min-width: 768px) and (max-width: 991px) {
         header.site-header .navigation .nav-pills {
           /* Small Devices */
@@ -6095,7 +6095,6 @@ header.site-header {
   header.site-header .search-wrapper {
     background-color: #ffffff;
     text-align: center;
-    height: 60px;
     border-left: 1px solid #eeeeee;
     padding: 0; }
     header.site-header .search-wrapper form {
@@ -6108,8 +6107,7 @@ header.site-header {
         border: none;
         line-height: 40px;
         padding: 10px;
-        font-size: 14px;
-        height: 60px; }
+        font-size: 14px; }
         header.site-header .search-wrapper form .input-group input[type="text"]:focus {
           outline: none; }
       header.site-header .search-wrapper form .btn-lg, header.site-header .search-wrapper form .btn-group-lg > .btn {
@@ -6133,6 +6131,52 @@ header.site-header {
     -webkit-transform: rotate(0deg); }
   to {
     -webkit-transform: rotate(360deg); } }
+    @media only screen and (min-width: 320px) {
+      header.site-header .search-wrapper {
+        /* Custom, iPhone Retina */
+        border-left: none;
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+        border-right: none; }
+        header.site-header .search-wrapper form .input-group input[type="text"] {
+          height: 58px; } }
+    @media only screen and (min-width: 480px) and (max-width: 767px) {
+      header.site-header .search-wrapper {
+        /* Extra Small Devices, Phones */
+        border-left: none;
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+        border-right: none; }
+        header.site-header .search-wrapper form .input-group input[type="text"] {
+          height: 58px; } }
+    @media only screen and (min-width: 768px) and (max-width: 991px) {
+      header.site-header .search-wrapper {
+        /* Small Devices */
+        border-left: 1px solid #eeeeee;
+        border-top: none;
+        border-bottom: none;
+        border-right: none; }
+        header.site-header .search-wrapper form .input-group input[type="text"] {
+          height: 60px; } }
+    @media only screen and (min-width: 992px) and (max-width: 1199px) {
+      header.site-header .search-wrapper {
+        /* Medium Devices, Desktops */
+        border-left: 1px solid #eeeeee;
+        border-top: none;
+        border-bottom: none;
+        border-right: none; }
+        header.site-header .search-wrapper form .input-group input[type="text"] {
+          height: 60px; } }
+    @media only screen and (min-width: 1200px) {
+      header.site-header .search-wrapper {
+        /* Large Devices, Wide Screens */
+        border-left: 1px solid #eeeeee;
+        border-top: none;
+        border-bottom: none;
+        border-right: none; }
+        header.site-header .search-wrapper form .input-group input[type="text"] {
+          height: 60px; } }
+
 .site-footer {
   float: left;
   display: block;

@@ -174,13 +174,13 @@ header.site-header {
             @include breakpoint(xxs) {
                 width: 100%;
                 li {
-                    width: 32%;
+                    width: 49%;
                 }
             }
             @include breakpoint(xs) {
                 width: 100%;
                 li {
-                    width: 32%;
+                    width: 49%;
                 }
             }
             @include breakpoint(sm) {
@@ -207,9 +207,7 @@ header.site-header {
     .search-wrapper {
         background-color: $white;
         text-align: center;
-        height: 60px;
-        border-left: 1px solid $gray-lighter;
-        padding: 0;
+
         form {
             overflow: visible;
             .input-group {
@@ -222,7 +220,6 @@ header.site-header {
                     line-height: 40px;
                     padding: 10px;
                     font-size: 14px;
-                    height: 60px;
                     &:focus {
                         outline: none;
                     }
@@ -251,6 +248,75 @@ header.site-header {
                 to { -webkit-transform: rotate(360deg); }
             }
         }
+            
+        @include breakpoint(xxs) {
+            border-left: none;
+            border-top: 1px solid $gray-lighter;
+            border-bottom: 1px solid $gray-lighter;
+            border-right: none;
+            form {
+                .input-group {
+                    input[type="text"] {
+                        height: 58px;
+                    }
+                }
+            }
+        }
+        @include breakpoint(xs) {
+            border-left: none;
+            border-top: 1px solid $gray-lighter;
+            border-bottom: 1px solid $gray-lighter;
+            border-right: none;
+            form {
+                .input-group {
+                    input[type="text"] {
+                        height: 58px;
+                    }
+                }
+            }
+        }
+        @include breakpoint(sm) {
+            border-left: 1px solid $gray-lighter;
+            border-top: none;
+            border-bottom: none;
+            border-right: none;
+            form {
+                .input-group {
+                    input[type="text"] {
+                        height: 60px;
+                    }
+                }
+            }
+        }
+        @include breakpoint(md) {
+            border-left: 1px solid $gray-lighter;
+            border-top: none;
+            border-bottom: none;
+            border-right: none;
+            form {
+                .input-group {
+                    input[type="text"] {
+                        height: 60px;
+                    }
+                }
+            }
+        }
+        @include breakpoint(lg) {
+            border-left: 1px solid $gray-lighter;
+            border-top: none;
+            border-bottom: none;
+            border-right: none;
+            form {
+                .input-group {
+                    input[type="text"] {
+                        height: 60px;
+                    }
+                }
+            }
+        }
+
+        border-left: 1px solid $gray-lighter;
+        padding: 0;
     }
 }
 
