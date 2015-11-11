@@ -23,41 +23,44 @@ $.extend(true, substitut, {modules: {}});
 
             init: function () {
                 $.hisrc.speedTest();
+
+                app.setupAutocomplete();
+                app.setupSearchPromoteBtn();
+                app.setupPagination();
+                app.setupNutritionToggle();
+                app.loadRecipes();
+
+                // Setup voting functionality 
+                app.votes = substitut.modules.Vote(
+                    {
+                        selector: "vote"
+                    }
+                );
+                app.setupVoteButtons();
+                
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
                 app.state = substitut.modules.Responsive(
                     {
                         callback: app.responsiveChange
                     }
                 );
-                // Setup voting functionality 
-                app.votes = substitut.modules.Vote(
-                    {
-                        selector: ".vote"
-                    }
-                );
-
-                app.setupAutocomplete();
-                app.setupVoteButtons();
-                app.setupSearchPromoteBtn();
-                app.setupPagination();
-                app.setupNutritionToggle();
-                app.loadRecipes();
-
+                
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
 
             responsiveChange: function (state) {
+                console.log("responsiveChange", state);
                 if (state === "xxs") {
-                    //console.log("xxs");
+                    app.votes.expandVoteButton();
                 } else if (state === "xs") {
-                    //console.log("xs");
+                    app.votes.expandVoteButton();
                 } else if (state === "sm") {
-                    //console.log("sm");
+                    app.votes.expandVoteButton();
                 } else if (state === "md") {
-                    //console.log("md");
+                    app.votes.collapseVoteButton();
                 } else if (state === "lg") {
-                    //console.log("lg");
+                    app.votes.collapseVoteButton();
                 } else {
                     // Do nothing
                 }
@@ -244,6 +247,10 @@ $.extend(true, substitut, {modules: {}});
                 });
 
                 app.showFooter();
+
+                var state = app.state.getState();
+                app.responsiveChange(state);
+
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 

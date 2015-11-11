@@ -10,7 +10,16 @@
     h3.index {
         margin-bottom: 0;
     }
+    .row.no-gutter {
+        margin-left: 0;
+        margin-right: 0;
+    }
 
+    .row.no-gutter [class*='col-']:not(:first-child),
+    .row.no-gutter [class*='col-']:not(:last-child) {
+        padding-right: 0;
+        padding-left: 0;
+    }
 }
 
 /* Store current state for js use */
@@ -394,76 +403,88 @@ header.site-header {
         .instructions-wrapper {
             margin-top: ($grid-gutter-width*2);
         }
-        .vote {
-            float: right;
-            margin-top: ($grid-gutter-width/2);
-            position: relative;
-            width: 60px;
-            height: 35px;
-            padding: 5px 10px;
-            -webkit-border-radius: $border-radius-base;
-            -moz-border-radius: $border-radius-base;
-            border-radius: $border-radius-base;
-            -webkit-transition: all 0.2s;
-            -moz-transition: all 0.2s;
-            -ms-transition: all 0.2s;
-            -o-transition: all 0.2s;
-            transition: all 0.2s;
-            .votes-total {
-                display: inline-block;
-                line-height: 25px;
+        .vote-button-wrapper {
+            .vote {
                 float: right;
-            }
-            .votes-text {
-                font-family: $font-family-monospace;
-                display: none;
-                line-height: 25px;
-                float: right;
-                color: $white;
-                font-size: 15px;
-                margin-right: 5px;
-            }
-            .votes-btn {
-                line-height: 25px;
-                float: right;
-                margin-top: 1px;
-                color: $brand-danger;
-            }
-            &:hover {
-                cursor: pointer;
-                background-color: $brand-danger;
-                width: 165px;
-                @include box-shadow(0 1px 1.5px 1px rgba(0,0,0,.12));
-                text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
+                margin-top: ($grid-gutter-width/2);
+                position: relative;
+                width: 60px;
+                height: 35px;
+                padding: 5px 10px;
+                -webkit-border-radius: $border-radius-base;
+                -moz-border-radius: $border-radius-base;
+                border-radius: $border-radius-base;
+                -webkit-transition: all 0.2s;
+                -moz-transition: all 0.2s;
+                -ms-transition: all 0.2s;
+                -o-transition: all 0.2s;
+                transition: all 0.2s;
                 .votes-total {
-                    display: none;
+                    display: inline-block;
+                    line-height: 25px;
+                    float: right;
                 }
                 .votes-text {
-                    display: inline-block;
+                    font-family: $font-family-monospace;
+                    display: none;
+                    line-height: 25px;
+                    float: right;
+                    color: $white;
+                    font-size: 15px;
+                    margin-right: 5px;
                 }
                 .votes-btn {
-                    color: $white;
+                    line-height: 25px;
+                    float: right;
+                    margin-top: 1px;
+                    color: $brand-danger;
                 }
-            }
-            &.disabled {
-                background-color: $white;
-                cursor: pointer;
-                &:hover {
+                &:hover,
+                &.expanded {
+                    cursor: pointer;
+                    background-color: $brand-danger;
+                    width: 165px;
+                    @include box-shadow(0 1px 1.5px 1px rgba(0,0,0,.12));
+                    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
                     .votes-total {
-                        display: inline-block;
-                    }
-                    .votes-text {
                         display: none;
                     }
+                    .votes-text {
+                        display: inline-block;
+                    }
                     .votes-btn {
-                        color: $brand-danger;
+                        color: $white;
                     }
                 }
-                width: 60px;
-                filter: alpha(opacity=30);
-                -moz-opacity: 0.3;
-                -khtml-opacity: 0.3;
-                opacity: 0.3;
+                &.expanded {
+                    float: none;
+                }
+                &.disabled {
+                    background-color: $white;
+                    cursor: pointer;
+                    &:hover {
+                        .votes-total {
+                            display: inline-block;
+                        }
+                        .votes-text {
+                            display: none;
+                        }
+                        .votes-btn {
+                            color: $brand-danger;
+                        }
+                    }
+                    width: 60px;
+                    filter: alpha(opacity=30);
+                    -moz-opacity: 0.3;
+                    -khtml-opacity: 0.3;
+                    opacity: 0.3;
+                }
+            }
+            &.center {
+                text-align: center;
+                .vote {
+                    margin: 1em auto 2em;
+                }
             }
         }
         ol {

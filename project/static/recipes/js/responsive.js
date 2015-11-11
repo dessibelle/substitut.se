@@ -58,18 +58,23 @@ function debounce(func, wait, immediate) {
                     var state = res.loadDeviceState();
                     if (state !== res.data.state) {
                         res.data.state = state;
-                        if (typeof res.data.callback === 'function') {
-                            res.data.callback.call(this, state);
-                        }
+                        res.callBack();
                     }
                 }, 20));
+            },
+
+            callBack: function () {
+                if (typeof res.data.callback === 'function') {
+                    res.data.callback.call(this, res.data.state);
+                }
             }
         };
 
         res.init();
 
         return {
-            getState: res.getState
+            getState: res.getState,
+            callBack: res.callBack
         };
     }});
 }(jQuery));

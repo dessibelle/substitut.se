@@ -5940,6 +5940,13 @@ a.text-tag:focus {
   border: 0; }
 #substitut h3.index {
   margin-bottom: 0; }
+#substitut .row.no-gutter {
+  margin-left: 0;
+  margin-right: 0; }
+#substitut .row.no-gutter [class*='col-']:not(:first-child),
+#substitut .row.no-gutter [class*='col-']:not(:last-child) {
+  padding-right: 0;
+  padding-left: 0; }
 
 /* Store current state for js use */
 .state-indicator {
@@ -6248,7 +6255,7 @@ header.site-header {
     .recipe-section article.recipe .ingredients-wrapper,
     .recipe-section article.recipe .instructions-wrapper {
       margin-top: 60px; }
-    .recipe-section article.recipe .vote {
+    .recipe-section article.recipe .vote-button-wrapper .vote {
       float: right;
       margin-top: 15px;
       position: relative;
@@ -6263,11 +6270,11 @@ header.site-header {
       -ms-transition: all 0.2s;
       -o-transition: all 0.2s;
       transition: all 0.2s; }
-      .recipe-section article.recipe .vote .votes-total {
+      .recipe-section article.recipe .vote-button-wrapper .vote .votes-total {
         display: inline-block;
         line-height: 25px;
         float: right; }
-      .recipe-section article.recipe .vote .votes-text {
+      .recipe-section article.recipe .vote-button-wrapper .vote .votes-text {
         font-family: "Cutive Mono", "Courier New", Courier, Menlo, Monaco, Consolas, monospace;
         display: none;
         line-height: 25px;
@@ -6275,25 +6282,27 @@ header.site-header {
         color: #ffffff;
         font-size: 15px;
         margin-right: 5px; }
-      .recipe-section article.recipe .vote .votes-btn {
+      .recipe-section article.recipe .vote-button-wrapper .vote .votes-btn {
         line-height: 25px;
         float: right;
         margin-top: 1px;
         color: #da656e; }
-      .recipe-section article.recipe .vote:hover {
+      .recipe-section article.recipe .vote-button-wrapper .vote:hover, .recipe-section article.recipe .vote-button-wrapper .vote.expanded {
         cursor: pointer;
         background-color: #da656e;
         width: 165px;
         -webkit-box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12);
         box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12);
         text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1); }
-        .recipe-section article.recipe .vote:hover .votes-total {
+        .recipe-section article.recipe .vote-button-wrapper .vote:hover .votes-total, .recipe-section article.recipe .vote-button-wrapper .vote.expanded .votes-total {
           display: none; }
-        .recipe-section article.recipe .vote:hover .votes-text {
+        .recipe-section article.recipe .vote-button-wrapper .vote:hover .votes-text, .recipe-section article.recipe .vote-button-wrapper .vote.expanded .votes-text {
           display: inline-block; }
-        .recipe-section article.recipe .vote:hover .votes-btn {
+        .recipe-section article.recipe .vote-button-wrapper .vote:hover .votes-btn, .recipe-section article.recipe .vote-button-wrapper .vote.expanded .votes-btn {
           color: #ffffff; }
-      .recipe-section article.recipe .vote.disabled {
+      .recipe-section article.recipe .vote-button-wrapper .vote.expanded {
+        float: none; }
+      .recipe-section article.recipe .vote-button-wrapper .vote.disabled {
         background-color: #ffffff;
         cursor: pointer;
         width: 60px;
@@ -6301,12 +6310,16 @@ header.site-header {
         -moz-opacity: 0.3;
         -khtml-opacity: 0.3;
         opacity: 0.3; }
-        .recipe-section article.recipe .vote.disabled:hover .votes-total {
+        .recipe-section article.recipe .vote-button-wrapper .vote.disabled:hover .votes-total {
           display: inline-block; }
-        .recipe-section article.recipe .vote.disabled:hover .votes-text {
+        .recipe-section article.recipe .vote-button-wrapper .vote.disabled:hover .votes-text {
           display: none; }
-        .recipe-section article.recipe .vote.disabled:hover .votes-btn {
+        .recipe-section article.recipe .vote-button-wrapper .vote.disabled:hover .votes-btn {
           color: #da656e; }
+    .recipe-section article.recipe .vote-button-wrapper.center {
+      text-align: center; }
+      .recipe-section article.recipe .vote-button-wrapper.center .vote {
+        margin: 1em auto 2em; }
     .recipe-section article.recipe ol {
       counter-reset: li;
       margin-left: 0;

@@ -30147,41 +30147,44 @@ $.extend(true, substitut, {modules: {}});
 
             init: function () {
                 $.hisrc.speedTest();
+
+                app.setupAutocomplete();
+                app.setupSearchPromoteBtn();
+                app.setupPagination();
+                app.setupNutritionToggle();
+                app.loadRecipes();
+
+                // Setup voting functionality 
+                app.votes = substitut.modules.Vote(
+                    {
+                        selector: "vote"
+                    }
+                );
+                app.setupVoteButtons();
+                
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
                 app.state = substitut.modules.Responsive(
                     {
                         callback: app.responsiveChange
                     }
                 );
-                // Setup voting functionality 
-                app.votes = substitut.modules.Vote(
-                    {
-                        selector: ".vote"
-                    }
-                );
-
-                app.setupAutocomplete();
-                app.setupVoteButtons();
-                app.setupSearchPromoteBtn();
-                app.setupPagination();
-                app.setupNutritionToggle();
-                app.loadRecipes();
-
+                
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
 
             responsiveChange: function (state) {
+                console.log("responsiveChange", state);
                 if (state === "xxs") {
-                    //console.log("xxs");
+                    app.votes.expandVoteButton();
                 } else if (state === "xs") {
-                    //console.log("xs");
+                    app.votes.expandVoteButton();
                 } else if (state === "sm") {
-                    //console.log("sm");
+                    app.votes.expandVoteButton();
                 } else if (state === "md") {
-                    //console.log("md");
+                    app.votes.collapseVoteButton();
                 } else if (state === "lg") {
-                    //console.log("lg");
+                    app.votes.collapseVoteButton();
                 } else {
                     // Do nothing
                 }
@@ -30368,6 +30371,10 @@ $.extend(true, substitut, {modules: {}});
                 });
 
                 app.showFooter();
+
+                var state = app.state.getState();
+                app.responsiveChange(state);
+
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
@@ -30512,7 +30519,7 @@ $(function () {
         vote = {
 
             options: $.extend({
-                selector: ".vote-btn"
+                selector: "vote"
             }, options),
             storage: null,
 
@@ -30541,6 +30548,20 @@ $(function () {
                         }
                     }
                 }
+            },
+
+            expandVoteButton: function () {
+                var $btns = $(vote.getSelector());
+                if (!$btns.hasClass("expanded")) {
+                    $btns.addClass("expanded");
+                }
+                $btns.parent().addClass("center");
+            },
+
+            collapseVoteButton: function () {
+                var $btns = $(vote.getSelector());
+                $btns.removeClass("expanded");
+                $btns.parent().removeClass("center");
             },
 
             voteFor: function (recipe_id) {
@@ -30615,7 +30636,7 @@ $(function () {
             },
 
             getSelector: function () {
-                return vote.options.selector;
+                return "." + vote.options.selector;
             }
         };
 
@@ -30624,7 +30645,9 @@ $(function () {
         return {
             voteFor: vote.voteFor,
             getTotal: vote.getTotal,
-            getSelector: vote.getSelector
+            getSelector: vote.getSelector,
+            expandVoteButton: vote.expandVoteButton,
+            collapseVoteButton: vote.collapseVoteButton
         };
     }});
 }(jQuery));/*jslint browser: true*/
@@ -30956,18 +30979,23 @@ function debounce(func, wait, immediate) {
                     var state = res.loadDeviceState();
                     if (state !== res.data.state) {
                         res.data.state = state;
-                        if (typeof res.data.callback === 'function') {
-                            res.data.callback.call(this, state);
-                        }
+                        res.callBack();
                     }
                 }, 20));
+            },
+
+            callBack: function () {
+                if (typeof res.data.callback === 'function') {
+                    res.data.callback.call(this, res.data.state);
+                }
             }
         };
 
         res.init();
 
         return {
-            getState: res.getState
+            getState: res.getState,
+            callBack: res.callBack
         };
     }});
 }(jQuery));(function() {
@@ -31051,17 +31079,17 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
 
   return "<div class=\"row recipe-row "
     + alias4(((helper = (helper = helpers["class"] || (depth0 != null ? depth0["class"] : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"class","hash":{},"data":data}) : helper)))
-    + "\" itemscope itemtype=\"http://schema.org/Recipe\">\n    <div class=\"cover\"></div>\n    <div class=\"column-1 col-md-9 col-sm-12 col-xs-12\">\n        <section class=\"recipe-section\">\n            <article class=\"recipe\">\n                <div class=\"row\">\n                    <h2><a href=\""
+    + "\" itemscope itemtype=\"http://schema.org/Recipe\">\n    <div class=\"cover\"></div>\n    <div class=\"column-1 col-md-9 col-sm-12 col-xs-12\">\n        <section class=\"recipe-section\">\n            <article class=\"recipe\">\n                <div class=\"row no-gutter\">\n                    <div class=\"col-md-8 col-sm-12 col-xs-12\">\n                        <h2><a href=\""
     + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
     + "\" itemprop=\"name\">"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</a></h2>\n                    <div class=\"vote\" data-recipe-id=\""
+    + "</a></h2>\n                    </div>\n                    <div class=\"col-md-4 col-sm-12 col-xs-12 vote-button-wrapper\">\n                        <div class=\"vote\" data-recipe-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">\n                        <span class=\"votes-btn\"><i class=\"glyphicon glyphicon-heart\"></i></span>\n                        <span class=\"votes-text\">Rekommendera</span>\n                        <span class=\"votes-total\" id=\"votes-total-"
+    + "\">\n                            <span class=\"votes-btn\"><i class=\"glyphicon glyphicon-heart\"></i></span>\n                            <span class=\"votes-text\">Rekommendera</span>\n                            <span class=\"votes-total\" id=\"votes-total-"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\">"
     + alias4(((helper = (helper = helpers.vote_total || (depth0 != null ? depth0.vote_total : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"vote_total","hash":{},"data":data}) : helper)))
-    + "</span>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
+    + "</span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.servings : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.food_groups : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.description : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")

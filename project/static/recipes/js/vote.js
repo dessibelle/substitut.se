@@ -10,7 +10,7 @@
         vote = {
 
             options: $.extend({
-                selector: ".vote-btn"
+                selector: "vote"
             }, options),
             storage: null,
 
@@ -39,6 +39,20 @@
                         }
                     }
                 }
+            },
+
+            expandVoteButton: function () {
+                var $btns = $(vote.getSelector());
+                if (!$btns.hasClass("expanded")) {
+                    $btns.addClass("expanded");
+                }
+                $btns.parent().addClass("center");
+            },
+
+            collapseVoteButton: function () {
+                var $btns = $(vote.getSelector());
+                $btns.removeClass("expanded");
+                $btns.parent().removeClass("center");
             },
 
             voteFor: function (recipe_id) {
@@ -113,7 +127,7 @@
             },
 
             getSelector: function () {
-                return vote.options.selector;
+                return "." + vote.options.selector;
             }
         };
 
@@ -122,7 +136,9 @@
         return {
             voteFor: vote.voteFor,
             getTotal: vote.getTotal,
-            getSelector: vote.getSelector
+            getSelector: vote.getSelector,
+            expandVoteButton: vote.expandVoteButton,
+            collapseVoteButton: vote.collapseVoteButton
         };
     }});
 }(jQuery));

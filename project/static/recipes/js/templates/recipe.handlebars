@@ -3,12 +3,16 @@
     <div class="column-1 col-md-9 col-sm-12 col-xs-12">
         <section class="recipe-section">
             <article class="recipe">
-                <div class="row">
-                    <h2><a href="{{ url }}" itemprop="name">{{ name }}</a></h2>
-                    <div class="vote" data-recipe-id="{{ id }}">
-                        <span class="votes-btn"><i class="glyphicon glyphicon-heart"></i></span>
-                        <span class="votes-text">Rekommendera</span>
-                        <span class="votes-total" id="votes-total-{{ id }}">{{ vote_total }}</span>
+                <div class="row no-gutter">
+                    <div class="col-md-8 col-sm-12 col-xs-12">
+                        <h2><a href="{{ url }}" itemprop="name">{{ name }}</a></h2>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 vote-button-wrapper">
+                        <div class="vote" data-recipe-id="{{ id }}">
+                            <span class="votes-btn"><i class="glyphicon glyphicon-heart"></i></span>
+                            <span class="votes-text">Rekommendera</span>
+                            <span class="votes-total" id="votes-total-{{ id }}">{{ vote_total }}</span>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
