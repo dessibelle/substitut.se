@@ -218,9 +218,9 @@ header.site-header {
                 }
             }
             @include breakpoint(sm) {
-                width: auto;
+                width: 100%;
                 li {
-                    width: auto;
+                    width: 49%;
                 }
             }
             @include breakpoint(md) {
@@ -310,14 +310,14 @@ header.site-header {
             }
         }
         @include breakpoint(sm) {
-            border-left: 1px solid $gray-lighter;
-            border-top: none;
-            border-bottom: none;
+            border-left: none;
+            border-top: 1px solid $gray-lighter;
+            border-bottom: 1px solid $gray-lighter;
             border-right: none;
             form {
                 .input-group {
                     input[type="text"] {
-                        height: 60px;
+                        height: 58px;
                     }
                 }
             }
@@ -399,9 +399,35 @@ header.site-header {
                 color: $gray-dark;
             }
         }
-        .ingredients-wrapper,
-        .instructions-wrapper {
-            margin-top: ($grid-gutter-width*2);
+        @include breakpoint(xxs) {
+            .ingredients-wrapper,
+            .instructions-wrapper {
+                margin-top: 0;
+            }
+        }
+        @include breakpoint(xs) {
+            .ingredients-wrapper,
+            .instructions-wrapper {
+                margin-top: ($grid-gutter-width/2);
+            }
+        }
+        @include breakpoint(sm) {
+            .ingredients-wrapper,
+            .instructions-wrapper {
+                margin-top: ($grid-gutter-width/2);
+            }
+        }
+        @include breakpoint(md) {
+            .ingredients-wrapper,
+            .instructions-wrapper {
+                margin-top: ($grid-gutter-width*2);
+            }
+        }
+        @include breakpoint(lg) {
+            .ingredients-wrapper,
+            .instructions-wrapper {
+                margin-top: ($grid-gutter-width*2);
+            }
         }
         .vote-button-wrapper {
             .vote {
