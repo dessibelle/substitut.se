@@ -43,6 +43,7 @@ COMPRESS = "$(STATICPATH)/recipes/js/substitut.js" \
 	"$(STATICPATH)/recipes/js/exceptions.js" \
 	"$(STATICPATH)/recipes/js/storage.js" \
 	"$(STATICPATH)/recipes/js/recipe.js" \
+	"$(STATICPATH)/recipes/js/responsive.js" \
 	"$(STATICPATH)/recipes/js/templates/templates.js"
 
 COMBINE_COMPRESSED = "lib/jquery/dist/jquery.min.js" \

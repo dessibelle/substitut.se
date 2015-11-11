@@ -13,6 +13,31 @@
 
 }
 
+/* Store current state for js use */
+.state-indicator {
+    position: absolute;
+    top: -999em;
+    left: -999em;
+    &:before { 
+        content: 'desktop';
+    }
+}
+@include breakpoint(xxs) {
+    .state-indicator:before { content: 'xxs'; }
+}
+@include breakpoint(xs) {
+    .state-indicator:before { content: 'xs'; }
+}
+@include breakpoint(sm) {
+    .state-indicator:before { content: 'sm'; }
+}
+@include breakpoint(md) {
+    .state-indicator:before { content: 'md'; }
+}
+@include breakpoint(lg) {
+    .state-indicator:before { content: 'lg'; }
+}
+
 .airy {
     margin: $grid-gutter-width 0;
 }

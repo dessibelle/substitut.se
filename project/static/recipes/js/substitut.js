@@ -19,19 +19,50 @@ $.extend(true, substitut, {modules: {}});
             votes: null,
             limit: 10,
             offset: 0,
+            state: null,
 
             init: function () {
                 $.hisrc.speedTest();
-                app.votes = substitut.modules.Vote({selector: ".vote"});
+                // Setup callback on window state change (xxs, xs, sm, md or lg)
+                app.state = substitut.modules.Responsive(
+                    {
+                        callback: app.responsiveChange
+                    }
+                );
+                // Setup voting functionality 
+                app.votes = substitut.modules.Vote(
+                    {
+                        selector: ".vote"
+                    }
+                );
+
                 app.setupAutocomplete();
                 app.setupVoteButtons();
                 app.setupSearchPromoteBtn();
                 app.setupPagination();
                 app.setupNutritionToggle();
                 app.loadRecipes();
-                //$(".recipe-image").unveil(200, app.unveil);
+
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
+
+
+            responsiveChange: function (state) {
+                if (state === "xxs") {
+                    //console.log("xxs");
+                } else if (state === "xs") {
+                    //console.log("xs");
+                } else if (state === "sm") {
+                    //console.log("sm");
+                } else if (state === "md") {
+                    //console.log("md");
+                } else if (state === "lg") {
+                    //console.log("lg");
+                } else {
+                    // Do nothing
+                }
+            },
+
 
             setupSearchPromoteBtn: function () {
                 $(".search-promote-btn").on("click", function (ignore) {
@@ -330,7 +361,8 @@ $.extend(true, substitut, {modules: {}});
         return {
             init: app.init,
             parseJson: app.parseJson,
-            unveil: app.unveil
+            unveil: app.unveil,
+            responsiveChange: app.responsiveChange
         };
     }});
 }(jQuery));
