@@ -37,8 +37,12 @@
                         <ul class="ingredients">
                         {{#each ingredients}}
                             <li itemprop="recipeIngredient">
+                                {{#if amount}}
                                 <span class="ingredient-amount">{{ amount }}</span>
+                                {{/if}}
+                                {{#if unit_short}}
                                 <span class="ingredient-unit">{{ unit_short }}</span>
+                                {{/if}}
                                 <span class="ingredient-name">{{ text }}</span>
                             </li>
                         {{/each}}

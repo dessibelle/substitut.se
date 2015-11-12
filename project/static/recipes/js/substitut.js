@@ -62,7 +62,7 @@ $.extend(true, substitut, {modules: {}});
                 } else if (state === "lg") {
                     app.votes.collapseVoteButton();
                 } else {
-                    // Do nothing
+                    // Invalid state, do nothing
                 }
             },
 
@@ -158,14 +158,18 @@ $.extend(true, substitut, {modules: {}});
             },
 
             parseJson: function (str) {
-                var json;
-                try {
-                    json = JSON.parse(str);
-                } catch (err) {
-                    console.log(err);
-                    json = null;
+                if (typeof str === 'object') {
+                    return str;
+                } else {
+                    var json;
+                    try {
+                        json = JSON.parse(str);
+                    } catch (err) {
+                        console.log("parseJson():", str);
+                        json = null;
+                    }
+                    return json;
                 }
-                return json;
             },
 
             setupAutocomplete: function () {
@@ -263,7 +267,9 @@ $.extend(true, substitut, {modules: {}});
                     app.requestSuccessObject(obj);
                 }
                 app.loading(false);
-                app.toggleMoreBtn(obj.count === app.limit);
+                if (obj) {
+                    app.toggleMoreBtn(obj.count === app.limit);
+                }
             },
 
             requestSuccessAppend: function (responseData) {
