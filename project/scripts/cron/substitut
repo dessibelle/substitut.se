@@ -1,0 +1,8 @@
+SHELL=/bin/bash
+MAILTO="danlarss@gmail.com"
+LANG=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+PYTHONPATH=/webapps/substitut.se/env/bin
+
+# Backup database every night at 3:15 am.
+15 3 * * * /webapps/substitut.se/project/scripts/db_backup/db_backup_rotated.sh >/dev/null 2>&1
