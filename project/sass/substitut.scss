@@ -165,6 +165,20 @@ header.site-header {
     @include box-shadow(0 5px 20px rgba(0, 0, 0, 0.2));
     z-index: 99;
     .logo-wrapper {
+        .svg-wrapper {
+            position: relative;
+            width: 30px;
+            height: 40px;
+            float: left;
+            margin-top: 10px;
+            object {
+                position: absolute;
+                height: 100%; 
+                width: 100%; 
+                left: 0; 
+                top: 0;
+            }
+        }
         h1 {
             margin: 13px 0 0 0;
             float: left;
@@ -177,12 +191,6 @@ header.site-header {
             height: 40px;
             line-height: 40px;
             font-size: 30px;
-        }
-        img {
-            margin-top: 10px;
-            float: left;
-            transition: all 0.2s;
-            height: 40px;
         }
     }
     .navigation {
