@@ -26105,63 +26105,6 @@ var tooltip = $.widget( "ui.tooltip", {
 
 })(jQuery);
 
-/**
- * jQuery Unveil
- * A very lightweight jQuery plugin to lazy load images
- * http://luis-almeida.github.com/unveil
- *
- * Licensed under the MIT license.
- * Copyright 2013 Luís Almeida
- * https://github.com/luis-almeida
- */
-
-;(function($) {
-
-  $.fn.unveil = function(threshold, callback) {
-
-    var $w = $(window),
-        th = threshold || 0,
-        retina = window.devicePixelRatio > 1,
-        attrib = retina? "data-src-retina" : "data-src",
-        images = this,
-        loaded;
-
-    this.one("unveil", function() {
-      var source = this.getAttribute(attrib);
-      source = source || this.getAttribute("data-src");
-      if (source) {
-        this.setAttribute("src", source);
-        if (typeof callback === "function") callback.call(this);
-      }
-    });
-
-    function unveil() {
-      var inview = images.filter(function() {
-        var $e = $(this);
-        if ($e.is(":hidden")) return;
-
-        var wt = $w.scrollTop(),
-            wb = wt + $w.height(),
-            et = $e.offset().top,
-            eb = et + $e.height();
-
-        return eb >= wt - th && et <= wb + th;
-      });
-
-      loaded = inview.trigger("unveil");
-      images = images.not(loaded);
-    }
-
-    $w.scroll(unveil);
-    $w.resize(unveil);
-
-    unveil();
-
-    return this;
-
-  };
-
-})(window.jQuery || window.Zepto);
 /*!
 
  handlebars v4.0.4
@@ -30123,12 +30066,13 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 /*jslint browser: true*/
-/*global $, jQuery, window, substitut, Handlebars*/
+/*global $*/
 
 // top-level namespace being assigned an object literal
 var substitut = substitut || {};
 
-$.extend(true, substitut, {modules: {}});
+$.extend(true, substitut, {modules: {}});/*jslint browser: true*/
+/*global $, jQuery, window, substitut, Handlebars*/
 
 (function ($) {
     "use strict";
@@ -30154,42 +30098,43 @@ $.extend(true, substitut, {modules: {}});
                 app.setupNutritionToggle();
                 app.loadRecipes();
 
-                // Setup voting functionality 
+                // Setup voting functionality
                 app.votes = substitut.modules.Vote(
                     {
                         selector: "vote"
                     }
                 );
                 app.setupVoteButtons();
-                
+
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
                 app.state = substitut.modules.Responsive(
                     {
                         callback: app.responsiveChange
                     }
                 );
-                
+
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
 
             responsiveChange: function (state) {
-                console.log("responsiveChange", state);
                 if (state === "xxs") {
                     app.votes.expandVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "xs") {
                     app.votes.expandVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "sm") {
                     app.votes.expandVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "md") {
                     app.votes.collapseVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "lg") {
                     app.votes.collapseVoteButton();
-                } else {
-                    // Invalid state, do nothing
+                    $("body").removeClass().addClass("substitut-" + state);
                 }
             },
-
 
             setupSearchPromoteBtn: function () {
                 $(".search-promote-btn").on("click", function (ignore) {
@@ -30289,7 +30234,7 @@ $.extend(true, substitut, {modules: {}});
                     try {
                         json = JSON.parse(str);
                     } catch (err) {
-                        console.log("parseJson():", str);
+                        console.log(err);
                         json = null;
                     }
                     return json;
@@ -30363,8 +30308,6 @@ $.extend(true, substitut, {modules: {}});
 
             requestSuccessObject: function (obj) {
                 var html, i = 0;
-
-                console.log("obj", obj);
 
                 app.offset += obj.count;
                 document.title = obj.label + ' - Substitut';
@@ -30487,11 +30430,6 @@ $.extend(true, substitut, {modules: {}});
                     $content.appendTo("#content");
                     $content.fadeIn("slow");
                 }
-            },
-
-            unveil: function () {
-                var $me = $(this);
-                $me.removeClass("image-hidden").addClass("image-visible");
             }
         };
 
@@ -30500,23 +30438,13 @@ $.extend(true, substitut, {modules: {}});
         return {
             init: app.init,
             parseJson: app.parseJson,
-            unveil: app.unveil,
             responsiveChange: app.responsiveChange
         };
     }});
 }(jQuery));
-
-$(function () {
-    "use strict";
-    $.extend(true, substitut, {application: substitut.modules.Main()});
-
-    window.onpopstate = function (e) {
-        if (e.state) {
-            $("#content").html(e.state.content);
-        }
-    };
-});/*jslint browser: true*/
+/*jslint browser: true*/
 /*global $, jQuery, substitut*/
+
 (function ($) {
     "use strict";
 
@@ -30694,6 +30622,7 @@ $(function () {
     substitut.exceptions.StorageParamExpiredException.prototype = new Error();
 }(jQuery));/*jslint browser: true*/
 /*global $, jQuery, substitut*/
+
 (function ($) {
     "use strict";
 
@@ -30800,6 +30729,7 @@ $(function () {
     }});
 }(jQuery));/*jslint browser: true*/
 /*global $, jQuery, Handlebars, substitut*/
+
 (function ($) {
     "use strict";
 
@@ -31122,3 +31052,16 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + "    </div>\n</div>\n";
 },"useData":true,"useDepths":true});
 })();
+/*jslint browser: true*/
+/*global $, jQuery, window, substitut*/
+
+$(function () {
+    "use strict";
+    $.extend(true, substitut, {application: substitut.modules.Main()});
+
+    window.onpopstate = function (e) {
+        if (e.state) {
+            $("#content").html(e.state.content);
+        }
+    };
+});

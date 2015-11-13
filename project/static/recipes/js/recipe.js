@@ -1,5 +1,6 @@
 /*jslint browser: true*/
 /*global $, jQuery, Handlebars, substitut*/
+
 (function ($) {
     "use strict";
 

@@ -1,11 +1,6 @@
 /*jslint browser: true*/
 /*global $, jQuery, window, substitut, Handlebars*/
 
-// top-level namespace being assigned an object literal
-var substitut = substitut || {};
-
-$.extend(true, substitut, {modules: {}});
-
 (function ($) {
     "use strict";
 
@@ -30,42 +25,43 @@ $.extend(true, substitut, {modules: {}});
                 app.setupNutritionToggle();
                 app.loadRecipes();
 
-                // Setup voting functionality 
+                // Setup voting functionality
                 app.votes = substitut.modules.Vote(
                     {
                         selector: "vote"
                     }
                 );
                 app.setupVoteButtons();
-                
+
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
                 app.state = substitut.modules.Responsive(
                     {
                         callback: app.responsiveChange
                     }
                 );
-                
+
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
 
             responsiveChange: function (state) {
-                console.log("responsiveChange", state);
                 if (state === "xxs") {
                     app.votes.expandVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "xs") {
                     app.votes.expandVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "sm") {
                     app.votes.expandVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "md") {
                     app.votes.collapseVoteButton();
+                    $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "lg") {
                     app.votes.collapseVoteButton();
-                } else {
-                    // Invalid state, do nothing
+                    $("body").removeClass().addClass("substitut-" + state);
                 }
             },
-
 
             setupSearchPromoteBtn: function () {
                 $(".search-promote-btn").on("click", function (ignore) {
@@ -165,7 +161,7 @@ $.extend(true, substitut, {modules: {}});
                     try {
                         json = JSON.parse(str);
                     } catch (err) {
-                        console.log("parseJson():", str);
+                        console.log(err);
                         json = null;
                     }
                     return json;
@@ -361,11 +357,6 @@ $.extend(true, substitut, {modules: {}});
                     $content.appendTo("#content");
                     $content.fadeIn("slow");
                 }
-            },
-
-            unveil: function () {
-                var $me = $(this);
-                $me.removeClass("image-hidden").addClass("image-visible");
             }
         };
 
@@ -374,19 +365,7 @@ $.extend(true, substitut, {modules: {}});
         return {
             init: app.init,
             parseJson: app.parseJson,
-            unveil: app.unveil,
             responsiveChange: app.responsiveChange
         };
     }});
 }(jQuery));
-
-$(function () {
-    "use strict";
-    $.extend(true, substitut, {application: substitut.modules.Main()});
-
-    window.onpopstate = function (e) {
-        if (e.state) {
-            $("#content").html(e.state.content);
-        }
-    };
-});
