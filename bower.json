@@ -19,6 +19,7 @@
     "bootstrap-sass": "~3.3.5",
     "handlebars": "~4.0.4",
     "jquery-ui": "~1.11.4",
-    "hisrc": "*"
+    "hisrc": "*",
+    "Flowtype.js": "flowtype#~1.1.0"
   }
 }

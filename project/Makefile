@@ -54,6 +54,7 @@ COMBINE_COMPRESSED = "lib/jquery/dist/jquery.min.js" \
 	"lib/handlebars/handlebars.runtime.js" \
 	"lib/parallax/parallax.min.js" \
 	"lib/bootstrap/dist/js/bootstrap.min.js" \
+	"lib/Flowtype.js/flowtype.js" \
 	"recipes/js/final/substitut.min.js"
 
 COMBINE_ALL = "$(STATICPATH)/lib/jquery/dist/jquery.js" \
@@ -62,6 +63,7 @@ COMBINE_ALL = "$(STATICPATH)/lib/jquery/dist/jquery.js" \
 	"$(STATICPATH)/lib/handlebars/handlebars.runtime.js" \
 	"$(STATICPATH)/lib/parallax/parallax.js" \
 	"$(STATICPATH)/lib/bootstrap/dist/js/bootstrap.js" \
+	"$(STATICPATH)/lib/Flowtype.js/flowtype.js" \
 	$(COMPRESS)
 
 .PHONY: clean showenv coverage test bootstrap pip virtualenv sdist virtual_env_set
