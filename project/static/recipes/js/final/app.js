@@ -30172,6 +30172,13 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                     maximum: 400,
                     fontRatio: 20
                 });
+                $('.index-text').flowtype({
+                    minFont: 14,
+                    maxFont: 40,
+                    minimum: 500,
+                    maximum: 1200,
+                    fontRatio: 30
+                });
             },
 
             responsiveChange: function (state) {
@@ -30380,6 +30387,15 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
 
                 var state = app.state.getState();
                 app.responsiveChange(state);
+
+                $('.instructions, .ingredients > li').flowtype({
+                    minFont: 14,
+                    maxFont: 26,
+                    minimum: 500,
+                    maximum: 1200,
+                    fontRatio: 30
+                });
+
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },

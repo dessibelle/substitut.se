@@ -6097,7 +6097,6 @@ body {
   padding: 0;
   margin: 0 auto;
   width: 100%;
-  height: 60px;
   background-color: #ffffff;
   overflow: visible;
   text-align: center;
@@ -6280,19 +6279,19 @@ body {
         /* Custom, iPhone Retina */ }
         .recipe-section article.recipe .ingredients-wrapper,
         .recipe-section article.recipe .instructions-wrapper {
-          margin-top: 0; } }
+          margin-top: 30px; } }
     @media only screen and (min-width: 480px) and (max-width: 767px) {
       .recipe-section article.recipe {
         /* Extra Small Devices, Phones */ }
         .recipe-section article.recipe .ingredients-wrapper,
         .recipe-section article.recipe .instructions-wrapper {
-          margin-top: 15px; } }
+          margin-top: 30px; } }
     @media only screen and (min-width: 768px) and (max-width: 991px) {
       .recipe-section article.recipe {
         /* Small Devices */ }
         .recipe-section article.recipe .ingredients-wrapper,
         .recipe-section article.recipe .instructions-wrapper {
-          margin-top: 15px; } }
+          margin-top: 30px; } }
     @media only screen and (min-width: 992px) and (max-width: 1199px) {
       .recipe-section article.recipe {
         /* Medium Devices, Desktops */ }
@@ -6486,8 +6485,10 @@ body {
     height: 400px; }
   .parallax-window .index-text {
     color: #ffffff;
-    fonr-weight: lighter;
+    font-weight: lighter;
     float: left;
+    padding: 15px;
+    font-size: 2em;
     position: relative;
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -6501,41 +6502,6 @@ body {
       height: 0; }
     .parallax-window.search .index-text {
       display: none; }
-  @media only screen and (min-width: 320px) {
-    .parallax-window {
-      /* Custom, iPhone Retina */
-      font-size: 16px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); }
-      .parallax-window .index-text {
-        margin: -3em 1em 0 1em; } }
-  @media only screen and (min-width: 480px) and (max-width: 767px) {
-    .parallax-window {
-      /* Extra Small Devices, Phones */
-      font-size: 18px;
-      text-shadow: 1px 1px 3px #464646; }
-      .parallax-window .index-text {
-        margin: -2.5em 2em 0 2em; } }
-  @media only screen and (min-width: 768px) and (max-width: 991px) {
-    .parallax-window {
-      /* Small Devices */
-      font-size: 20px;
-      text-shadow: 1px 1px 3px #464646; }
-      .parallax-window .index-text {
-        margin: 0 5em; } }
-  @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .parallax-window {
-      /* Medium Devices, Desktops */
-      font-size: 20px;
-      text-shadow: 1px 1px 3px #464646; }
-      .parallax-window .index-text {
-        margin: 0 5em; } }
-  @media only screen and (min-width: 1200px) {
-    .parallax-window {
-      /* Large Devices, Wide Screens */
-      font-size: 24px;
-      text-shadow: 1px 1px 3px #464646; }
-      .parallax-window .index-text {
-        margin: 0; } }
   .parallax-window a {
     float: left;
     margin: 15px;
