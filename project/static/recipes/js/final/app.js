@@ -30145,6 +30145,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 app.setupNutritionToggle();
                 app.loadRecipes();
                 app.setupFlowtype();
+                app.setupDataLinks();
 
                 // Setup voting functionality
                 app.votes = substitut.modules.Vote(
@@ -30162,6 +30163,17 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 );
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
+            },
+
+            setupDataLinks: function () {
+                $("#content").on("click", ".data-link", function (event) {
+                    var url = $(event.currentTarget).attr("data-href");
+                    if (url) {
+                        event.stopPropagation();
+                        window.location.href = url;
+                        return false;
+                    }
+                });
             },
 
             setupFlowtype: function () {

@@ -18,7 +18,7 @@
     </div>
 {% for recipe in latest_recipes %}
     <div class="col-md-3 col-sm-4 col-xs-6">
-        <a href="{{ recipe.url }}">
+        <a class="data-link" href="{{ recipe.plain_url }}" data-href="{{ recipe.url }}">
             <div class="thumbnail recipe-image-wrapper index">
                 <img class="recipe-image img-responsive" src="{{ recipe.img_small }}" data-1x="{{ recipe.img_medium }}" data-2x="{{ recipe.img_large }}" width="100%">
                 <div class="caption bg-info">
@@ -36,7 +36,7 @@
     </div>
 {% for recipe in popular_recipes %}
     <div class="col-md-3 col-sm-4 col-xs-6">
-        <a href="{{ recipe.url }}">
+        <a class="data-link" href="{{ recipe.plain_url }}" data-href="{{ recipe.url }}">
             <div class="thumbnail recipe-image-wrapper index">
                 <img class="recipe-image img-responsive" src="{{ recipe.img_small }}" data-1x="{{ recipe.img_medium }}" data-2x="{{ recipe.img_large }}" width="100%">
                 <div class="caption">

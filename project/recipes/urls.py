@@ -6,6 +6,8 @@ from recipes.views import *
 urlpatterns = [
     url(r'^$',
         site.index, name='index'),
+    url(r'^recipe/(?P<recipe_id>[0-9]+)/$',
+        site.plain_recipes, name='plain_recipes'),
     url(r'^recept/(?P<lookup>[a-zA-Z0-9]+)(?:/(?P<slug>[a-zA-Z0-9-]+))?$',
         site.recipes, name='recipes'),
     url(r'^kategori/(?P<lookup>[a-zA-Z0-9]+)(?:/(?P<slug>[a-zA-Z0-9-]+))?$',
