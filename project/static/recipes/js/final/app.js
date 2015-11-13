@@ -30144,6 +30144,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 app.setupPagination();
                 app.setupNutritionToggle();
                 app.loadRecipes();
+                app.setupFlowtype();
 
                 // Setup voting functionality
                 app.votes = substitut.modules.Vote(
@@ -30163,6 +30164,15 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
 
+            setupFlowtype: function () {
+                $('.flowtype').flowtype({
+                    minFont: 11,
+                    maxFont: 40,
+                    minimum: 205,
+                    maximum: 400,
+                    fontRatio: 20
+                });
+            },
 
             responsiveChange: function (state) {
                 if (state === "xxs") {
