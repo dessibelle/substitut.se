@@ -33,18 +33,28 @@
 }
 @include breakpoint(xxs) {
     .state-indicator:before { content: 'xxs'; }
+    #substitut div[class^="col"] {padding-left:5px; padding-right:5px;}
+    #substitut .recipe-image-wrapper.index {margin-top:5px; margin-bottom:5px;}
 }
 @include breakpoint(xs) {
     .state-indicator:before { content: 'xs'; }
+    #substitut div[class^="col"]{padding-left:5px; padding-right:5px;}
+    #substitut .recipe-image-wrapper.index {margin-top:5px; margin-bottom:5px;}
 }
 @include breakpoint(sm) {
     .state-indicator:before { content: 'sm'; }
+    #substitut div[class^="col"]{padding-left:5px; padding-right:5px;}
+    #substitut .recipe-image-wrapper.index {margin-top:5px; margin-bottom:5px;}
 }
 @include breakpoint(md) {
     .state-indicator:before { content: 'md'; }
+    #substitut div[class^="col"]{padding-left:($grid-gutter-width/2); padding-right:($grid-gutter-width/2);}
+    #substitut .recipe-image-wrapper.index {margin-top:($grid-gutter-width/2); margin-bottom:($grid-gutter-width/2);}
 }
 @include breakpoint(lg) {
     .state-indicator:before { content: 'lg'; }
+    #substitut div[class^="col"]{padding-left:($grid-gutter-width/2); padding-right:($grid-gutter-width/2);}
+    #substitut .recipe-image-wrapper.index {margin-top:($grid-gutter-width/2); margin-bottom:($grid-gutter-width/2);}
 }
 
 .airy {

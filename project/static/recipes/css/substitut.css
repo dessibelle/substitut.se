@@ -5959,23 +5959,63 @@ a.text-tag:focus {
 @media only screen and (min-width: 320px) {
   /* Custom, iPhone Retina */
   .state-indicator:before {
-    content: 'xxs'; } }
+    content: 'xxs'; }
+
+  #substitut div[class^="col"] {
+    padding-left: 5px;
+    padding-right: 5px; }
+
+  #substitut .recipe-image-wrapper.index {
+    margin-top: 5px;
+    margin-bottom: 5px; } }
 @media only screen and (min-width: 480px) and (max-width: 767px) {
   /* Extra Small Devices, Phones */
   .state-indicator:before {
-    content: 'xs'; } }
+    content: 'xs'; }
+
+  #substitut div[class^="col"] {
+    padding-left: 5px;
+    padding-right: 5px; }
+
+  #substitut .recipe-image-wrapper.index {
+    margin-top: 5px;
+    margin-bottom: 5px; } }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   /* Small Devices */
   .state-indicator:before {
-    content: 'sm'; } }
+    content: 'sm'; }
+
+  #substitut div[class^="col"] {
+    padding-left: 5px;
+    padding-right: 5px; }
+
+  #substitut .recipe-image-wrapper.index {
+    margin-top: 5px;
+    margin-bottom: 5px; } }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   /* Medium Devices, Desktops */
   .state-indicator:before {
-    content: 'md'; } }
+    content: 'md'; }
+
+  #substitut div[class^="col"] {
+    padding-left: 15px;
+    padding-right: 15px; }
+
+  #substitut .recipe-image-wrapper.index {
+    margin-top: 15px;
+    margin-bottom: 15px; } }
 @media only screen and (min-width: 1200px) {
   /* Large Devices, Wide Screens */
   .state-indicator:before {
-    content: 'lg'; } }
+    content: 'lg'; }
+
+  #substitut div[class^="col"] {
+    padding-left: 15px;
+    padding-right: 15px; }
+
+  #substitut .recipe-image-wrapper.index {
+    margin-top: 15px;
+    margin-bottom: 15px; } }
 .airy {
   margin: 30px 0; }
 
