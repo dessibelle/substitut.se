@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    {% if recipe.description %}
+    <meta name="description" content="{{ recipe.description|striptags }}" />
+    {% endif %}
+    <title>{{ recipe.name }} | substitut.se</title>
+  </head>
+  <body>
+    <article itemscope itemtype="http://schema.org/Recipe">
+      {% if recipe.img_small %}
+      <aside class="thumbnail recipe-image-wrapper">
+          <img itemprop="image" src="{{ recipe.img_small }}">
+      </aside>
+      {% endif %}
+      <header>
+        <h1 itemprop="name">{{ recipe.name }}</h1>
+        {% if recipe.servings %}
+        <span itemprop="recipeYield">{{ recipe.servings }}</span> portioner
+        {% endif %}
+      </header>
+      <div class="article-body">
+        {% if recipe.description %}
+        <div class="description" itemprop="description">
+          {{ recipe.description|safe }}
+        </div>
+        {% endif %}
+        <h2>Ingredienser</h2>
+        <ul>
+        {% for ingredient in recipe.ingredients %}
+            <li itemprop="recipeIngredient">{% if ingredient.amount %}{{ ingredient.amount }} {% endif %}{% if ingredient.unit_short %}{{ ingredient.unit_short }} {% endif %}{{ ingredient.text }}</li>
+        {% endfor %}
+        </ul>
+        <h2>Gör så här</h2>
+        <div itemprop="recipeInstructions">
+          {{ recipe.instructions|safe }}
+        </div>
+      </div>
+      <footer>
+      </footer>
+    </article>
+  </body>
+</html>

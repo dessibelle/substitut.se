@@ -3,6 +3,7 @@
 """ Site views are views returning HTML """
 
 from __future__ import absolute_import
+from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.templatetags.static import static
 # from django.contrib.staticsfiles.templatetags.staticfiles import static
@@ -10,6 +11,7 @@ from django.shortcuts import render
 from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from recipes.models.term import Term
 from recipes.models.food_group import FoodGroup
 from recipes.models.ingredient import Ingredient
 from recipes.models.recipe import Recipe
@@ -17,6 +19,8 @@ from recipes.forms.recipe import RecipeForm
 from sorl.thumbnail import get_thumbnail
 # from random import randint
 import logging
+import mistune
+
 
 # Get an instance of a logger
 logger = logging.getLogger("substitut")
@@ -43,7 +47,6 @@ def about(request):
 
 @cache_page(60 * 15)
 def index(request):
-
     latest_recipes = Recipe.objects.filter(status=1).order_by('-pub_date')[:4]
     latest_recipes_with_links = []
     for recipe in latest_recipes:
@@ -51,6 +54,7 @@ def index(request):
             'id': recipe.id,
             'name': recipe.name,
             'url': recipe.get_absolute_url(),
+            'plain_url': reverse('plain_recipes', args=(recipe.id,)),
             'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
             'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
             'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url
@@ -63,6 +67,7 @@ def index(request):
             'id': recipe.id,
             'name': recipe.name,
             'url': recipe.get_absolute_url(),
+            'plain_url': reverse('plain_recipes', args=(recipe.id,)),
             'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
             'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
             'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url
@@ -158,6 +163,32 @@ def ingredients(request, lookup, slug=None):
             'limit': settings.PAGE_LIMIT
         }
     )
+
+
+def plain_recipes(request, recipe_id):
+    """ Plain html version for robots."""
+    md = mistune.Markdown()
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    ingredients = Ingredient.objects.with_units(recipe_id)
+    obj = {
+        'id': recipe.id,
+        'type': Term.RECIPE,
+        'name': recipe.name,
+        'url': recipe.get_absolute_url(),
+        'instructions': md.render(recipe.instructions),
+        'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
+        'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
+        'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url,
+        'pub_date': unicode(recipe.pub_date),
+        'description': md.render(recipe.description),
+        'servings': recipe.servings,
+        'status': recipe.status,
+        'ingredients': ingredients['list'],
+        'vote_total': 0,
+        'food_groups': FoodGroup.objects.get_food_groups(recipe.id),
+        'weight': ingredients['weight']
+    }
+    return render(request, 'recipes/plain.html', {'recipe': obj})
 
 
 def recipe_form(request):
