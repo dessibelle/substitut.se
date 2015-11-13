@@ -105,7 +105,7 @@ def api_terms(request):
         if u'term' in request.GET:
             term = request.GET[u'term']
             output = Term.objects.lookup(term)
-    return JsonResponse(output)
+    return JsonResponse(output, safe=False)
 
 
 @cache_page(60 * 15)
@@ -251,4 +251,4 @@ def api_term(request):
         if u'term' in request.GET:
             term = request.GET[u'term']
             output = Term.objects.lookup(term)
-    return JsonResponse(output)
+    return JsonResponse(output, safe=False)
