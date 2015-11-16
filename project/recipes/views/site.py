@@ -129,7 +129,7 @@ def recipes(request, lookup, slug=None):
         }
         for ingredient in obj['ingredients']:
             json_ld['recipeIngredient'].append(
-                "{} {} {}".format(
+                u"{} {} {}".format(
                     ingredient['amount'],
                     ingredient['unit_short'],
                     ingredient['text']

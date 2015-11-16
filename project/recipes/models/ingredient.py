@@ -89,7 +89,7 @@ class IngredientManager(models.Manager):
                 "unit": row[21],
                 "unit_short": row[22],
                 "amount": row[23],
-                "text": row[24]
+                "text": unicode(row[24])
                 })
         return result
 
