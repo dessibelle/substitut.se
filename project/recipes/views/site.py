@@ -17,9 +17,11 @@ from recipes.models.ingredient import Ingredient
 from recipes.models.recipe import Recipe
 from recipes.forms.recipe import RecipeForm
 from sorl.thumbnail import get_thumbnail
+from recipes.views.common import recipes_dict
 # from random import randint
 import logging
 import mistune
+import json
 
 
 # Get an instance of a logger
@@ -110,13 +112,39 @@ def recipes(request, lookup, slug=None):
     except:
         raise Http404
 
+    data = recipes_dict(recipe['id'], False)
+    obj = data['data'][0]
+
+    if obj:
+        json_ld = {
+            "@context": "http://schema.org",
+            "@type": "Recipe",
+            "name": obj['name'],
+            "recipeYield": obj['servings'],
+            "description": obj['description'],
+            "datePublished": obj['pub_date'],
+            "image": obj['img_small'],
+            "recipeIngredient": [],
+            "recipeInstructions": obj['instructions']
+        }
+        for ingredient in obj['ingredients']:
+            json_ld['recipeIngredient'].append(
+                "{} {} {}".format(
+                    ingredient['amount'],
+                    ingredient['unit_short'],
+                    ingredient['text']
+                )
+            )
+
     return render(
         request,
         'recipes/recipes.html',
         {
             'endpoint': endpoint,
             'page_title': recipe['name'],
-            'limit': settings.PAGE_LIMIT
+            'page_description': json_ld['description'][:155] if json_ld['description'] else json_ld['recipeInstructions'][:155],
+            'limit': settings.PAGE_LIMIT,
+            'json_ld': json.dumps(json_ld)
         }
     )
 

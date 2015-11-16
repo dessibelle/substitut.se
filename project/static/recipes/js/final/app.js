@@ -30839,25 +30839,25 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             }, data),
 
             nutrition: {
-                energy_kj: 0,
+                //energy_kj: 0,
                 energy_kcal: 0,
                 protein: 0,
                 fat: 0,
                 carbohydrates: 0,
-                fibers: 0,
-                salt: 0,
-                water: 0,
-                saturates: 0,
-                monounsaturated: 0,
-                trans_fat: 0,
-                cholesterol: 0,
-                vitamin_d: 0,
-                vitamin_e: 0,
-                vitamin_k: 0,
-                vitamin_c: 0,
-                vitamin_b6: 0,
-                vitamin_b12: 0,
-                iron: 0
+                fibers: 0
+                //salt: 0,
+                //water: 0,
+                //saturates: 0,
+                //monounsaturated: 0,
+                //trans_fat: 0,
+                //cholesterol: 0,
+                //vitamin_d: 0,
+                //vitamin_e: 0,
+                //vitamin_k: 0,
+                //vitamin_c: 0,
+                //vitamin_b6: 0,
+                //vitamin_b12: 0,
+                //iron: 0
             },
 
             labels: {

@@ -10,6 +10,7 @@ site of my own.
 
 * [Django](https://www.djangoproject.com/)
 * [jQuery](https://jquery.com/)
+* [FlowType.js](http://simplefocus.com/flowtype/)
 * [Bootstrap](http://getbootstrap.com/)
 * [Sass](http://sass-lang.com/)
 * [Bower](http://bower.io/)

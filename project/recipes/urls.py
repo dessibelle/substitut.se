@@ -1,11 +1,28 @@
 from __future__ import absolute_import
 from django.conf.urls import url
 from django.conf import settings
+from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps.views import sitemap
+from recipes.models.recipe import Recipe
+from recipes.models.food_group import FoodGroup
 from recipes.views import *
+
+recipes_sitemap = {
+    'queryset': Recipe.objects.filter(status=Recipe.PUBLISHED),
+    'date_field': 'pub_date',
+}
+
+food_group_sitemap = {
+    'queryset': FoodGroup.objects.all()
+}
 
 urlpatterns = [
     url(r'^$',
         site.index, name='index'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': {
+        'recipe': GenericSitemap(recipes_sitemap, priority=0.6),
+        'food_group': GenericSitemap(food_group_sitemap, priority=0.5)
+    }}, name='django.contrib.sitemaps.views.sitemap'),
     url(r'^recipe/(?P<recipe_id>[0-9]+)/$',
         site.plain_recipes, name='plain_recipes'),
     url(r'^recept/(?P<lookup>[a-zA-Z0-9]+)(?:/(?P<slug>[a-zA-Z0-9-]+))?$',

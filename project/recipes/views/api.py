@@ -3,7 +3,6 @@
 """ API views are views returning JSON. """
 
 from django.views.decorators.cache import cache_page, never_cache
-from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.http import JsonResponse
 from django.conf import settings
@@ -12,6 +11,7 @@ from recipes.models.food_group import FoodGroup
 from recipes.models.ingredient import Ingredient
 from recipes.models.recipe import Recipe
 from recipes.models.vote import Vote
+from recipes.views.common import recipes_dict
 from sorl.thumbnail import get_thumbnail
 import mistune
 import logging
@@ -110,39 +110,10 @@ def api_terms(request):
 
 @cache_page(60 * 15)
 def api_recipes(request, recipe_id):
-    """ Get recipe data for a singe recipe.
-
-    Return:
-        JSON.
-    """
-    md = mistune.Markdown()
-    _recipe = get_object_or_404(Recipe, pk=recipe_id)
-    output = {
-        'url': _recipe.get_absolute_url(),
-        'label': _recipe.name,
-        'data': [],
-        'count': 1
-    }
-    ingredients = Ingredient.objects.with_units(recipe_id)
-    output['data'].append({
-        'id': _recipe.id,
-        'type': Term.RECIPE,
-        'name': _recipe.name,
-        'url': _recipe.get_absolute_url(),
-        'instructions': md.render(_recipe.instructions),
-        'img_small': get_thumbnail(_recipe.image, '135x135', crop='center', quality=99).url,
-        'img_medium': get_thumbnail(_recipe.image, '270x270', crop='center', quality=99).url,
-        'img_large': get_thumbnail(_recipe.image, '540x540', crop='center', quality=99).url,
-        'pub_date': unicode(_recipe.pub_date),
-        'description': md.render(_recipe.description),
-        'servings': _recipe.servings,
-        'status': _recipe.status,
-        'ingredients': ingredients['list'],
-        'vote_total': 0,
-        'food_groups': FoodGroup.objects.get_food_groups(_recipe.id),
-        'weight': ingredients['weight']
-    })
-
+    """ Get recipe data for a singe recipe."""
+    output = recipes_dict(recipe_id)
+    if not output:
+        raise Http404
     return JsonResponse(output)
 
 
