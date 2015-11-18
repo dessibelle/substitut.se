@@ -7,13 +7,6 @@
                     <div class="col-md-8 col-sm-12 col-xs-12">
                         <h2><a href="{{ url }}" itemprop="name">{{ name }}</a></h2>
                     </div>
-                    <div class="col-md-4 col-sm-12 col-xs-12 vote-button-wrapper">
-                        <div class="vote" data-recipe-id="{{ id }}">
-                            <span class="votes-btn"><i class="glyphicon glyphicon-heart"></i></span>
-                            <span class="votes-text">Rekommendera</span>
-                            <span class="votes-total" id="votes-total-{{ id }}">{{ vote_total }}</span>
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
                     {{#if servings}}
@@ -51,6 +44,15 @@
                     <div class="col-md-8 col-sm-12 col-xs-12 instructions-wrapper">
                         <div class="instructions" itemprop="recipeInstructions">
                             {{{instructions}}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row recipe-footer-row" id="recipe-footer-row-{{ id }}">
+                    <div class="col-md-12">
+                        <div class="like-recipe-wrapper">
+                            Gillar du det här receptet?
+                            <button class="btn btn-info vote-button" data-recipe-id="{{ id }}">Ja!</button> 
+                            <button class="btn btn-default">Nej</button>
                         </div>
                     </div>
                 </div>

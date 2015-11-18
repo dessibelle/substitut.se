@@ -30145,14 +30145,9 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 app.setupNutritionToggle();
                 app.loadRecipes();
                 app.setupFlowtype();
-                app.setupDataLinks();
 
                 // Setup voting functionality
-                app.votes = substitut.modules.Vote(
-                    {
-                        selector: "vote"
-                    }
-                );
+                app.votes = substitut.modules.Vote();
                 app.setupVoteButtons();
 
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
@@ -30163,17 +30158,6 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 );
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
-            },
-
-            setupDataLinks: function () {
-                $("#content").on("click", ".data-link", function (event) {
-                    var url = $(event.currentTarget).attr("data-href");
-                    if (url) {
-                        event.stopPropagation();
-                        window.location.href = url;
-                        return false;
-                    }
-                });
             },
 
             setupFlowtype: function () {
@@ -30195,19 +30179,14 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
 
             responsiveChange: function (state) {
                 if (state === "xxs") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "xs") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "sm") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "md") {
-                    app.votes.collapseVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "lg") {
-                    app.votes.collapseVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 }
             },
@@ -30237,10 +30216,10 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             },
 
             setupVoteButtons: function () {
-                $("#content").on("click", app.votes.getSelector(), function (event) {
+                $("#content").on("click", ".vote-button", function (event) {
                     var recipe_id = $(event.currentTarget).attr("data-recipe-id");
 
-                    if (recipe_id !== undefined && !$(event.currentTarget).parent().hasClass("disabled")) {
+                    if (recipe_id !== undefined && !$(event.currentTarget).parent().parent().hasClass("hidden")) {
                         app.votes.voteFor(recipe_id);
                     }
 
@@ -30392,7 +30371,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                     i += 1;
                     html = app.getHtml(item, (obj.count !== 1 && i === obj.count));
                     app.setContent(html, true);
-                    app.votes.getTotal(item.id);
+                    app.votes.validateButton(item.id);
                 });
 
                 app.showFooter();
@@ -30407,7 +30386,6 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                     maximum: 1200,
                     fontRatio: 30
                 });
-
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
@@ -30539,9 +30517,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
 
         vote = {
 
-            options: $.extend({
-                selector: "vote"
-            }, options),
+            options: $.extend({}, options),
             storage: null,
 
             init: function () {
@@ -30571,20 +30547,6 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 }
             },
 
-            expandVoteButton: function () {
-                var $btns = $(vote.getSelector());
-                if (!$btns.hasClass("expanded")) {
-                    $btns.addClass("expanded");
-                }
-                $btns.parent().addClass("center");
-            },
-
-            collapseVoteButton: function () {
-                var $btns = $(vote.getSelector());
-                $btns.removeClass("expanded");
-                $btns.parent().removeClass("center");
-            },
-
             voteFor: function (recipe_id) {
                 $.ajax({
                     url: "/api/recipes/vote/" + recipe_id + "/?v=" + Date.now(),
@@ -30592,12 +30554,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                         var json = substitut.application.parseJson(responseData);
                         if (json) {
                             if (json.status === "ok") {
-                                var $vote_total = $('#votes-total-' + recipe_id);
-                                if ($vote_total) {
-                                    vote.save(recipe_id);
-                                    var num_votes = parseInt($vote_total.html(), 10) + 1;
-                                    vote.setTotal({recipe_id: recipe_id, votes: num_votes});
-                                }
+                                vote.save(recipe_id);
                             } else if (json.status === "denied") {
                                 vote.save(recipe_id);
                             } else {
@@ -30610,65 +30567,31 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             },
 
             /**
-             * Return the total number of votes for current recipe.
-             */
-            getTotal: function (recipe_id) {
-                $.ajax({
-                    url: "/api/recipes/votes/" + recipe_id + "/?v=" + Date.now(),
-                    success: function (responseData) {
-                        var json = substitut.application.parseJson(responseData);
-                        if (json) {
-                            vote.setTotal(json);
-                        }
-                    }
-                });
-            },
-
-            /**
              * Checks if vote button should be enabled for current recipe.
              */
             validateButton: function (recipe_id) {
-                var $vote_total = $('#votes-total-' + recipe_id);
-                if (!$vote_total.parent().hasClass("disabled")) {
-                    $vote_total.parent().addClass("disabled");
-                }
+                var $vote_total = $('#recipe-footer-row-' + recipe_id);
                 try {
                     vote.storage.get(recipe_id);
+                    if (!$vote_total.hasClass("hidden")) {
+                        $vote_total.fadeOut("fast", function (event) {
+                            $(event.currentTarget).addClass("hidden");
+                        });
+                    }
                 } catch (ex) {
                     if (ex instanceof substitut.exceptions.StorageParamNotFoundException) {
-                        $vote_total.parent().removeClass("disabled");
+                        $vote_total.removeClass("hidden");
                     }
                 }
             },
-
-            setTotal: function (json) {
-                if (json.recipe_id === undefined) {
-                    throw new Error("setVoteTotal(): Recipe id is not set");
-                }
-                if (json.votes === undefined) {
-                    throw new Error("setVoteTotal(): Votes is not set");
-                }
-                var $vote_total = $('#votes-total-' + json.recipe_id);
-                if (!$vote_total) {
-                    throw new Error("setVoteTotal(): Element #votes-total-" + json.recipe_id + " not found");
-                }
-                $vote_total.html(json.votes);
-                vote.validateButton(json.recipe_id);
-            },
-
-            getSelector: function () {
-                return "." + vote.options.selector;
-            }
         };
 
         vote.init();
 
         return {
             voteFor: vote.voteFor,
-            getTotal: vote.getTotal,
-            getSelector: vote.getSelector,
-            expandVoteButton: vote.expandVoteButton,
-            collapseVoteButton: vote.collapseVoteButton
+            validateButton: vote.validateButton,
+            save: vote.save
         };
     }});
 }(jQuery));/*jslint browser: true*/
@@ -31117,13 +31040,7 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
     + "\" itemprop=\"name\">"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</a></h2>\n                    </div>\n                    <div class=\"col-md-4 col-sm-12 col-xs-12 vote-button-wrapper\">\n                        <div class=\"vote\" data-recipe-id=\""
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">\n                            <span class=\"votes-btn\"><i class=\"glyphicon glyphicon-heart\"></i></span>\n                            <span class=\"votes-text\">Rekommendera</span>\n                            <span class=\"votes-total\" id=\"votes-total-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">"
-    + alias4(((helper = (helper = helpers.vote_total || (depth0 != null ? depth0.vote_total : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"vote_total","hash":{},"data":data}) : helper)))
-    + "</span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
+    + "</a></h2>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.servings : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.food_groups : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.description : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -31131,7 +31048,11 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.ingredients : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "                        </ul>\n                    </div>\n                    <div class=\"col-md-8 col-sm-12 col-xs-12 instructions-wrapper\">\n                        <div class=\"instructions\" itemprop=\"recipeInstructions\">\n                            "
     + ((stack1 = ((helper = (helper = helpers.instructions || (depth0 != null ? depth0.instructions : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"instructions","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
+    + "\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row recipe-footer-row\" id=\"recipe-footer-row-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">\n                    <div class=\"col-md-12\">\n                        <div class=\"like-recipe-wrapper\">\n                            Gillar du det här receptet?\n                            <button class=\"btn btn-info vote-button\" data-recipe-id=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">Ja!</button> \n                            <button class=\"btn btn-default\">Nej</button>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.img_small : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"if","hash":{},"fn":container.program(14, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n</div>\n";
@@ -31142,7 +31063,7 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
 
 $(function () {
     "use strict";
-    $.extend(true, substitut, {application: substitut.modules.Main()});
+    jQuery.extend(true, substitut, {application: substitut.modules.Main()});
 
     window.onpopstate = function (e) {
         if (e.state) {

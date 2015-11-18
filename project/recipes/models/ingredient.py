@@ -5,7 +5,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
-from recipe import Recipe
+from recipes.models.recipe import Recipe
 
 
 class IngredientManager(models.Manager):
@@ -89,7 +89,7 @@ class IngredientManager(models.Manager):
                 "unit": row[21],
                 "unit_short": row[22],
                 "amount": row[23],
-                "text": unicode(row[24])
+                "text": row[24]
                 })
         return result
 

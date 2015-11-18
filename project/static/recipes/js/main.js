@@ -1,6 +1,5 @@
 /*jslint browser: true*/
 /*global $, jQuery, window, substitut*/
-
 $(function () {
     "use strict";
     $.extend(true, substitut, {application: substitut.modules.Main()});
