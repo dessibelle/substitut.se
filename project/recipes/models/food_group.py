@@ -6,7 +6,7 @@ from django.db import models
 # from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
-from recipe import Recipe
+from recipes.models.recipe import Recipe
 
 
 class FoodGroupManager(models.Manager):

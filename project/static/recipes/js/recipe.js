@@ -47,28 +47,28 @@
             },
 
             labels: {
-                name: 'Namn',
-                unit: 'Enhet',
-                amount: 'Mängd',
-                energy_kj: 'Energi (kj)',
-                energy_kcal: 'Energi (kcal)',
-                protein: 'Protein (g)',
-                fat: 'Fett (g)',
-                carbohydrates: 'Kolhydrater (g)',
-                fibers: 'Fibrer (g)',
-                salt: 'Salt (g)',
-                water: 'Vatten (g)',
-                saturates: 'Mättat fett (g)',
-                monounsaturated: 'Enkelomättat fett (g)',
-                trans_fat: 'Transfetter (g)',
-                cholesterol: 'Kolesterol (g)',
-                vitamin_d: 'D-vitamin (µg)',
-                vitamin_e: 'E-vitamin  (µg)',
-                vitamin_k: 'K-vitamin  (µg)',
-                vitamin_c: 'C-vitamin  (µg)',
-                vitamin_b6: 'Vitamin B6  (µg)',
-                vitamin_b12: 'Vitamin B12  (µg)',
-                iron: 'Järn (g)'
+                name: {val: 'Namn'},
+                unit: {val: 'Enhet'},
+                amount: {val: 'Mängd'},
+                energy_kj: {val: 'Kalorier', unit: 'kj'},
+                energy_kcal: {val: 'Kalorier', unit: 'kcal'},
+                protein: {val: 'Protein', unit: 'g'},
+                fat: {val: 'Fett', unit: 'g'},
+                carbohydrates: {val: 'Kolhydrater', unit: 'g'},
+                fibers: {val: 'Fibrer', unit: 'g'},
+                salt: {val: 'Salt', unit: 'g'},
+                water: {val: 'Vatten', unit: 'g'},
+                saturates: {val: 'Mättat fett', unit: 'g'},
+                monounsaturated: {val: 'Enkelomättat fett', unit: 'g'},
+                trans_fat: {val: 'Transfetter', unit: 'g'},
+                cholesterol: {val: 'Kolesterol', unit: 'g'},
+                vitamin_d: {val: 'D-vitamin (µg)', unit: 'g'},
+                vitamin_e: {val: 'E-vitamin  (µg)', unit: 'g'},
+                vitamin_k: {val: 'K-vitamin  (µg)', unit: 'g'},
+                vitamin_c: {val: 'C-vitamin  (µg)', unit: 'g'},
+                vitamin_b6: {val: 'Vitamin B6  (µg)', unit: 'g'},
+                vitamin_b12: {val: 'Vitamin B12  (µg)', unit: 'g'},
+                iron: {val: 'Järn', unit: 'g'}
             },
 
             init: function () {
@@ -86,10 +86,11 @@
             },
 
             getNutrition: function () {
-                var kv = [], name, total, per_hundred_gram, per_serving, sum = 0;
+                var kv = [], name, unit, total, per_hundred_gram, per_serving, sum = 0;
                 $.each(rec.nutrition, function (key, value) {
 
-                    name = rec.labels[key];
+                    name = rec.labels[key].val;
+                    unit = rec.labels[key].unit;
                     total = value;
                     per_hundred_gram = (value / rec.data.weight) * 100;
                     sum += value;
@@ -103,6 +104,7 @@
                     if (total !== 0) {
                         kv.push({
                             key: name,
+                            unit: unit,
                             val: Math.round(total * 100) / 100,
                             phg: Math.round(per_hundred_gram * 100) / 100,
                             ps: Math.round(per_serving * 100) / 100

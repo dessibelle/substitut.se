@@ -27,11 +27,7 @@
                 app.setupFlowtype();
 
                 // Setup voting functionality
-                app.votes = substitut.modules.Vote(
-                    {
-                        selector: "vote"
-                    }
-                );
+                app.votes = substitut.modules.Vote();
                 app.setupVoteButtons();
 
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
@@ -63,19 +59,14 @@
 
             responsiveChange: function (state) {
                 if (state === "xxs") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "xs") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "sm") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "md") {
-                    app.votes.collapseVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "lg") {
-                    app.votes.collapseVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 }
             },
@@ -105,10 +96,10 @@
             },
 
             setupVoteButtons: function () {
-                $("#content").on("click", app.votes.getSelector(), function (event) {
+                $("#content").on("click", ".vote-button", function (event) {
                     var recipe_id = $(event.currentTarget).attr("data-recipe-id");
 
-                    if (recipe_id !== undefined && !$(event.currentTarget).parent().hasClass("disabled")) {
+                    if (recipe_id !== undefined && !$(event.currentTarget).parent().parent().hasClass("hidden")) {
                         app.votes.voteFor(recipe_id);
                     }
 
@@ -260,7 +251,7 @@
                     i += 1;
                     html = app.getHtml(item, (obj.count !== 1 && i === obj.count));
                     app.setContent(html, true);
-                    app.votes.getTotal(item.id);
+                    app.votes.validateButton(item.id);
                 });
 
                 app.showFooter();
@@ -275,7 +266,6 @@
                     maximum: 1200,
                     fontRatio: 30
                 });
-
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },

@@ -14,11 +14,30 @@
         margin-left: 0;
         margin-right: 0;
     }
-
-    .row.no-gutter [class*='col-']:not(:first-child),
-    .row.no-gutter [class*='col-']:not(:last-child) {
+    .row.no-gutter > [class*='col-'] {
         padding-right: 0;
         padding-left: 0;
+    }
+    .row.tight-gutter {
+        margin-left: -($grid-gutter-width/4);
+        margin-right: -($grid-gutter-width/4);
+    }
+    .row.tight-gutter > [class*='col-'] {
+        padding-right: ($grid-gutter-width/4);
+        padding-left: ($grid-gutter-width/4);
+        margin-bottom: ($grid-gutter-width/2);
+    }
+
+    .nutrition-front {
+        font-size: .85em;
+        width: 100%;
+        overflow: hidden;
+        padding: .5em 0;
+        text-align: center;
+        background-color: $gray_lighter;
+        .key {
+            color: $gray_light;
+        }
     }
 }
 
@@ -216,7 +235,6 @@ header.site-header {
                 text-align: center;
                 a {
                     display: block;
-                    font-family: $font-family-monospace;
                     height: 40px;
                     width: 100%;
                     font-size: 1em;
@@ -425,88 +443,10 @@ header.site-header {
                 margin-top: ($grid-gutter-width*2);
             }
         }
-        .vote-button-wrapper {
-            .vote {
-                float: right;
-                margin-top: ($grid-gutter-width/2);
-                position: relative;
-                width: 60px;
-                height: 35px;
-                padding: 5px 10px;
-                -webkit-border-radius: $border-radius-base;
-                -moz-border-radius: $border-radius-base;
-                border-radius: $border-radius-base;
-                -webkit-transition: all 0.2s;
-                -moz-transition: all 0.2s;
-                -ms-transition: all 0.2s;
-                -o-transition: all 0.2s;
-                transition: all 0.2s;
-                .votes-total {
-                    display: inline-block;
-                    line-height: 25px;
-                    float: right;
-                }
-                .votes-text {
-                    font-family: $font-family-monospace;
-                    display: none;
-                    line-height: 25px;
-                    float: right;
-                    color: $white;
-                    font-size: 15px;
-                    margin-right: 5px;
-                }
-                .votes-btn {
-                    line-height: 25px;
-                    float: right;
-                    margin-top: 1px;
-                    color: $brand-danger;
-                }
-                &:hover,
-                &.expanded {
-                    cursor: pointer;
-                    background-color: $brand-danger;
-                    width: 165px;
-                    @include box-shadow(0 1px 1.5px 1px rgba(0,0,0,.12));
-                    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
-                    .votes-total {
-                        display: none;
-                    }
-                    .votes-text {
-                        display: inline-block;
-                    }
-                    .votes-btn {
-                        color: $white;
-                    }
-                }
-                &.expanded {
-                    float: none;
-                }
-                &.disabled {
-                    background-color: $white;
-                    cursor: pointer;
-                    &:hover {
-                        .votes-total {
-                            display: inline-block;
-                        }
-                        .votes-text {
-                            display: none;
-                        }
-                        .votes-btn {
-                            color: $brand-danger;
-                        }
-                    }
-                    width: 60px;
-                    filter: alpha(opacity=30);
-                    -moz-opacity: 0.3;
-                    -khtml-opacity: 0.3;
-                    opacity: 0.3;
-                }
-            }
-            &.center {
+        .recipe-footer-row {
+            > div {
+                margin: 2em 0;
                 text-align: center;
-                .vote {
-                    margin: 1em auto 2em;
-                }
             }
         }
         ol {
@@ -722,10 +662,6 @@ header.site-header {
     font-size: 12px;
 }
 
-.no-gutter > [class*='col-'] {
-    padding-right:0;
-    padding-left:0;
-}
 
 .ui-autocomplete {
     position: absolute;

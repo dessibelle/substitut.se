@@ -46,7 +46,7 @@ def recipes_dict(recipe_id, format_md=True):
             'img_small': get_thumbnail(recipe.image, '135x135', crop='center', quality=99).url,
             'img_medium': get_thumbnail(recipe.image, '270x270', crop='center', quality=99).url,
             'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url,
-            'pub_date': unicode(recipe.pub_date),
+            'pub_date': str(recipe.pub_date),
             'description': md.render(recipe.description) if format_md else recipe.description,
             'servings': recipe.servings,
             'status': recipe.status,

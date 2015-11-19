@@ -30145,14 +30145,9 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 app.setupNutritionToggle();
                 app.loadRecipes();
                 app.setupFlowtype();
-                app.setupDataLinks();
 
                 // Setup voting functionality
-                app.votes = substitut.modules.Vote(
-                    {
-                        selector: "vote"
-                    }
-                );
+                app.votes = substitut.modules.Vote();
                 app.setupVoteButtons();
 
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
@@ -30163,17 +30158,6 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 );
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
-            },
-
-            setupDataLinks: function () {
-                $("#content").on("click", ".data-link", function (event) {
-                    var url = $(event.currentTarget).attr("data-href");
-                    if (url) {
-                        event.stopPropagation();
-                        window.location.href = url;
-                        return false;
-                    }
-                });
             },
 
             setupFlowtype: function () {
@@ -30195,19 +30179,14 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
 
             responsiveChange: function (state) {
                 if (state === "xxs") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "xs") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "sm") {
-                    app.votes.expandVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "md") {
-                    app.votes.collapseVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 } else if (state === "lg") {
-                    app.votes.collapseVoteButton();
                     $("body").removeClass().addClass("substitut-" + state);
                 }
             },
@@ -30237,10 +30216,10 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             },
 
             setupVoteButtons: function () {
-                $("#content").on("click", app.votes.getSelector(), function (event) {
+                $("#content").on("click", ".vote-button", function (event) {
                     var recipe_id = $(event.currentTarget).attr("data-recipe-id");
 
-                    if (recipe_id !== undefined && !$(event.currentTarget).parent().hasClass("disabled")) {
+                    if (recipe_id !== undefined && !$(event.currentTarget).parent().parent().hasClass("hidden")) {
                         app.votes.voteFor(recipe_id);
                     }
 
@@ -30392,7 +30371,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                     i += 1;
                     html = app.getHtml(item, (obj.count !== 1 && i === obj.count));
                     app.setContent(html, true);
-                    app.votes.getTotal(item.id);
+                    app.votes.validateButton(item.id);
                 });
 
                 app.showFooter();
@@ -30407,7 +30386,6 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                     maximum: 1200,
                     fontRatio: 30
                 });
-
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
             },
@@ -30539,9 +30517,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
 
         vote = {
 
-            options: $.extend({
-                selector: "vote"
-            }, options),
+            options: $.extend({}, options),
             storage: null,
 
             init: function () {
@@ -30571,20 +30547,6 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                 }
             },
 
-            expandVoteButton: function () {
-                var $btns = $(vote.getSelector());
-                if (!$btns.hasClass("expanded")) {
-                    $btns.addClass("expanded");
-                }
-                $btns.parent().addClass("center");
-            },
-
-            collapseVoteButton: function () {
-                var $btns = $(vote.getSelector());
-                $btns.removeClass("expanded");
-                $btns.parent().removeClass("center");
-            },
-
             voteFor: function (recipe_id) {
                 $.ajax({
                     url: "/api/recipes/vote/" + recipe_id + "/?v=" + Date.now(),
@@ -30592,12 +30554,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                         var json = substitut.application.parseJson(responseData);
                         if (json) {
                             if (json.status === "ok") {
-                                var $vote_total = $('#votes-total-' + recipe_id);
-                                if ($vote_total) {
-                                    vote.save(recipe_id);
-                                    var num_votes = parseInt($vote_total.html(), 10) + 1;
-                                    vote.setTotal({recipe_id: recipe_id, votes: num_votes});
-                                }
+                                vote.save(recipe_id);
                             } else if (json.status === "denied") {
                                 vote.save(recipe_id);
                             } else {
@@ -30610,65 +30567,31 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             },
 
             /**
-             * Return the total number of votes for current recipe.
-             */
-            getTotal: function (recipe_id) {
-                $.ajax({
-                    url: "/api/recipes/votes/" + recipe_id + "/?v=" + Date.now(),
-                    success: function (responseData) {
-                        var json = substitut.application.parseJson(responseData);
-                        if (json) {
-                            vote.setTotal(json);
-                        }
-                    }
-                });
-            },
-
-            /**
              * Checks if vote button should be enabled for current recipe.
              */
             validateButton: function (recipe_id) {
-                var $vote_total = $('#votes-total-' + recipe_id);
-                if (!$vote_total.parent().hasClass("disabled")) {
-                    $vote_total.parent().addClass("disabled");
-                }
+                var $vote_total = $('#recipe-footer-row-' + recipe_id);
                 try {
                     vote.storage.get(recipe_id);
+                    if (!$vote_total.hasClass("hidden")) {
+                        $vote_total.fadeOut("fast", function (event) {
+                            $(event.currentTarget).addClass("hidden");
+                        });
+                    }
                 } catch (ex) {
                     if (ex instanceof substitut.exceptions.StorageParamNotFoundException) {
-                        $vote_total.parent().removeClass("disabled");
+                        $vote_total.removeClass("hidden");
                     }
                 }
             },
-
-            setTotal: function (json) {
-                if (json.recipe_id === undefined) {
-                    throw new Error("setVoteTotal(): Recipe id is not set");
-                }
-                if (json.votes === undefined) {
-                    throw new Error("setVoteTotal(): Votes is not set");
-                }
-                var $vote_total = $('#votes-total-' + json.recipe_id);
-                if (!$vote_total) {
-                    throw new Error("setVoteTotal(): Element #votes-total-" + json.recipe_id + " not found");
-                }
-                $vote_total.html(json.votes);
-                vote.validateButton(json.recipe_id);
-            },
-
-            getSelector: function () {
-                return "." + vote.options.selector;
-            }
         };
 
         vote.init();
 
         return {
             voteFor: vote.voteFor,
-            getTotal: vote.getTotal,
-            getSelector: vote.getSelector,
-            expandVoteButton: vote.expandVoteButton,
-            collapseVoteButton: vote.collapseVoteButton
+            validateButton: vote.validateButton,
+            save: vote.save
         };
     }});
 }(jQuery));/*jslint browser: true*/
@@ -30861,28 +30784,28 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             },
 
             labels: {
-                name: 'Namn',
-                unit: 'Enhet',
-                amount: 'Mängd',
-                energy_kj: 'Energi (kj)',
-                energy_kcal: 'Energi (kcal)',
-                protein: 'Protein (g)',
-                fat: 'Fett (g)',
-                carbohydrates: 'Kolhydrater (g)',
-                fibers: 'Fibrer (g)',
-                salt: 'Salt (g)',
-                water: 'Vatten (g)',
-                saturates: 'Mättat fett (g)',
-                monounsaturated: 'Enkelomättat fett (g)',
-                trans_fat: 'Transfetter (g)',
-                cholesterol: 'Kolesterol (g)',
-                vitamin_d: 'D-vitamin (µg)',
-                vitamin_e: 'E-vitamin  (µg)',
-                vitamin_k: 'K-vitamin  (µg)',
-                vitamin_c: 'C-vitamin  (µg)',
-                vitamin_b6: 'Vitamin B6  (µg)',
-                vitamin_b12: 'Vitamin B12  (µg)',
-                iron: 'Järn (g)'
+                name: {val: 'Namn'},
+                unit: {val: 'Enhet'},
+                amount: {val: 'Mängd'},
+                energy_kj: {val: 'Kalorier', unit: 'kj'},
+                energy_kcal: {val: 'Kalorier', unit: 'kcal'},
+                protein: {val: 'Protein', unit: 'g'},
+                fat: {val: 'Fett', unit: 'g'},
+                carbohydrates: {val: 'Kolhydrater', unit: 'g'},
+                fibers: {val: 'Fibrer', unit: 'g'},
+                salt: {val: 'Salt', unit: 'g'},
+                water: {val: 'Vatten', unit: 'g'},
+                saturates: {val: 'Mättat fett', unit: 'g'},
+                monounsaturated: {val: 'Enkelomättat fett', unit: 'g'},
+                trans_fat: {val: 'Transfetter', unit: 'g'},
+                cholesterol: {val: 'Kolesterol', unit: 'g'},
+                vitamin_d: {val: 'D-vitamin (µg)', unit: 'g'},
+                vitamin_e: {val: 'E-vitamin  (µg)', unit: 'g'},
+                vitamin_k: {val: 'K-vitamin  (µg)', unit: 'g'},
+                vitamin_c: {val: 'C-vitamin  (µg)', unit: 'g'},
+                vitamin_b6: {val: 'Vitamin B6  (µg)', unit: 'g'},
+                vitamin_b12: {val: 'Vitamin B12  (µg)', unit: 'g'},
+                iron: {val: 'Järn', unit: 'g'}
             },
 
             init: function () {
@@ -30900,10 +30823,11 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
             },
 
             getNutrition: function () {
-                var kv = [], name, total, per_hundred_gram, per_serving, sum = 0;
+                var kv = [], name, unit, total, per_hundred_gram, per_serving, sum = 0;
                 $.each(rec.nutrition, function (key, value) {
 
-                    name = rec.labels[key];
+                    name = rec.labels[key].val;
+                    unit = rec.labels[key].unit;
                     total = value;
                     per_hundred_gram = (value / rec.data.weight) * 100;
                     sum += value;
@@ -30917,6 +30841,7 @@ $.extend(true, substitut, {modules: {}});/*jslint browser: true*/
                     if (total !== 0) {
                         kv.push({
                             key: name,
+                            unit: unit,
                             val: Math.round(total * 100) / 100,
                             phg: Math.round(per_hundred_gram * 100) / 100,
                             ps: Math.round(per_serving * 100) / 100
@@ -31024,49 +30949,53 @@ function debounce(func, wait, immediate) {
 }(jQuery));(function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['recipe'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "                    <div class=\"servings\">\n                        <span id=\"servings-recipe-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" itemprop=\"recipeYield\">"
-    + alias4(((helper = (helper = helpers.servings || (depth0 != null ? depth0.servings : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"servings","hash":{},"data":data}) : helper)))
-    + "</span> portioner\n                    </div>\n";
-},"3":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "                    <a class=\"btn btn-tag\" href=\""
-    + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
-    + "\">\n                        "
-    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "\n                    </a>\n";
-},"5":function(container,depth0,helpers,partials,data) {
     var stack1, helper;
 
   return "                    <div class=\"description\" itemprop=\"description\">\n                        "
     + ((stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"description","hash":{},"data":data}) : helper))) != null ? stack1 : "")
     + "\n                    </div>\n";
-},"7":function(container,depth0,helpers,partials,data) {
+},"3":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                    <div class=\"col-lg-2 col-md-4 col-sm-4 col-xs-6\">\n                        <div class=\"nutrition-front\">\n                            <span class=\"key\">Portioner:</span> <span id=\"servings-recipe-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" itemprop=\"recipeYield\">"
+    + alias4(((helper = (helper = helpers.servings || (depth0 != null ? depth0.servings : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"servings","hash":{},"data":data}) : helper)))
+    + "</span>\n                        </div>\n                    </div>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.val : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"6":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                        <div class=\"col-lg-2 col-md-4 col-sm-4 col-xs-6\">\n                            <div class=\"nutrition-front\">\n                                <span class=\"key\">"
+    + alias4(((helper = (helper = helpers.key || (depth0 != null ? depth0.key : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
+    + ":</span> "
+    + alias4(((helper = (helper = helpers.phg || (depth0 != null ? depth0.phg : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phg","hash":{},"data":data}) : helper)))
+    + "\n                            </div>\n                        </div>\n";
+},"8":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {};
 
   return "                            <li itemprop=\"recipeIngredient\">\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.amount : depth0),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.unit_short : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.amount : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.unit_short : depth0),{"name":"if","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "                                <span class=\"ingredient-name\">"
     + container.escapeExpression(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
     + "</span>\n                            </li>\n";
-},"8":function(container,depth0,helpers,partials,data) {
+},"9":function(container,depth0,helpers,partials,data) {
     var helper;
 
   return "                                <span class=\"ingredient-amount\">"
     + container.escapeExpression(((helper = (helper = helpers.amount || (depth0 != null ? depth0.amount : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"amount","hash":{},"data":data}) : helper)))
     + "</span>\n";
-},"10":function(container,depth0,helpers,partials,data) {
+},"11":function(container,depth0,helpers,partials,data) {
     var helper;
 
   return "                                <span class=\"ingredient-unit\">"
     + container.escapeExpression(((helper = (helper = helpers.unit_short || (depth0 != null ? depth0.unit_short : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"unit_short","hash":{},"data":data}) : helper)))
     + "</span>\n";
-},"12":function(container,depth0,helpers,partials,data) {
+},"13":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "        <aside class=\"thumbnail recipe-image-wrapper\">\n            <img itemprop=\"image\" class=\"recipe-image img-responsive\" src=\""
@@ -31078,19 +31007,19 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + "\" width=\"100%\">\n            <div class=\"caption\">\n                <h3>"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "</h3>\n            </div>\n        </aside>\n";
-},"14":function(container,depth0,helpers,partials,data,blockParams,depths) {
+},"15":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {};
 
   return "        <aside class=\"nutrition\" itemprop=\"nutrition\">\n            <h3><span class=\"pull-left\">Näring</span> <a href=\"#\" class=\"nutrition-toggle btn btn-info pull-right\" data-recipe-id=\""
     + container.escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-current-nutrition=\"total\">totalt</a></h3>\n            <table class=\"nutrition-table\">\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"each","hash":{},"fn":container.program(15, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"each","hash":{},"fn":container.program(16, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "            </table>\n            <span class=\"footnote\">Källa: <a href=\"http://www.livsmedelsverket.se/livsmedelsdatabasen\" target=\"_blank\">Livsmedelsverket</a></span>\n        </aside>\n";
-},"15":function(container,depth0,helpers,partials,data,blockParams,depths) {
+},"16":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
 
-  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.val : depth0),{"name":"if","hash":{},"fn":container.program(16, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"16":function(container,depth0,helpers,partials,data,blockParams,depths) {
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.val : depth0),{"name":"if","hash":{},"fn":container.program(17, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"17":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda;
 
   return "                    <tr>\n                        <th>"
@@ -31099,14 +31028,20 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + alias4(alias5((depths[1] != null ? depths[1].id : depths[1]), depth0))
     + " nutrition-total\">"
     + alias4(((helper = (helper = helpers.val || (depth0 != null ? depth0.val : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"val","hash":{},"data":data}) : helper)))
+    + " "
+    + alias4(((helper = (helper = helpers.unit || (depth0 != null ? depth0.unit : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"unit","hash":{},"data":data}) : helper)))
     + "</td>\n                        <td class=\"nutrition-recipe-"
     + alias4(alias5((depths[1] != null ? depths[1].id : depths[1]), depth0))
     + " nutrition-phg\">"
     + alias4(((helper = (helper = helpers.phg || (depth0 != null ? depth0.phg : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phg","hash":{},"data":data}) : helper)))
+    + " "
+    + alias4(((helper = (helper = helpers.unit || (depth0 != null ? depth0.unit : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"unit","hash":{},"data":data}) : helper)))
     + "</td>\n                        <td class=\"nutrition-recipe-"
     + alias4(alias5((depths[1] != null ? depths[1].id : depths[1]), depth0))
     + " nutrition-ps\">"
     + alias4(((helper = (helper = helpers.ps || (depth0 != null ? depth0.ps : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"ps","hash":{},"data":data}) : helper)))
+    + " "
+    + alias4(((helper = (helper = helpers.unit || (depth0 != null ? depth0.unit : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"unit","hash":{},"data":data}) : helper)))
     + "</td>\n                    </tr>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
@@ -31117,29 +31052,27 @@ templates['recipe'] = template({"1":function(container,depth0,helpers,partials,d
     + alias4(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data}) : helper)))
     + "\" itemprop=\"name\">"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</a></h2>\n                    </div>\n                    <div class=\"col-md-4 col-sm-12 col-xs-12 vote-button-wrapper\">\n                        <div class=\"vote\" data-recipe-id=\""
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">\n                            <span class=\"votes-btn\"><i class=\"glyphicon glyphicon-heart\"></i></span>\n                            <span class=\"votes-text\">Rekommendera</span>\n                            <span class=\"votes-total\" id=\"votes-total-"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">"
-    + alias4(((helper = (helper = helpers.vote_total || (depth0 != null ? depth0.vote_total : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"vote_total","hash":{},"data":data}) : helper)))
-    + "</span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.servings : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.food_groups : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.description : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</a></h2>\n                    </div>\n                </div>\n                <div class=\"row\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.description : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "                </div>\n                <div class=\"row tight-gutter\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.servings : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"each","hash":{},"fn":container.program(5, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "                </div>\n                <div class=\"row\">\n                    <div class=\"col-md-4 col-sm-12 col-xs-12 no-left-padding ingredients-wrapper\">\n                        <ul class=\"ingredients\">\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.ingredients : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.ingredients : depth0),{"name":"each","hash":{},"fn":container.program(8, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "                        </ul>\n                    </div>\n                    <div class=\"col-md-8 col-sm-12 col-xs-12 instructions-wrapper\">\n                        <div class=\"instructions\" itemprop=\"recipeInstructions\">\n                            "
     + ((stack1 = ((helper = (helper = helpers.instructions || (depth0 != null ? depth0.instructions : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"instructions","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.img_small : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"if","hash":{},"fn":container.program(14, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row recipe-footer-row\" id=\"recipe-footer-row-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">\n                    <div class=\"col-md-12\">\n                        <div class=\"like-recipe-wrapper\">\n                            Gillar du det här receptet?\n                            <button class=\"btn btn-info vote-button\" data-recipe-id=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">Ja!</button> \n                            <button class=\"btn btn-default\">Nej</button>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        </section>\n    </div>\n    <div class=\"column-2 col-md-3 col-sm-12 col-xs-12\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.img_small : depth0),{"name":"if","hash":{},"fn":container.program(13, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.nutrition : depth0),{"name":"if","hash":{},"fn":container.program(15, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n</div>\n";
 },"useData":true,"useDepths":true});
 })();
 /*jslint browser: true*/
 /*global $, jQuery, window, substitut*/
-
 $(function () {
     "use strict";
     $.extend(true, substitut, {application: substitut.modules.Main()});

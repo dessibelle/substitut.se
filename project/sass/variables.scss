@@ -68,7 +68,7 @@ $link-hover-decoration: none !default;
 
 $font-family-monospace:   "Cutive Mono", "Courier New", Courier, Menlo, Monaco, Consolas, monospace !default;
 $font-family-sans-serif:  "Roboto", Helvetica, Arial, sans-serif !default;
-$font-family-serif:       $font-family-monospace !default;
+$font-family-serif:       "latolight" !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-base:        $font-family-sans-serif !default;
 
@@ -90,7 +90,7 @@ $line-height-computed:    floor(($font-size-base * $line-height-base)) !default;
 
 //** By default, this inherits from the `<body>`.
 $headings-font-family:    $font-family-serif !default;
-$headings-font-weight:    500 !default;
+$headings-font-weight:    normal !default;
 $headings-line-height:    1.1 !default;
 $headings-color:          inherit !default;
 

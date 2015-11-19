@@ -1,10 +1,10 @@
 from django.contrib import admin
-from models.term import Term
-from models.food_group import FoodGroup
-from models.ingredient import Ingredient
-from models.recipe import Recipe, RecipeFoodGroup, RecipeIngredient
-from models.unit import Unit, UnitIngredient
-from models.vote import Vote
+from recipes.models.term import Term
+from recipes.models.food_group import FoodGroup
+from recipes.models.ingredient import Ingredient
+from recipes.models.recipe import Recipe, RecipeFoodGroup, RecipeIngredient
+from recipes.models.unit import Unit, UnitIngredient
+from recipes.models.vote import Vote
 from sorl.thumbnail.admin import AdminImageMixin
 
 

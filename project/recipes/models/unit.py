@@ -3,7 +3,7 @@
 """ Unit model. """
 
 from django.db import models
-from ingredient import Ingredient
+from recipes.models.ingredient import Ingredient
 
 
 class Unit(models.Model):

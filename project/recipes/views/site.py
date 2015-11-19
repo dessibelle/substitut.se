@@ -125,9 +125,24 @@ def recipes(request, lookup, slug=None):
             "datePublished": obj['pub_date'],
             "image": obj['img_small'],
             "recipeIngredient": [],
-            "recipeInstructions": obj['instructions']
+            "recipeInstructions": obj['instructions'],
         }
+
+        sums = {
+            'carbohydrates': 0,
+            'energy_kcal': 0,
+            'fat': 0,
+            'fibers': 0,
+            'protein': 0
+        }
+
         for ingredient in obj['ingredients']:
+            sums['carbohydrates'] += ingredient['carbohydrates']
+            sums['energy_kcal'] += ingredient['energy_kcal']
+            sums['fat'] += ingredient['fat']
+            sums['fibers'] += ingredient['fibers']
+            sums['protein'] += ingredient['protein']
+
             json_ld['recipeIngredient'].append(
                 u"{} {} {}".format(
                     ingredient['amount'],
@@ -135,6 +150,15 @@ def recipes(request, lookup, slug=None):
                     ingredient['text']
                 )
             )
+
+        json_ld['nutrition'] = {
+            "@type": "NutritionInformation",
+            "calories": "{} kcal".format(round(sums['protein'], 2)),
+            "carbohydrateContent": "{} g".format(round(sums['energy_kcal'], 2)),
+            "fatContent": "{} g".format(round(sums['fat'], 2)),
+            "fiberContent": "{} g".format(round(sums['fibers'], 2)),
+            "proteinContent": "{} g".format(round(sums['protein'], 2))
+        }
 
     return render(
         request,
