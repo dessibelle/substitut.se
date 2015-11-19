@@ -5954,6 +5954,22 @@ a.text-tag:focus {
 #substitut .row.no-gutter > [class*='col-'] {
   padding-right: 0;
   padding-left: 0; }
+#substitut .row.tight-gutter {
+  margin-left: -7.5px;
+  margin-right: -7.5px; }
+#substitut .row.tight-gutter > [class*='col-'] {
+  padding-right: 7.5px;
+  padding-left: 7.5px;
+  margin-bottom: 15px; }
+#substitut .nutrition-front {
+  font-size: .85em;
+  width: 100%;
+  overflow: hidden;
+  padding: .5em 0;
+  text-align: center;
+  background-color: #eeeeee; }
+  #substitut .nutrition-front .key {
+    color: #777777; }
 
 /* Store current state for js use */
 .state-indicator {
@@ -6147,7 +6163,6 @@ body {
         text-align: center; }
         #substitut header.site-header .navigation .nav-pills li a {
           display: block;
-          font-family: "Cutive Mono", "Courier New", Courier, Menlo, Monaco, Consolas, monospace;
           height: 40px;
           width: 100%;
           font-size: 1em;

@@ -55,24 +55,24 @@ import json, sys
 data = json.load(sys.stdin)
 
 if "errors" in data:
-	print "### COMPILATION FAILED WITH ERRORS"
+	print("### COMPILATION FAILED WITH ERRORS")
 	for err in data["errors"]:
 		file = sys.argv[int(err["file"].replace("Input_", "")) + 1]
-		print "File: %s, %d:%d" % (file, err["lineno"], err["charno"])
-		print "Error: %s" % err["error"]
-		print "Line: %s" % err["line"]
+		print("File: %s, %d:%d" % (file, err["lineno"], err["charno"]))
+		print("Error: %s" % err["error"])
+		print("Line: %s" % err["line"])
 		
-	print "\nBuild failed.\n"
+	print("\nBuild failed.\n")
 	
 else:
-	print "### COMPILATION COMPLETED"
-	print "Original size: %db, gziped: %db" % (data["statistics"]["originalSize"], data["statistics"]["originalGzipSize"])
-	print "Compressed size: %db, gziped: %db" % (data["statistics"]["compressedSize"], data["statistics"]["compressedGzipSize"])
-	print "Compression rate: %.2f" % (float(data["statistics"]["compressedSize"]) / int(data["statistics"]["originalSize"]))
+	print("### COMPILATION COMPLETED")
+	print("Original size: %db, gziped: %db" % (data["statistics"]["originalSize"],data["statistics"]["originalGzipSize"]))
+	print("Compressed size: %db, gziped: %db" % (data["statistics"]["compressedSize"],data["statistics"]["compressedGzipSize"]))
+	print("Compression rate: %.2f" % (float(data["statistics"]["compressedSize"]) / int(data["statistics"]["originalSize"])))
 
 	filename = "'${NEWFILE}'"
 	with open(filename, "w") as f:
 		f.write(data["compiledCode"])
 
-	print "\nBuild file %s created.\n" % filename
+	print("\nBuild file %s created.\n" % filename)
 ' $@

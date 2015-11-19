@@ -9,21 +9,29 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{#if servings}}
-                    <div class="servings">
-                        <span id="servings-recipe-{{ id }}" itemprop="recipeYield">{{ servings }}</span> portioner
-                    </div>
-                    {{/if}}
-                    {{#each food_groups}}
-                    <a class="btn btn-tag" href="{{ url }}">
-                        {{name}}
-                    </a>
-                    {{/each}}
                     {{#if description}}
                     <div class="description" itemprop="description">
                         {{{ description }}}
                     </div>
                     {{/if}}
+                </div>
+                <div class="row tight-gutter">
+                    {{#if servings}}
+                    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+                        <div class="nutrition-front">
+                            <span class="key">Portioner:</span> <span id="servings-recipe-{{ id }}" itemprop="recipeYield">{{ servings }}</span>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{#each nutrition}}
+                        {{#if val}}
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+                            <div class="nutrition-front">
+                                <span class="key">{{key}}:</span> {{phg}}
+                            </div>
+                        </div>
+                        {{/if}}
+                    {{/each}}
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 col-xs-12 no-left-padding ingredients-wrapper">
@@ -76,9 +84,9 @@
                     {{#if val}}
                     <tr>
                         <th>{{key}}</th>
-                        <td class="nutrition-recipe-{{ ../id }} nutrition-total">{{val}}</td>
-                        <td class="nutrition-recipe-{{ ../id }} nutrition-phg">{{phg}}</td>
-                        <td class="nutrition-recipe-{{ ../id }} nutrition-ps">{{ps}}</td>
+                        <td class="nutrition-recipe-{{ ../id }} nutrition-total">{{val}} {{unit}}</td>
+                        <td class="nutrition-recipe-{{ ../id }} nutrition-phg">{{phg}} {{unit}}</td>
+                        <td class="nutrition-recipe-{{ ../id }} nutrition-ps">{{ps}} {{unit}}</td>
                     </tr>
                     {{/if}}
                 {{/each}}

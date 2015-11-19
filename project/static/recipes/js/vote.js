@@ -76,7 +76,7 @@
                         $vote_total.removeClass("hidden");
                     }
                 }
-            },
+            }
         };
 
         vote.init();
