@@ -54,7 +54,7 @@
                 energy_kcal: {val: 'Kalorier', unit: 'kcal'},
                 protein: {val: 'Protein', unit: 'g'},
                 fat: {val: 'Fett', unit: 'g'},
-                carbohydrates: {val: 'Kolhydrater', unit: 'g'},
+                carbohydrates: {val: 'Carbs', unit: 'g'},
                 fibers: {val: 'Fibrer', unit: 'g'},
                 salt: {val: 'Salt', unit: 'g'},
                 water: {val: 'Vatten', unit: 'g'},
@@ -73,6 +73,10 @@
 
             init: function () {
                 rec.updateNutrition();
+            },
+
+            getLabel: function (key) {
+                return rec.labels[key] || {};
             },
 
             updateNutrition: function () {
@@ -103,7 +107,8 @@
 
                     if (total !== 0) {
                         kv.push({
-                            key: name,
+                            key: key,
+                            name: name,
                             unit: unit,
                             val: Math.round(total * 100) / 100,
                             phg: Math.round(per_hundred_gram * 100) / 100,
@@ -127,7 +132,8 @@
         rec.init();
 
         return {
-            getData: rec.getData
+            getData: rec.getData,
+            getLabel: rec.getLabel
         };
     }});
 }(jQuery));

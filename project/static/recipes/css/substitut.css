@@ -5962,6 +5962,7 @@ a.text-tag:focus {
   padding-left: 7.5px;
   margin-bottom: 15px; }
 #substitut .nutrition-front {
+  cursor: pointer;
   font-size: .85em;
   width: 100%;
   overflow: hidden;
@@ -5970,6 +5971,14 @@ a.text-tag:focus {
   background-color: #eeeeee; }
   #substitut .nutrition-front .key {
     color: #777777; }
+#substitut .nutrition-tooltip {
+  font-size: 0.9em; }
+  #substitut .nutrition-tooltip ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none; }
+    #substitut .nutrition-tooltip ul li {
+      padding: 0; }
 
 /* Store current state for js use */
 .state-indicator {

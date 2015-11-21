@@ -9,9 +9,9 @@ for NEWFILE in $*; do :; done
 # Check if files to compile are provided
 if [ $# -eq 0 ]
 then
-	echo 'Nothing to compile. Specify input files as command arguments. E.g.'
-	echo './compressjs file1.js file2.js file3.js'
-	exit
+    echo 'Nothing to compile. Specify input files as command arguments. E.g.'
+    echo './compressjs file1.js file2.js file3.js'
+    exit
 fi
 
 # Itearate through all files
@@ -25,8 +25,8 @@ do
                         code="${code} --data-urlencode js_code@${f}"
                         # Test whether at least one of the input file is newer than the output file
                         if [ ${f} -nt $NEWFILE ]; then
-						    process_files=true
-						fi
+                            process_files=true
+                        fi
                 else
                         echo "File ${f} does not exist or is not readable. Skipped."
                 fi
@@ -35,8 +35,8 @@ done
 
 if ! ${process_files}
 then
-	echo "Already up to date."
-	exit 0
+    echo "Already up to date."
+    exit 0
 fi
 
 # Send request
@@ -55,24 +55,24 @@ import json, sys
 data = json.load(sys.stdin)
 
 if "errors" in data:
-	print("### COMPILATION FAILED WITH ERRORS")
-	for err in data["errors"]:
-		file = sys.argv[int(err["file"].replace("Input_", "")) + 1]
-		print("File: %s, %d:%d" % (file, err["lineno"], err["charno"]))
-		print("Error: %s" % err["error"])
-		print("Line: %s" % err["line"])
-		
-	print("\nBuild failed.\n")
-	
+    print("### COMPILATION FAILED WITH ERRORS")
+    for err in data["errors"]:
+        file = sys.argv[int(err["file"].replace("Input_", "")) + 1]
+        print("File: %s, %d:%d" % (file, err["lineno"], err["charno"]))
+        print("Error: %s" % err["error"])
+        print("Line: %s" % err["line"])
+        
+    print("\nBuild failed.\n")
+    
 else:
-	print("### COMPILATION COMPLETED")
-	print("Original size: %db, gziped: %db" % (data["statistics"]["originalSize"],data["statistics"]["originalGzipSize"]))
-	print("Compressed size: %db, gziped: %db" % (data["statistics"]["compressedSize"],data["statistics"]["compressedGzipSize"]))
-	print("Compression rate: %.2f" % (float(data["statistics"]["compressedSize"]) / int(data["statistics"]["originalSize"])))
+    print("### COMPILATION COMPLETED")
+    print("Original size: %db, gziped: %db" % (data["statistics"]["originalSize"],data["statistics"]["originalGzipSize"]))
+    print("Compressed size: %db, gziped: %db" % (data["statistics"]["compressedSize"],data["statistics"]["compressedGzipSize"]))
+    print("Compression rate: %.2f" % (float(data["statistics"]["compressedSize"]) / int(data["statistics"]["originalSize"])))
 
-	filename = "'${NEWFILE}'"
-	with open(filename, "w") as f:
-		f.write(data["compiledCode"])
+    filename = "'${NEWFILE}'"
+    with open(filename, "w") as f:
+        f.write(data["compiledCode"])
 
-	print("\nBuild file %s created.\n" % filename)
+    print("\nBuild file %s created.\n" % filename)
 ' $@

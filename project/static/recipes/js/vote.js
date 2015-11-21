@@ -32,12 +32,21 @@
                 if (vote.storage) {
                     try {
                         vote.storage.get(recipe_id);
+                        return true;
                     } catch (ex) {
                         if (ex instanceof substitut.exceptions.StorageParamNotFoundException) {
                             vote.storage.set(recipe_id);
+                            return false;
                         }
                     }
                 }
+                return false;
+            },
+
+            voteHide: function (recipe_id) {
+                vote.save(recipe_id);
+                vote.validateButton(recipe_id);
+                console.log('yup');
             },
 
             voteFor: function (recipe_id) {
@@ -68,7 +77,9 @@
                     vote.storage.get(recipe_id);
                     if (!$vote_total.hasClass("hidden")) {
                         $vote_total.fadeOut("fast", function (event) {
-                            $(event.currentTarget).addClass("hidden");
+                            if (event.currentTarget) {
+                                $(event.currentTarget).addClass("hidden");
+                            }
                         });
                     }
                 } catch (ex) {
@@ -83,6 +94,7 @@
 
         return {
             voteFor: vote.voteFor,
+            hide: vote.voteHide,
             validateButton: vote.validateButton,
             save: vote.save
         };

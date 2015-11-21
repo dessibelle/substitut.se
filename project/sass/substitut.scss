@@ -29,6 +29,7 @@
     }
 
     .nutrition-front {
+        cursor: pointer;
         font-size: .85em;
         width: 100%;
         overflow: hidden;
@@ -39,6 +40,17 @@
             color: $gray_light;
         }
     }
+    .nutrition-tooltip {
+        font-size: 0.9em;
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            li {
+                padding: 0;
+            }
+        }
+    }
 }
 
 /* Store current state for js use */
@@ -46,7 +58,7 @@
     position: absolute;
     top: -999em;
     left: -999em;
-    &:before { 
+    &:before {
         content: 'desktop';
     }
 }
@@ -91,7 +103,7 @@
         }
     }
     p {
-        margin-bottom: $grid-gutter-width; 
+        margin-bottom: $grid-gutter-width;
     }
 }
 
@@ -202,9 +214,9 @@ header.site-header {
             margin-top: 10px;
             object {
                 position: absolute;
-                height: 100%; 
-                width: 100%; 
-                left: 0; 
+                height: 100%;
+                width: 100%;
+                left: 0;
                 top: 0;
             }
         }
@@ -295,7 +307,7 @@ header.site-header {
                 to { -webkit-transform: rotate(360deg); }
             }
         }
-            
+
         @include breakpoint(xxs) {
             border-left: none;
             border-top: 1px solid $gray-lighter;
@@ -495,7 +507,7 @@ header.site-header {
             li {
                 margin-bottom: 0.5em;
                 border-bottom: 1px solid $gray_lighter;
-                .ingredient-amount, 
+                .ingredient-amount,
                 .ingredient-unit,
                 .ingredient-name {
                     display: inline-block;
@@ -643,15 +655,15 @@ header.site-header {
             min-height: 100%;
             z-index: 999;
             background: -webkit-gradient(
-                linear, 
-                left bottom, 
-                left top, 
+                linear,
+                left bottom,
+                left top,
                 color-stop(0, rgba(255,255,255,1.0)),
                 color-stop(1, rgba(255,255,255,0.0))
             );
             background: -moz-linear-gradient(
-                center bottom, 
-                rgba(255,255,255,0.0) 100%, 
+                center bottom,
+                rgba(255,255,255,0.0) 100%,
                 rgba(255,255,255,1.0) 0%
             );
         }

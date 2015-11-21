@@ -39,6 +39,7 @@ PYTHON_BIN = $(VIRTUAL_ENV)/bin
 
 # JS files to be compressed
 COMPRESS = "$(STATICPATH)/recipes/js/init.js" \
+	"$(STATICPATH)/recipes/js/handlebars_helpers.js" \
 	"$(STATICPATH)/recipes/js/substitut.js" \
 	"$(STATICPATH)/recipes/js/vote.js" \
 	"$(STATICPATH)/recipes/js/exceptions.js" \
@@ -53,7 +54,7 @@ COMBINE_COMPRESSED = "lib/jquery/dist/jquery.min.js" \
 	"lib/hisrc/hisrc.js" \
 	"lib/handlebars/handlebars.runtime.js" \
 	"lib/parallax/parallax.min.js" \
-	"lib/bootstrap/dist/js/bootstrap.min.js" \
+	"lib/bootstrap-sass/assets/javascripts/bootstrap.min.js" \
 	"lib/Flowtype.js/flowtype.js" \
 	"recipes/js/final/substitut.min.js"
 
@@ -62,7 +63,8 @@ COMBINE_ALL = "$(STATICPATH)/lib/jquery/dist/jquery.js" \
 	"$(STATICPATH)/lib/hisrc/hisrc.js" \
 	"$(STATICPATH)/lib/handlebars/handlebars.runtime.js" \
 	"$(STATICPATH)/lib/parallax/parallax.js" \
-	"$(STATICPATH)/lib/bootstrap/dist/js/bootstrap.js" \
+	"$(STATICPATH)/lib/bootstrap-sass/assets/javascripts/bootstrap.js" \
+	"$(STATICPATH)/lib/bootstrap-sass/assets/javascripts/bootstrap/popover.js" \
 	"$(STATICPATH)/lib/Flowtype.js/flowtype.js" \
 	$(COMPRESS)
 

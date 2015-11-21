@@ -38,6 +38,7 @@
                 );
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
+
             },
 
             setupFlowtype: function () {
@@ -97,12 +98,20 @@
 
             setupVoteButtons: function () {
                 $("#content").on("click", ".vote-button", function (event) {
-                    var recipe_id = $(event.currentTarget).attr("data-recipe-id");
-
-                    if (recipe_id !== undefined && !$(event.currentTarget).parent().parent().hasClass("hidden")) {
-                        app.votes.voteFor(recipe_id);
+                    var recipe_id = $(event.currentTarget).parent().attr("data-recipe-id");
+                    if (recipe_id !== undefined) {
+                        if (!$(event.currentTarget).parent().parent().hasClass("hidden")) {
+                            app.votes.voteFor(recipe_id);
+                        }
                     }
-
+                    return false;
+                });
+                $("#content").on("click", ".vote-button-dismiss", function (event) {
+                    var recipe_id = $(event.currentTarget).parent().attr("data-recipe-id");
+                    if (recipe_id !== undefined) {
+                        app.votes.hide(recipe_id);
+                        event.stopPropagation();
+                    }
                     return false;
                 });
             },
@@ -268,6 +277,28 @@
                 });
 
                 $(".recipe-image").hisrc({useTransparentGif: true});
+                $('[data-toggle="popover"]').popover(
+                    {
+                        html: true,
+                        title: app.nutritionPopoverTitle,
+                        content: app.nutritionPopoverContent,
+                        placement: 'bottom',
+                        trigger: 'hover'
+                    }
+                );
+            },
+
+            nutritionPopoverTitle: function () {
+                var recipe = new substitut.modules.Recipe();
+                return recipe.getLabel($(this).attr('data-key')).val || "";
+            },
+
+            nutritionPopoverContent: function () {
+                var context = {
+                    phg: $(this).attr('data-phg'),
+                    ps: $(this).attr('data-ps')
+                };
+                return Handlebars.templates.tooltip(context);
             },
 
             requestSuccess: function (responseData) {
