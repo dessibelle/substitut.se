@@ -19,6 +19,8 @@ path.append(DJANGO_ROOT)
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = False
 
+TEST = False
+
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
     ('Dan Larsson', 'dan.larsson@substitut.se'),
@@ -63,19 +65,21 @@ STATICFILES_DIRS = (
     ('lib', normpath(join(SITE_ROOT, 'static', 'lib'))),
     # static/recipes/css -> assets/css
     ('css', normpath(join(SITE_ROOT, 'static', 'recipes', 'css'))),
-    # static/recipes/js/final -> assets/js
-    ('js', normpath(join(SITE_ROOT, 'static', 'recipes', 'js', 'final'))),
-    # static/recipes/fonts/ -> assets/fonts
-    ('fonts', normpath(join(SITE_ROOT, 'static', 'recipes', 'fonts'))),
+    # sass -> assets/sass/recipes
+    ('sass', normpath(join(SITE_ROOT, 'sass'))),
+    # static/recipes/fonts/ -> assets/css
+    ('css', normpath(join(SITE_ROOT, 'static', 'recipes', 'fonts'))),
+    # static/recipes/js -> assets/js
+    ('js', normpath(join(SITE_ROOT, 'static', 'recipes', 'js'))),
     # static/recipes/images/site -> assets/images/site
     (join('images', 'site'), normpath(join(SITE_ROOT, 'static', 'recipes', 'images', 'site'))),
-
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
@@ -134,15 +138,70 @@ DJANGO_APPS = (
     'django.contrib.admin',
     'simplejson',
     'django.contrib.contenttypes',
-    'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'sorl.thumbnail',
+    'pipeline'
 )
 
 LOCAL_APPS = (
     'recipes',
 )
+
+# django-pipeline settings
+PIPELINE_TEMPLATE_EXT = '.handlebars'
+PIPELINE_TEMPLATE_FUNC = 'Handlebars.compile'
+PIPELINE_TEMPLATE_NAMESPACE = 'Handlebars.templates'
+
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+
+PIPELINE_COMPILERS = (
+    'pipeline.compilers.sass.SASSCompiler',
+)
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+PIPELINE_JS = {
+    'app': {
+        'source_filenames': (
+            'js/init.js',
+            'js/templates/*.handlebars',
+            'js/exceptions.js',
+            'js/handlebars_helpers.js',
+            'js/recipe.js',
+            'js/responsive.js',
+            'js/storage.js',
+            'js/substitut.js',
+            'js/vote.js',
+            'js/main.js',
+        ),
+        'output_filename': 'js/app.js',
+    },
+    'vendor': {
+        'source_filenames': (
+            'lib/jquery/dist/jquery.min.js',
+            'lib/jquery-ui/jquery-ui.min.js',
+            'lib/hisrc/hisrc.js',
+            'lib/handlebars/handlebars.js',
+            'lib/parallax/parallax.min.js',
+            'lib/bootstrap-sass/assets/javascripts/bootstrap.min.js',
+            'lib/Flowtype.js/flowtype.js',
+        ),
+        'output_filename': 'js/vendor.js',
+    }
+
+}
+PIPELINE_CSS = {
+    'app': {
+        'source_filenames': (
+            'sass/app.scss',
+        ),
+        'output_filename': 'css/app.css',
+        'extra_context': {
+            'media': 'screen,projection',
+        },
+    },
+}
 
 # solr-thumbnail settings
 THUMBNAIL_FORMAT = 'PNG'
