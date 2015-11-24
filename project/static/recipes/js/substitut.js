@@ -296,7 +296,8 @@
             nutritionPopoverContent: function () {
                 var context = {
                     phg: $(this).attr('data-phg'),
-                    ps: $(this).attr('data-ps')
+                    ps: $(this).attr('data-ps'),
+                    info: $(this).attr('data-info')
                 };
                 return Handlebars.templates.tooltip(context);
             },

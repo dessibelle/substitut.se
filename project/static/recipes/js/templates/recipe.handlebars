@@ -26,7 +26,7 @@
                     {{#each nutrition}}
                         {{#if val}}
                         <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
-                            <div class="nutrition-front" data-container="body" data-toggle="popover" data-placement="bottom" data-key="{{ key }}" data-phg="{{ phg }}" data-ps="{{ ps }}">
+                            <div class="nutrition-front" data-container="body" data-toggle="popover" data-placement="bottom" data-key="{{ key }}" data-phg="{{ phg }}" data-ps="{{ ps }}" data-info="{{ info }}">
                             {{#compare unit "kcal"}}
                                 <span class="key">{{unit}}:</span> <span class="val">{{val}}</span>
                             {{else}}

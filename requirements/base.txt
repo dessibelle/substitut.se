@@ -1,5 +1,7 @@
 Django==1.8.6
 django-grappelli==2.7.2
+django-pipeline==1.5.4
+futures==3.0.3
 mistune==0.7.1
 Pillow==3.0.0
 pycrypto==2.6.1
