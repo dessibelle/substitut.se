@@ -22,7 +22,6 @@
                 app.setupAutocomplete();
                 app.setupSearchPromoteBtn();
                 app.setupPagination();
-                app.setupNutritionToggle();
                 app.loadRecipes();
                 app.setupFlowtype();
 
@@ -125,49 +124,6 @@
                         $icon.removeClass('glyphicon-refresh spinning').addClass('glyphicon-search');
                     }
                 }
-            },
-
-            setupNutritionToggle: function () {
-                $("#content").on("click", ".nutrition-toggle", function (event) {
-                    var my = event.target,
-                        recipe_id = $(my).attr("data-recipe-id");
-
-                    if (recipe_id !== undefined) {
-                        app.toggleNutrition(my, recipe_id);
-                    }
-
-                    event.stopPropagation();
-                    return false;
-                });
-            },
-
-            toggleNutrition: function (e, recipe_id) {
-                var $elem, servings, opt, current_index, next, label;
-
-                $elem = $(e);
-                servings = $('#servings-recipe-' + recipe_id).html();
-                opt = {
-                    total: {next: 'phg', label: 'Totalt'},
-                    phg: {next: 'total', label: '100g'},
-                    ps: {next: 'total', label: 'Portion'}
-                };
-                if (servings !== undefined) {
-                    opt.phg.next = 'ps';
-                }
-
-                current_index = $elem.attr('data-current-nutrition');
-                next = opt[current_index].next;
-                label = opt[next].label;
-
-                $elem.attr('data-current-nutrition', next);
-                $elem.html(label);
-                $.each(opt, function (key, ignore) {
-                    if (key === next) {
-                        $('.nutrition-recipe-' + recipe_id + '.nutrition-' + key).show();
-                    } else {
-                        $('.nutrition-recipe-' + recipe_id + '.nutrition-' + key).hide();
-                    }
-                });
             },
 
             parseJson: function (str) {

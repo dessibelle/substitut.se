@@ -79,23 +79,5 @@
             </div>
         </aside>
         {{/if}}
-        {{#if nutrition}}
-        <aside class="nutrition" itemprop="nutrition">
-            <h3><span class="pull-left">Näring</span> <a href="#" class="nutrition-toggle btn btn-info pull-right" data-recipe-id="{{ id }}" data-current-nutrition="total">totalt</a></h3>
-            <table class="nutrition-table">
-                {{#each nutrition}}
-                    {{#if val}}
-                    <tr>
-                        <th>{{name}}</th>
-                        <td class="nutrition-recipe-{{ ../id }} nutrition-total">{{val}} {{unit}}</td>
-                        <td class="nutrition-recipe-{{ ../id }} nutrition-phg">{{phg}} {{unit}}</td>
-                        <td class="nutrition-recipe-{{ ../id }} nutrition-ps">{{ps}} {{unit}}</td>
-                    </tr>
-                    {{/if}}
-                {{/each}}
-            </table>
-            <span class="footnote">Källa: <a href="http://www.livsmedelsverket.se/livsmedelsdatabasen" target="_blank">Livsmedelsverket</a></span>
-        </aside>
-        {{/if}}
     </div>
 </div>
