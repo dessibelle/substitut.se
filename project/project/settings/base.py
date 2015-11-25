@@ -143,24 +143,37 @@ DJANGO_APPS = (
     'sorl.thumbnail',
     'pipeline'
 )
-
 LOCAL_APPS = (
     'recipes',
 )
 
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+
 # django-pipeline settings
+
+# see: http://django-pipeline.readthedocs.org/en/latest/configuration.html#pipeline-template-ext
 PIPELINE_TEMPLATE_EXT = '.handlebars'
+
+# see: http://django-pipeline.readthedocs.org/en/latest/configuration.html#pipeline-template-func
 PIPELINE_TEMPLATE_FUNC = 'Handlebars.compile'
+
+# see: http://django-pipeline.readthedocs.org/en/latest/configuration.html#pipeline-template-namespace
 PIPELINE_TEMPLATE_NAMESPACE = 'Handlebars.templates'
 
+# see: http://django-pipeline.readthedocs.org/en/latest/compressors.html
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 
+# see: http://django-pipeline.readthedocs.org/en/latest/compilers.html
 PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
 
+# see: http://django-pipeline.readthedocs.org/en/latest/storages.html
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+# see: http://django-pipeline.readthedocs.org/en/latest/configuration.html
 PIPELINE_JS = {
     'app': {
         'source_filenames': (
@@ -203,22 +216,27 @@ PIPELINE_CSS = {
     },
 }
 
-# solr-thumbnail settings
+# sorl-thumbnail settings
+
+# see: https://sorl-thumbnail.readthedocs.org/en/latest/reference/settings.html#thumbnail-format
 THUMBNAIL_FORMAT = 'PNG'
+
+# see: https://sorl-thumbnail.readthedocs.org/en/latest/reference/settings.html#thumbnail-kvstore
 THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.redis_kvstore.KVStore'
+
+# see: https://sorl-thumbnail.readthedocs.org/en/latest/reference/settings.html#thumbnail-redis-host
 THUMBNAIL_REDIS_HOST = 'localhost'
+
+# see: https://sorl-thumbnail.readthedocs.org/en/latest/reference/settings.html#thumbnail-redis-port
 THUMBNAIL_REDIS_PORT = 6379
 
 SITE_ID = 1
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
 # number of recipes per page
-PAGE_LIMIT = 2
+PAGE_LIMIT = 5
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {

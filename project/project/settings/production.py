@@ -18,10 +18,7 @@ def get_env_setting(setting):
         raise ImproperlyConfigured(error_msg)
 
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = [
-    u'83.254.179.250',
-    u'ec2-52-29-23-47.eu-central-1.compute.amazonaws.com'
-]
+ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS', '').split(',')
 
 # solr-thumbnail settings
 THUMBNAIL_DEBUG = False
