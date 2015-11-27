@@ -7,6 +7,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
 from recipes.models.recipe import Recipe
+from django.utils.translation import ugettext as _
 
 
 class FoodGroupManager(models.Manager):
@@ -21,7 +22,7 @@ class FoodGroupManager(models.Manager):
             SELECT
                 fg.id,
                 fg.name,
-                SUM(r.num_votes) as num
+                SUM(r.score) as num
             FROM
                 recipes_foodgroup fg
             INNER JOIN
@@ -136,17 +137,19 @@ class FoodGroupManager(models.Manager):
 
 
 class FoodGroup(models.Model):
-    name = models.CharField(max_length=200)
-    recipes = models.ManyToManyField(Recipe, through='RecipeFoodGroup')
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    recipes = models.ManyToManyField(Recipe, through='RecipeFoodGroup', verbose_name=_('Recipes'))
     objects = FoodGroupManager()
     lookup = models.SlugField(
         unique=True,
         default=get_random_string,
         max_length=13,
+        verbose_name=_('Hash')
     )
 
     class Meta:
         app_label = 'recipes'
+        verbose_name = _('Food group')
 
     @models.permalink
     def get_absolute_url(self):

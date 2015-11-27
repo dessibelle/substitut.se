@@ -6,6 +6,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.crypto import get_random_string
 from recipes.models.recipe import Recipe
+from django.utils.translation import ugettext as _
 
 
 class IngredientManager(models.Manager):
@@ -140,35 +141,37 @@ class IngredientManager(models.Manager):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=128)
-    energy_kj = models.FloatField(default=0, blank=True, null=True)
-    energy_kcal = models.FloatField(default=0, blank=True, null=True)
-    protein = models.FloatField(default=0, blank=True, null=True)
-    fat = models.FloatField(default=0, blank=True, null=True)
-    carbohydrates = models.FloatField(default=0, blank=True, null=True)
-    fibers = models.FloatField(default=0, blank=True, null=True)
-    salt = models.FloatField(default=0, blank=True, null=True)
-    water = models.FloatField(default=0, blank=True, null=True)
-    saturates = models.FloatField(default=0, blank=True, null=True)
-    monounsaturated = models.FloatField(default=0, blank=True, null=True)
-    trans_fat = models.FloatField(default=0, blank=True, null=True)
-    cholesterol = models.FloatField(default=0, blank=True, null=True)
-    vitamin_d = models.FloatField(default=0, blank=True, null=True)
-    vitamin_e = models.FloatField(default=0, blank=True, null=True)
-    vitamin_k = models.FloatField(default=0, blank=True, null=True)
-    vitamin_c = models.FloatField(default=0, blank=True, null=True)
-    vitamin_b6 = models.FloatField(default=0, blank=True, null=True)
-    vitamin_b12 = models.FloatField(default=0, blank=True, null=True)
-    iron = models.FloatField(default=0, blank=True, null=True)
+    name = models.CharField(max_length=128, verbose_name=_('Name'))
+    energy_kj = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Energy (kj)'))
+    energy_kcal = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Enery (kcal)'))
+    protein = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Protein'))
+    fat = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Fat'))
+    carbohydrates = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Carbohydrates'))
+    fibers = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Fibers'))
+    salt = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Salt'))
+    water = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Water'))
+    saturates = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Saturates'))
+    monounsaturated = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Monounsaturated'))
+    trans_fat = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Trans fat'))
+    cholesterol = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Cholesterol'))
+    vitamin_d = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Vitamin D'))
+    vitamin_e = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Vitamin E'))
+    vitamin_k = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Vitamin K'))
+    vitamin_c = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Vitamin C'))
+    vitamin_b6 = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Vitamin B6'))
+    vitamin_b12 = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Vitamin B12'))
+    iron = models.FloatField(default=0, blank=True, null=True, verbose_name=_('Iron'))
     objects = IngredientManager()
     lookup = models.SlugField(
         unique=True,
         default=get_random_string,
         max_length=13,
+        verbose_name=_('Hash')
     )
 
     class Meta:
         app_label = 'recipes'
+        verbose_name = _('Ingredient')
 
     @models.permalink
     def get_absolute_url(self):

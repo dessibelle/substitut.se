@@ -2,9 +2,10 @@
 
 """ Vote model. """
 
-from django.db import models
+from django.db import connection, models, transaction
 from django.utils.timezone import now
 from django.db.models.signals import post_save
+from django.utils.translation import ugettext as _
 
 
 def save_handler(sender, instance, **kwargs):
@@ -40,7 +41,7 @@ class VoteManager(models.Manager):
         user_agent = VoteManager.get_user_agent(request)
 
         vote = self.model(recipe_id=recipe_id, ip_address=ip_address,
-                          user_agent=user_agent)
+                          user_agent=user_agent, vote=+1)
 
         vote.save(using=self._db)
 
@@ -49,23 +50,6 @@ class VoteManager(models.Manager):
         else:
             raise Exception('Could not create vote for recipe {}, ip: {},\
                 user_agent: {}'.format(recipe_id, ip_address, user_agent))
-
-    def get_index(self):
-        from django.db import connection
-        cursor = connection.cursor()
-        cursor.execute("""
-            SELECT
-                recipe_id,
-                count(*)
-            FROM
-                recipes_vote
-            GROUP BY
-                recipe_id""")
-        rows = cursor.fetchall()
-        ret = []
-        for row in rows:
-            ret.append({'recipe_id': row[0], 'num_votes': row[1]})
-        return ret
 
     def get_votes(self, recipe_id):
         from django.db import connection
@@ -88,16 +72,25 @@ class VoteManager(models.Manager):
 
 class Vote(models.Model):
 
+    VOTE_UP = +1
+    VOTE_DOWN = -1
+    VOTE_CHOICES = (
+        (VOTE_UP, _('Up')),
+        (VOTE_DOWN, _('Down')),
+    )
+
     class Meta:
         app_label = 'recipes'
         unique_together = [
             ["recipe", "created", "ip_address", "user_agent"],
         ]
 
-    recipe = models.ForeignKey('Recipe')
-    created = models.DateField(default=now)
-    ip_address = models.GenericIPAddressField()
-    user_agent = models.CharField(max_length=128)
+    recipe = models.ForeignKey('Recipe', verbose_name=_('Recipe'))
+    created = models.DateField(default=now, verbose_name=_('Created'))
+    ip_address = models.GenericIPAddressField(verbose_name=_('IP Address'))
+    user_agent = models.CharField(max_length=128, verbose_name=_('User Agent'))
+    vote = models.SmallIntegerField(choices=VOTE_CHOICES, verbose_name=_('Vote'))
+
     objects = VoteManager()
 
     def __str__(self):
@@ -106,4 +99,27 @@ class Vote(models.Model):
     def __unicode__(self):
         return self.ip_address
 
-post_save.connect(save_handler, sender=Vote)
+    def is_upvote(self):
+        return self.vote == self.VOTE_UP
+
+    def is_downvote(self):
+        return self.vote == self.VOTE_DOWN
+
+
+def update_recipe_score(sender, instance, **kwargs):
+    """ Updates the score for the recipe related to the given Vote. """
+    cursor = connection.cursor()
+    cursor.execute("""
+        UPDATE
+            recipes_recipe
+        SET
+            score = (
+                SELECT COALESCE(SUM(vote), 0) from recipes_vote
+                WHERE recipes_vote.recipe_id = recipes_recipe.id
+            )
+        WHERE
+            id = %%s""", [instance.recipe_id])
+    transaction.commit_unless_managed()
+    instance.was_saved = True
+
+post_save.connect(update_recipe_score, sender=Vote)

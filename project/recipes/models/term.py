@@ -3,6 +3,7 @@
 """ Term model. """
 
 from django.db import models
+from django.utils.translation import ugettext as _
 
 
 class TermManager(models.Manager):
@@ -37,6 +38,7 @@ class Term(models.Model):
 
     class Meta:
         app_label = 'recipes'
+        verbose_name = _('Term')
 
     RECIPE = 0
     INGREDIENT = 1
@@ -46,9 +48,9 @@ class Term(models.Model):
         (INGREDIENT, 'Ingredient'),
         (TAG, 'Tag'),
     )
-    name = models.CharField(max_length=128)
-    type = models.SmallIntegerField(choices=STATUS_CHOICES)
-    endpoint = models.CharField(max_length=255)
+    name = models.CharField(max_length=128, verbose_name=_('Name'))
+    type = models.SmallIntegerField(choices=STATUS_CHOICES, verbose_name=_('Type'))
+    endpoint = models.CharField(max_length=255, verbose_name=_('Endpoint URL'))
     objects = TermManager()
 
     def __str__(self):
