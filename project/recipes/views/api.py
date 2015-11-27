@@ -3,6 +3,7 @@
 """ API views are views returning JSON. """
 
 from django.views.decorators.cache import cache_page, never_cache
+from django.views.decorators.csrf import csrf_protect
 from django.http import Http404
 from django.http import JsonResponse
 from django.conf import settings
@@ -33,6 +34,7 @@ nullhandler = logger.addHandler(NullHandler())
 
 
 @never_cache
+@csrf_protect
 def api_vote(request, recipe_id):
     """ Create a new vote object.
 
@@ -85,6 +87,7 @@ def api_votes(request, recipe_id):
 
 
 @cache_page(60 * 15)
+@csrf_protect
 def api_terms(request):
     """ Get terms for autocomplete.
 
@@ -109,6 +112,7 @@ def api_terms(request):
 
 
 @cache_page(60 * 15)
+@csrf_protect
 def api_recipes(request, recipe_id):
     """ Get recipe data for a singe recipe."""
     output = recipes_dict(recipe_id)
@@ -117,6 +121,7 @@ def api_recipes(request, recipe_id):
     return JsonResponse(output)
 
 
+@csrf_protect
 def api_ingredients(request, ingredient_id):
     ingredient = Ingredient.objects.get(pk=ingredient_id)
     if not ingredient:
@@ -130,7 +135,7 @@ def api_ingredients(request, ingredient_id):
         offset = 0
 
     recipes = Recipe.objects.filter(ingredients=ingredient_id)\
-        .order_by('-num_votes')[offset:offset + settings.PAGE_LIMIT]
+        .order_by('-score')[offset:offset + settings.PAGE_LIMIT]
 
     output = {
         'url': ingredient.get_absolute_url(),
@@ -166,6 +171,7 @@ def api_ingredients(request, ingredient_id):
     return JsonResponse(output)
 
 
+@csrf_protect
 @cache_page(60 * 15)
 def api_food_groups(request, food_group_id):
 
@@ -177,7 +183,7 @@ def api_food_groups(request, food_group_id):
         offset = 0
 
     recipes = Recipe.objects.filter(foodgroup=food_group_id)\
-        .order_by('-num_votes')[offset:offset + settings.PAGE_LIMIT]
+        .order_by('-score')[offset:offset + settings.PAGE_LIMIT]
 
     food_group = FoodGroup.objects.get(pk=food_group_id)
 
@@ -215,6 +221,7 @@ def api_food_groups(request, food_group_id):
     return JsonResponse(output)
 
 
+@csrf_protect
 @cache_page(60 * 15)
 def api_term(request):
     output = {}

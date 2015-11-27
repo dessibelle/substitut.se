@@ -1,5 +1,6 @@
 /*jslint browser: true*/
 /*global $, jQuery, window, substitut, Handlebars*/
+// @TODO: use post requests
 
 (function ($) {
     "use strict";
@@ -12,12 +13,15 @@
             cache: {},
             options: $.extend({}, options),
             votes: null,
+            security: null,
             limit: 10,
             offset: 0,
             state: null,
 
             init: function () {
                 $.hisrc.speedTest();
+
+                app.security = substitut.modules.Security();
 
                 app.setupAutocomplete();
                 app.setupSearchPromoteBtn();
@@ -28,6 +32,7 @@
                 // Setup voting functionality
                 app.votes = substitut.modules.Vote();
                 app.setupVoteButtons();
+
 
                 // Setup callback on window state change (xxs, xs, sm, md or lg)
                 app.state = substitut.modules.Responsive(
@@ -187,8 +192,10 @@
                     app.loading(true);
                     $.ajax(
                         {
+                            beforeSend: app.security.setCsrfHeader,
                             url: endpoint,
-                            data: {v: Date.now(), o: app.offset}
+                            data: {v: Date.now(), o: app.offset},
+                            method: 'POST'
                         }
                     ).success(callback);
                 }
@@ -296,6 +303,8 @@
                 $.ajax({
                     url: "/api/terms",
                     data: {term: request.term, v: Date.now()},
+                    beforeSend: app.security.setCsrfHeader,
+                    method: 'POST',
                     success: function (responseData) {
                         var array = [], json;
 
@@ -323,7 +332,9 @@
                     app.setEndpoint(ui.item.endpoint);
 
                     $.ajax({
-                        url: ui.item.endpoint
+                        url: ui.item.endpoint,
+                        method: 'POST',
+                        beforeSend: app.security.setCsrfHeader
                     }).success(app.requestSuccess).done(function (responseData) {
                         var obj = app.parseJson(responseData);
                         if (obj) {

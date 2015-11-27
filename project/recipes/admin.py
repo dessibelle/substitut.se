@@ -1,4 +1,5 @@
 from django.contrib import admin
+from reversion.admin import VersionAdmin
 from recipes.models.term import Term
 from recipes.models.food_group import FoodGroup
 from recipes.models.ingredient import Ingredient
@@ -30,7 +31,7 @@ class VoteAdmin(admin.ModelAdmin):
     search_fields = ['recipe_id', 'ip_address']
 
 
-class RecipeAdmin(AdminImageMixin, admin.ModelAdmin):
+class RecipeAdmin(AdminImageMixin, VersionAdmin):
     fieldsets = [
         (None, {'fields': ['name', 'description']}),
         (None, {'fields': ['servings', 'instructions', 'image', 'status', 'lookup']}),
@@ -48,7 +49,27 @@ class UnitIngredientInline(admin.TabularInline):
 class IngredientAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('Data', {'fields': ['energy_kj', 'energy_kcal', 'protein', 'fat', 'carbohydrates', 'fibers', 'salt', 'water', 'saturates', 'monounsaturated', 'trans_fat', 'cholesterol', 'vitamin_d', 'vitamin_e', 'vitamin_k', 'vitamin_c', 'vitamin_b6', 'vitamin_b12', 'iron'], 'classes': ('grp-collapse grp-closed',)}),
+        ('Data',
+            {'fields': [
+                'energy_kj',
+                'energy_kcal',
+                'protein', 'fat',
+                'carbohydrates',
+                'fibers',
+                'salt',
+                'water',
+                'saturates',
+                'monounsaturated',
+                'trans_fat',
+                'cholesterol',
+                'vitamin_d',
+                'vitamin_e',
+                'vitamin_k',
+                'vitamin_c',
+                'vitamin_b6',
+                'vitamin_b12',
+                'iron'
+            ], 'classes': ('grp-collapse grp-closed',)}),
     ]
     inlines = [UnitIngredientInline]
     list_filter = ['name']

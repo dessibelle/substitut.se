@@ -30,6 +30,7 @@
                     }
                     storage.object = JSON.parse(localStorage.getItem(storage.data.name));
                 } else {
+                    // @TODO: use getCookie
                     var cookieData = null,
                         objectString = "{}";
 
@@ -96,13 +97,30 @@
                 } else {
                     document.cookie = storage.data.name + "=" + JSON.stringify(storage.object) + "; path=/";
                 }
+            },
+
+            // using jQuery
+            getCookie: function(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
             }
         };
         storage.init();
 
         return {
             get: storage.get,
-            set: storage.set
+            set: storage.set,
+            getCookie: storage.getCookie
         };
     }});
 }(jQuery));

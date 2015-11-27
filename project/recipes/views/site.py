@@ -62,7 +62,7 @@ def index(request):
             'img_large': get_thumbnail(recipe.image, '540x540', crop='center', quality=99).url
             })
 
-    popular_recipes = Recipe.objects.filter(status=1).order_by('-num_votes')[:4]
+    popular_recipes = Recipe.objects.filter(status=1).order_by('-score')[:4]
     popular_recipes_with_links = []
     for recipe in popular_recipes:
         popular_recipes_with_links.append({
