@@ -101,25 +101,25 @@
             },
 
             setupVoteButtons: function () {
-                $("#content").on("click", ".vote-button", function (event) {
+                $("#content").on("click", ".vote-up-button", function (event) {
                     var recipe_id = $(event.currentTarget).parent().attr("data-recipe-id");
                     if (recipe_id !== undefined) {
                         if (!$(event.currentTarget).parent().parent().hasClass("hidden")) {
-                            app.votes.voteFor(recipe_id);
+                            app.votes.voteUp(recipe_id);
                         }
                     }
                     return false;
                 });
-                $("#content").on("click", ".vote-button-dismiss", function (event) {
+                $("#content").on("click", ".vote-down-button", function (event) {
                     var recipe_id = $(event.currentTarget).parent().attr("data-recipe-id");
                     if (recipe_id !== undefined) {
-                        app.votes.hide(recipe_id);
-                        event.stopPropagation();
+                        if (!$(event.currentTarget).parent().parent().hasClass("hidden")) {
+                            app.votes.voteDown(recipe_id);
+                        }
                     }
                     return false;
                 });
             },
-
             loading: function (is_loading) {
                 var $icon = $('#index-search-btn .glyphicon');
                 if ($icon) {
@@ -380,7 +380,8 @@
         return {
             init: app.init,
             parseJson: app.parseJson,
-            responsiveChange: app.responsiveChange
+            responsiveChange: app.responsiveChange,
+            setCsrfHeader: app.security.setCsrfHeader
         };
     }});
 }(jQuery));

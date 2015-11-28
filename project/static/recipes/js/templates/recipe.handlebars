@@ -60,11 +60,15 @@
                     </div>
                 </div>
                 <div class="row recipe-footer-row" id="recipe-footer-row-{{ id }}">
-                    <div class="col-md-12">
-                        <div class="alert alert-success" role="alert" data-recipe-id="{{ id }}">
-                            <button type="button" class="close vote-button-dismiss" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <a href="#" class="alert-link vote-button">Jag kan rekommendera det här receptet!</a>
-                        </div>
+                    <div class="col-md-12" data-recipe-id="{{ id }}">
+                        <button class="btn btn-lg btn-success vote-up-button">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                            Rekommenderas!
+                        </button>
+                        <button class="btn btn-danger vote-down-button">
+                            <span class="glyphicon glyphicon-thumbs-down"></span>
+                            Inget vidare!
+                        </button>
                     </div>
                 </div>
             </article>

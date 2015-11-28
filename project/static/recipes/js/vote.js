@@ -46,26 +46,40 @@
             voteHide: function (recipe_id) {
                 vote.save(recipe_id);
                 vote.validateButton(recipe_id);
-                console.log('yup');
             },
 
-            voteFor: function (recipe_id) {
-                $.ajax({
-                    url: "/api/recipes/vote/" + recipe_id + "/?v=" + Date.now(),
-                    success: function (responseData) {
-                        var json = substitut.application.parseJson(responseData);
-                        if (json) {
-                            if (json.status === "ok") {
-                                vote.save(recipe_id);
-                            } else if (json.status === "denied") {
-                                vote.save(recipe_id);
-                            } else {
-                                console.log("Endpoint returned an unknown status: ", json.status);
-                            }
-                            vote.validateButton(recipe_id);
-                        }
+            voteUp: function (recipe_id) {
+                vote.voteFor(recipe_id, 'up');
+            },
+
+            voteDown: function (recipe_id) {
+                vote.voteFor(recipe_id, 'down');
+            },
+
+            voteSuccess: function (responseData) {
+                var json = substitut.application.parseJson(responseData);
+                if (json) {
+                    if (json.status === "ok") {
+                        vote.save(json.recipe_id);
+                    } else if (json.status === "denied") {
+                        vote.save(json.recipe_id);
+                    } else {
+                        console.log("Endpoint returned an unknown status: ", json.status);
                     }
-                });
+                    vote.validateButton(json.recipe_id);
+                }
+            },
+
+            voteFor: function (recipe_id, vote_type) {
+                $.ajax(
+                    {
+                        url: "/api/recipes/vote/" + recipe_id + "/?v=" + Date.now(),
+                        data: {type: vote_type},
+                        method: 'POST',
+                        success: vote.voteSuccess,
+                        beforeSend: substitut.application.setCsrfHeader
+                    }
+                );
             },
 
             /**
@@ -77,7 +91,7 @@
                     vote.storage.get(recipe_id);
                     if (!$vote_total.hasClass("hidden")) {
                         $vote_total.fadeOut("fast", function (event) {
-                            if (event.currentTarget) {
+                            if (event && event.currentTarget) {
                                 $(event.currentTarget).addClass("hidden");
                             }
                         });
@@ -93,7 +107,8 @@
         vote.init();
 
         return {
-            voteFor: vote.voteFor,
+            voteUp: vote.voteUp,
+            voteDown: vote.voteDown,
             hide: vote.voteHide,
             validateButton: vote.validateButton,
             save: vote.save

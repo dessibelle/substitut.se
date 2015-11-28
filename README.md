@@ -6,7 +6,6 @@ of tasty vegan dishes they were not so easy to find and when I did find them I o
 found the site to be inaccessible in one way or another. So I started making a
 site of my own.
 
-
 **This is a work in progress**
 
 

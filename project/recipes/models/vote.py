@@ -29,7 +29,7 @@ class VoteManager(models.Manager):
         """Use requestobject to fetch client user agent."""
         return request.META.get('HTTP_USER_AGENT', '')
 
-    def create_vote(self, request, recipe_id):
+    def create_vote(self, request, recipe_id, vote_type):
         """Create and saves a Vote."""
         if not request:
             raise ValueError('The given request must be set')
@@ -41,7 +41,7 @@ class VoteManager(models.Manager):
         user_agent = VoteManager.get_user_agent(request)
 
         vote = self.model(recipe_id=recipe_id, ip_address=ip_address,
-                          user_agent=user_agent, vote=+1)
+                          user_agent=user_agent, vote=vote_type)
 
         vote.save(using=self._db)
 
@@ -56,13 +56,11 @@ class VoteManager(models.Manager):
         cursor = connection.cursor()
         cursor.execute("""
             SELECT
-                count(*)
+                COALESCE(SUM(vote), 0)
             FROM
                 recipes_vote
             WHERE
-                recipe_id = %s
-            GROUP BY
-                recipe_id""", [recipe_id])
+                recipe_id = %s""", [recipe_id])
         row = cursor.fetchone()
         try:
             return row[0]
@@ -118,8 +116,8 @@ def update_recipe_score(sender, instance, **kwargs):
                 WHERE recipes_vote.recipe_id = recipes_recipe.id
             )
         WHERE
-            id = %%s""", [instance.recipe_id])
-    transaction.commit_unless_managed()
+            id = %s""", [instance.recipe_id])
+    transaction.commit()
     instance.was_saved = True
 
 post_save.connect(update_recipe_score, sender=Vote)

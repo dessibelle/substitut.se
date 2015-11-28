@@ -44,18 +44,30 @@ def api_vote(request, recipe_id):
     Example:
         Example response:
             {
-                'status': 'ok'
+                'status': 'ok',
+                'recipe_id': 12345
             }
 
     Return:
         JSON. Status 'ok' on success and 'denied' on failure.
     """
+    if request.method != 'POST':
+        raise Http404
+
+    vote_type = request.POST.get('type', None)
+    if vote_type == 'up':
+        vote_type = Vote.VOTE_UP
+    elif vote_type == 'down':
+        vote_type = Vote.VOTE_DOWN
+    else:
+        raise Http404
+
     try:
-        Vote.objects.create_vote(request, recipe_id)
-        output = {'status': 'ok'}
+        Vote.objects.create_vote(request, recipe_id, vote_type)
+        output = {'status': 'ok', 'recipe_id': recipe_id}
     except Exception:
         # UNIQUE constraint failed
-        output = {'status': 'denied'}
+        output = {'status': 'denied', 'recipe_id': recipe_id}
         pass
 
     return JsonResponse(output)
