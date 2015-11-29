@@ -116,9 +116,9 @@ def api_terms(request):
         JSON.
     """
     output = {}
-    if request.method == "GET":
-        if u'term' in request.GET:
-            term = request.GET[u'term']
+    if request.method == "POST":
+        if u'term' in request.POST:
+            term = request.POST[u'term']
             output = Term.objects.lookup(term)
     return JsonResponse(output, safe=False)
 
@@ -139,8 +139,8 @@ def api_ingredients(request, ingredient_id):
     if not ingredient:
         raise Http404
 
-    if u'o' in request.GET:
-        offset = int(request.GET[u'o'])
+    if 'o' in request.POST:
+        offset = int(request.POST['o'])
         if offset < 0:
             offset = 0
     else:
@@ -187,8 +187,8 @@ def api_ingredients(request, ingredient_id):
 @cache_page(60 * 15)
 def api_food_groups(request, food_group_id):
 
-    if u'o' in request.GET:
-        offset = int(request.GET[u'o'])
+    if 'o' in request.POST:
+        offset = int(request.POST['o'])
         if offset < 0:
             offset = 0
     else:
@@ -237,8 +237,8 @@ def api_food_groups(request, food_group_id):
 @cache_page(60 * 15)
 def api_term(request):
     output = {}
-    if request.method == "GET":
-        if u'term' in request.GET:
-            term = request.GET[u'term']
+    if request.method == "POST":
+        if 'term' in request.POST:
+            term = request.POST['term']
             output = Term.objects.lookup(term)
     return JsonResponse(output, safe=False)

@@ -51,6 +51,21 @@
             }
         }
     }
+    .recipe-vote-wrapper {
+        margin-top: $grid-gutter-width;
+        margin-bottom: 0;
+        .row {
+            div {
+                text-align: center;
+                button {
+                    height: 50px;
+                    width: 90%;
+                    font-size: 26px;
+                    padding: 0;
+                }
+            }
+        }
+    }
 }
 
 /* Store current state for js use */
@@ -455,12 +470,6 @@ header.site-header {
                 margin-top: ($grid-gutter-width*2);
             }
         }
-        .recipe-footer-row {
-            > div {
-                margin: 2em 0;
-                text-align: center;
-            }
-        }
         ol {
             counter-reset: li;
             margin-left: 0;
@@ -580,6 +589,7 @@ header.site-header {
             }
         }
     }
+
 }
 
 .category {

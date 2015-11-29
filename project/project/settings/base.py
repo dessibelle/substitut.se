@@ -180,6 +180,7 @@ PIPELINE_JS = {
             'js/init.js',
             'js/templates/*.handlebars',
             'js/exceptions.js',
+            'js/cache.js',
             'js/handlebars_helpers.js',
             'js/recipe.js',
             'js/responsive.js',
