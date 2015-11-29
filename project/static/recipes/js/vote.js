@@ -71,6 +71,7 @@
             },
 
             voteFor: function (recipe_id, vote_type) {
+                console.log("voteFor");
                 $.ajax(
                     {
                         url: "/api/recipes/vote/" + recipe_id + "/?v=" + Date.now(),
@@ -86,7 +87,7 @@
              * Checks if vote button should be enabled for current recipe.
              */
             validateButton: function (recipe_id) {
-                var $vote_total = $('#recipe-footer-row-' + recipe_id);
+                var $vote_total = $('#recipe-vote-wrapper-' + recipe_id);
                 try {
                     vote.storage.get(recipe_id);
                     if (!$vote_total.hasClass("hidden")) {

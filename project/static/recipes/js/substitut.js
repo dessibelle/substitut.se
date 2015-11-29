@@ -1,7 +1,5 @@
 /*jslint browser: true*/
 /*global $, jQuery, window, substitut, Handlebars*/
-// @TODO: use post requests
-
 (function ($) {
     "use strict";
 
@@ -22,6 +20,7 @@
                 $.hisrc.speedTest();
 
                 app.security = substitut.modules.Security();
+                app.cache = substitut.modules.Cache();
 
                 app.setupAutocomplete();
                 app.setupSearchPromoteBtn();
@@ -102,7 +101,7 @@
 
             setupVoteButtons: function () {
                 $("#content").on("click", ".vote-up-button", function (event) {
-                    var recipe_id = $(event.currentTarget).parent().attr("data-recipe-id");
+                    var recipe_id = $(event.currentTarget).parent().parent().attr("data-recipe-id");
                     if (recipe_id !== undefined) {
                         if (!$(event.currentTarget).parent().parent().hasClass("hidden")) {
                             app.votes.voteUp(recipe_id);
@@ -111,7 +110,7 @@
                     return false;
                 });
                 $("#content").on("click", ".vote-down-button", function (event) {
-                    var recipe_id = $(event.currentTarget).parent().attr("data-recipe-id");
+                    var recipe_id = $(event.currentTarget).parent().parent.attr("data-recipe-id");
                     if (recipe_id !== undefined) {
                         if (!$(event.currentTarget).parent().parent().hasClass("hidden")) {
                             app.votes.voteDown(recipe_id);
@@ -120,6 +119,7 @@
                     return false;
                 });
             },
+
             loading: function (is_loading) {
                 var $icon = $('#index-search-btn .glyphicon');
                 if ($icon) {
@@ -132,7 +132,7 @@
             },
 
             parseJson: function (str) {
-                if (typeof str === 'object') {
+                if (str !== null && typeof str === 'object') {
                     return str;
                 } else {
                     var json;
@@ -170,16 +170,23 @@
 
             getHtml: function (recipe, last) {
                 try {
-                    var recipe_id = recipe.id;
+                    var opts = {
+                        recipe_id: recipe.id
+                    };
+                    var cache_key = app.cache.getKey(opts);
+                    var result = null;
 
-                    if (app.cache[recipe_id] === undefined || !app.cache[recipe_id]) {
+                    if (app.cache.exists(cache_key)) {
+                        result = app.cache.get(cache_key);
+                    } else {
                         var r = new substitut.modules.Recipe(recipe);
-                        app.cache[recipe_id] = r.getData();
+                        result = r.getData();
+                        app.cache.add(cache_key, result);
                     }
                     if (last) {
-                        app.cache[recipe_id].class = "last";
+                        result.class = "last";
                     }
-                    return Handlebars.templates.recipe(app.cache[recipe_id]);
+                    return Handlebars.templates.recipe(result);
                 } catch (err) {
                     console.log(err);
                     return "";

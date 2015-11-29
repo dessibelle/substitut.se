@@ -57,16 +57,16 @@
                 var obj = storage.object[param];
                 if (storage.data.expire) {
                     var now = new Date().getTime() / 1000;
-                    if (now >= obj.timestamp) {
+                    if (now >= obj.ts) {
                         delete storage.object[param];
                         localStorage.setItem(storage.data.name, JSON.stringify(storage.object));
                         throw new substitut.exceptions.StorageParamExpiredException("param \"" + param + "\" found but has expired");
                     }
                 }
-                if (obj.value === undefined) {
+                if (obj.val === undefined) {
                     return "";
                 }
-                return obj.value;
+                return obj.val;
             },
 
             getTimestamp: function (daysInFuture) {
@@ -82,15 +82,15 @@
                 return startOfTomorrow;
             },
 
-            set: function (param, value) {
-                var timestamp = 0;
+            set: function (param, val) {
+                var ts = 0;
                 if (storage.data.expire) {
-                    timestamp = storage.getTimestamp(storage.data.expire);
+                    ts = storage.getTimestamp(storage.data.expire);
                 }
-                if (value === undefined) {
-                    storage.object[param] = {timestamp: timestamp};
+                if (val === undefined) {
+                    storage.object[param] = {ts: ts};
                 } else {
-                    storage.object[param] = {value: value, timestamp: timestamp};
+                    storage.object[param] = {val: val, ts: ts};
                 }
                 if (storage.enabled) {
                     localStorage.setItem(storage.data.name, JSON.stringify(storage.object));
@@ -99,7 +99,6 @@
                 }
             },
 
-            // using jQuery
             getCookie: function(name) {
                 var cookieValue = null;
                 if (document.cookie && document.cookie != '') {

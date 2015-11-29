@@ -59,18 +59,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row recipe-footer-row" id="recipe-footer-row-{{ id }}">
-                    <div class="col-md-12" data-recipe-id="{{ id }}">
-                        <button class="btn btn-lg btn-success vote-up-button">
-                            <span class="glyphicon glyphicon-thumbs-up"></span>
-                            Rekommenderas!
-                        </button>
-                        <button class="btn btn-danger vote-down-button">
-                            <span class="glyphicon glyphicon-thumbs-down"></span>
-                            Inget vidare!
-                        </button>
-                    </div>
-                </div>
             </article>
         </section>
     </div>
@@ -83,5 +71,22 @@
             </div>
         </aside>
         {{/if}}
+        <aside class="recipe-vote-wrapper" id="recipe-vote-wrapper-{{ id }}">
+            <div class="row" data-recipe-id="{{ id }}">
+                <div class="col-md-12">
+                    <h3>Gillade du det här receptet?</h3>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-success vote-up-button">
+                        ja
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-danger vote-down-button">
+                        nej
+                    </button>
+                </div>
+            </div>
+        </aside>
     </div>
 </div>
